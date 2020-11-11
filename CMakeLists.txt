@@ -7,10 +7,10 @@ set(SFML_STATIC_LIBRARIES TRUE)
 
 add_executable(Rail-simulator src/main.cpp src/Application.cpp src/Application.h src/Config.h src/Camera.cpp src/Camera.h src/Render.cpp src/Render.h src/State.h)
 
-set(SFML_ROOT "lib/SFML-2.5.1")
-set(SFML_DIR "lib/SFML-2.5.1/lib/cmake/SFML")
-set(SFML_INCLUDE_DIR "lib/SFML-2.5.1/include")
-set(SFML_LIBRARY_DIR "lib/SFML-2.5.1/lib")
+set(SFML_ROOT "libs/SFML-2.5.1")
+set(SFML_DIR "libs/SFML-2.5.1/lib/cmake/SFML")
+set(SFML_INCLUDE_DIR "libs/SFML-2.5.1/include")
+set(SFML_LIBRARY_DIR "libs/SFML-2.5.1/lib")
 
 find_package(SFML 2.5.1 REQUIRED graphics network audio window system)
 
@@ -57,8 +57,7 @@ add_executable(Rail_simulator
         libs/rapidjson/writer.h
         tests/graph_tests/test.cpp
         src/graph.cpp
-        src/graph_parser.cpp
-        main.cpp)
+        src/graph_parser.cpp)
 
 include(libs/RapidJson.cmake)
 include(libs/GTest.cmake)
