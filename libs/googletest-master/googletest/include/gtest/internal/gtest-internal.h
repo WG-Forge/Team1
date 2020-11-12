@@ -595,7 +595,7 @@ GTEST_API_ bool SkipPrefix(const char* prefix, const char** pstr);
 GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
 /* class A needs to have dll-interface to be used by clients of class B */)
 
-// State of the definition of a type-parameterized test suite.
+// state of the definition of a type-parameterized test suite.
 class GTEST_API_ TypedTestSuitePState {
  public:
   TypedTestSuitePState() : registered_(false) {}

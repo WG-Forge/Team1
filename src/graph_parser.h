@@ -9,7 +9,7 @@ public:
   explicit GraphParser(const std::string &parseText) {
     document_.Parse(parseText.c_str());
   }
-  Graph GetGraph() const;
+  graph GetGraph() const;
 
 private:
   rapidjson::Document document_;

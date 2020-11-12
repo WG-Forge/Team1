@@ -231,7 +231,7 @@ public:
     /// \brief Draw a drawable object to the render target
     ///
     /// \param drawable Object to draw
-    /// \param states   Render states to use for drawing
+    /// \param states   render states to use for drawing
     ///
     ////////////////////////////////////////////////////////////
     void draw(const Drawable& drawable, const RenderStates& states = RenderStates::Default);
@@ -242,7 +242,7 @@ public:
     /// \param vertices    Pointer to the vertices
     /// \param vertexCount Number of vertices in the array
     /// \param type        Type of primitives to draw
-    /// \param states      Render states to use for drawing
+    /// \param states      render states to use for drawing
     ///
     ////////////////////////////////////////////////////////////
     void draw(const Vertex* vertices, std::size_t vertexCount,
@@ -252,7 +252,7 @@ public:
     /// \brief Draw primitives defined by a vertex buffer
     ///
     /// \param vertexBuffer Vertex buffer
-    /// \param states       Render states to use for drawing
+    /// \param states       render states to use for drawing
     ///
     ////////////////////////////////////////////////////////////
     void draw(const VertexBuffer& vertexBuffer, const RenderStates& states = RenderStates::Default);
@@ -263,7 +263,7 @@ public:
     /// \param vertexBuffer Vertex buffer
     /// \param firstVertex  Index of the first vertex to render
     /// \param vertexCount  Number of vertices to render
-    /// \param states       Render states to use for drawing
+    /// \param states       render states to use for drawing
     ///
     ////////////////////////////////////////////////////////////
     void draw(const VertexBuffer& vertexBuffer, std::size_t firstVertex, std::size_t vertexCount, const RenderStates& states = RenderStates::Default);
@@ -427,7 +427,7 @@ private:
     /// \brief Setup environment for drawing
     ///
     /// \param useVertexCache Are we going to use the vertex cache?
-    /// \param states         Render states to use for drawing
+    /// \param states         render states to use for drawing
     ///
     ////////////////////////////////////////////////////////////
     void setupDraw(bool useVertexCache, const RenderStates& states);
@@ -445,13 +445,13 @@ private:
     ////////////////////////////////////////////////////////////
     /// \brief Clean up environment after drawing
     ///
-    /// \param states Render states used for drawing
+    /// \param states render states used for drawing
     ///
     ////////////////////////////////////////////////////////////
     void cleanupDraw(const RenderStates& states);
 
     ////////////////////////////////////////////////////////////
-    /// \brief Render states cache
+    /// \brief render states cache
     ///
     ////////////////////////////////////////////////////////////
     struct StatesCache
@@ -473,7 +473,7 @@ private:
     ////////////////////////////////////////////////////////////
     View        m_defaultView; ///< Default view
     View        m_view;        ///< Current view
-    StatesCache m_cache;       ///< Render states cache
+    StatesCache m_cache;       ///< render states cache
     Uint64      m_id;          ///< Unique number that identifies the RenderTarget
 };
 

@@ -1,12 +1,4 @@
-#include "Camera.h"
-
-void Camera::updateX(int dx) {
-    cameraX += dx;
-}
-
-void Camera::updateY(int dy) {
-    cameraY += dy;
-}
+#include "camera.h"
 
 void Camera::update(int dx, int dy) {
     cameraX += dx;

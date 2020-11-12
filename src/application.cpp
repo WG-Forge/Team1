@@ -1,4 +1,4 @@
-#include "Application.h"
+#include "application.h"
 
 Application::Application(const Config config) : config(config) {
 }
@@ -7,7 +7,7 @@ int Application::run() {
     init();
     sf::Clock dtTimer;
 
-    int mouseX = -1, mouseY = -1, cameraX = -1, cameraY = -1;
+    int mouseX = -1, mouseY = -1, cameraX = -1, cameraY = -1, delta = 0;
     while (window.isOpen()) {
         if (dtTimer.getElapsedTime().asMilliseconds() * config.fps <= 1000) {
             continue;
@@ -32,10 +32,14 @@ int Application::run() {
             } else {
                 mouseX = mouseY = cameraX = cameraY = -1;
             }
+            if (event.type == sf::Event::MouseWheelMoved) {
+                delta += event.mouseWheel.delta;
+            }
         }
 
         if (!states.empty()) {
             window.clear();
+            states.front().resize(delta);
             render.draw(states.front());
         }
 
@@ -78,6 +82,8 @@ void Application::init() {
         state.addCircle(30, 30, 10);
         state.addCircle(234, 123, 10);
         state.addCircle(123, 430, 10);
+        state.addText((int)(window.getSize().x / 2) - 150, (int)window.getSize().y - 50,
+                "Press esc to exit program", "../resourses/8-bit-pusab.ttf");
         states.push(state);
     }
 }

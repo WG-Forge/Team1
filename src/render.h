@@ -1,8 +1,8 @@
 #ifndef RAIL_SIMULATOR_RENDER_H
 #define RAIL_SIMULATOR_RENDER_H
 
-#include "Camera.h"
-#include "State.h"
+#include "camera.h"
+#include "state.h"
 
 class Render {
 private:

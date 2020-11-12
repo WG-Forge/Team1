@@ -9,10 +9,6 @@ private:
 public:
     Camera() = default;
 
-    void updateX(int dx);
-
-    void updateY(int dy);
-
     void update(int dx, int dy);
 
     [[nodiscard]] int getCameraX() const;

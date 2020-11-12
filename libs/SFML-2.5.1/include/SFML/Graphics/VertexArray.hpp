@@ -176,7 +176,7 @@ private:
     ////////////////////////////////////////////////////////////
     /// \brief Draw the vertex array to a render target
     ///
-    /// \param target Render target to draw to
+    /// \param target render target to draw to
     /// \param states Current render states
     ///
     ////////////////////////////////////////////////////////////

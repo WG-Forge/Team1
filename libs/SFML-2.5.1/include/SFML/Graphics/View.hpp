@@ -326,13 +326,13 @@ private:
 /// // Apply it
 /// window.setView(view);
 ///
-/// // Render stuff
+/// // render stuff
 /// window.draw(someSprite);
 ///
 /// // Set the default view back
 /// window.setView(window.getDefaultView());
 ///
-/// // Render stuff not affected by the view
+/// // render stuff not affected by the view
 /// window.draw(someText);
 /// \endcode
 ///

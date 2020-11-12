@@ -62,7 +62,7 @@ protected:
     /// by the derived class to define how the drawable should be
     /// drawn.
     ///
-    /// \param target Render target to draw to
+    /// \param target render target to draw to
     /// \param states Current render states
     ///
     ////////////////////////////////////////////////////////////

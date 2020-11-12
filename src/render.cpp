@@ -1,4 +1,4 @@
-#include "Render.h"
+#include "render.h"
 
 void Render::setWindow(sf::RenderWindow *renderWindow) {
     Render::window = renderWindow;
@@ -22,5 +22,13 @@ void Render::draw(State &state) {
         circle.setPosition(circle.getPosition().x - (float)camera->getCameraX(),
                            circle.getPosition().y - (float)camera->getCameraY());
         window->draw(circle);
+    }
+    for (auto [text, fontPath]: state.texts) {
+        sf::Font font;
+        if (!font.loadFromFile(fontPath)) {
+            exit(228);
+        }
+        text.setFont(font);
+        window->draw(text);
     }
 }

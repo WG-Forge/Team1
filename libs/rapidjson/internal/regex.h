@@ -68,7 +68,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 // GenericRegex
 
-static const SizeType kRegexInvalidState = ~SizeType(0);  //!< Represents an invalid index in GenericRegex::State::out, out1
+static const SizeType kRegexInvalidState = ~SizeType(0);  //!< Represents an invalid index in GenericRegex::state::out, out1
 static const SizeType kRegexInvalidRange = ~SizeType(0);
 
 template <typename Encoding, typename Allocator>
@@ -308,7 +308,7 @@ private:
 #if RAPIDJSON_REGEX_VERBOSE
             printf("root: %d\n", root_);
             for (SizeType i = 0; i < stateCount_ ; i++) {
-                State& s = GetState(i);
+                state& s = GetState(i);
                 printf("[%2d] out: %2d out1: %2d c: '%c'\n", i, s.out, s.out1, (char)s.codepoint);
             }
             printf("\n");

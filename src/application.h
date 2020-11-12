@@ -4,10 +4,10 @@
 #include <iostream>
 #include <queue>
 
-#include "Camera.h"
-#include "Config.h"
-#include "Render.h"
-#include "State.h"
+#include "camera.h"
+#include "config.h"
+#include "render.h"
+#include "state.h"
 
 class Application {
 private:
