@@ -2,22 +2,32 @@ cmake_minimum_required(VERSION 3.15)
 project(Rail-simulator)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc")
-set(SFML_STATIC_LIBRARIES TRUE)
 
 add_executable(Rail-simulator src/main.cpp src/application.cpp src/application.h src/config.h src/camera.cpp src/camera.h src/render.cpp src/render.h src/state.h)
 
-set(SFML_ROOT "libs/SFML-2.5.1")
-set(SFML_DIR "libs/SFML-2.5.1/lib/cmake/SFML")
-set(SFML_INCLUDE_DIR "libs/SFML-2.5.1/include")
-set(SFML_LIBRARY_DIR "libs/SFML-2.5.1/lib")
+if (WIN32)
+    set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc")
+    set(SFML_STATIC_LIBRARIES TRUE)
+    set(SFML_ROOT "libs/SFML-2.5.1-Windows")
+    set(SFML_DIR "libs/SFML-2.5.1-Windows/lib/cmake/SFML")
+    set(SFML_INCLUDE_DIR "libs/SFML-2.5.1-Windows/include")
+    set(SFML_LIBRARY_DIR "libs/SFML-2.5.1-Windows/lib")
+endif ()
+
+if (UNIX)
+    set(SFML_ROOT "libs/SFML-2.5.1-Linux")
+    set(SFML_DIR "libs/SFML-2.5.1-Linux/lib/cmake/SFML")
+    set(SFML_INCLUDE_DIR "libs/SFML-2.5.1-Linux/include")
+    set(SFML_LIBRARY_DIR "libs/SFML-2.5.1-Linux/lib")
+endif ()
 
 find_package(SFML 2.5.1 REQUIRED graphics network audio window system)
 
-if(SFML_FOUND)
+if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
-    target_link_libraries (Rail-simulator sfml-graphics sfml-network sfml-audio sfml-window sfml-system)
-endif()
+    target_link_libraries(Rail-simulator sfml-graphics sfml-network sfml-audio sfml-window sfml-system)
+endif ()
+
 
 add_executable(Rail_simulator
         libs/rapidjson/error/en.h
