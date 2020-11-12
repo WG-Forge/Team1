@@ -7,12 +7,12 @@
 class GraphParser {
 public:
   explicit GraphParser(const std::string &parseText) {
-    document_.Parse(parseText.c_str());
+    document.Parse(parseText.c_str());
   }
-  graph GetGraph() const;
+  Graph GetGraph() const;
 
 private:
-  rapidjson::Document document_;
+  rapidjson::Document document;
 };
 
 #endif

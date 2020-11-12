@@ -3,33 +3,7 @@ project(Rail-simulator)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Rail-simulator src/main.cpp src/application.cpp src/application.h src/config.h src/camera.cpp src/camera.h src/render.cpp src/render.h src/state.h)
-
-if (WIN32)
-    set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc")
-    set(SFML_STATIC_LIBRARIES TRUE)
-    set(SFML_ROOT "libs/SFML-2.5.1-Windows")
-    set(SFML_DIR "libs/SFML-2.5.1-Windows/lib/cmake/SFML")
-    set(SFML_INCLUDE_DIR "libs/SFML-2.5.1-Windows/include")
-    set(SFML_LIBRARY_DIR "libs/SFML-2.5.1-Windows/lib")
-endif ()
-
-if (UNIX)
-    set(SFML_ROOT "libs/SFML-2.5.1-Linux")
-    set(SFML_DIR "libs/SFML-2.5.1-Linux/lib/cmake/SFML")
-    set(SFML_INCLUDE_DIR "libs/SFML-2.5.1-Linux/include")
-    set(SFML_LIBRARY_DIR "libs/SFML-2.5.1-Linux/lib")
-endif ()
-
-find_package(SFML 2.5.1 REQUIRED graphics network audio window system)
-
-if (SFML_FOUND)
-    include_directories(${SFML_INCLUDE_DIR})
-    target_link_libraries(Rail-simulator sfml-graphics sfml-network sfml-audio sfml-window sfml-system)
-endif ()
-
-
-add_executable(Rail_simulator
+add_executable(Rail-simulator
         libs/rapidjson/error/en.h
         libs/rapidjson/error/error.h
         libs/rapidjson/internal/biginteger.h
@@ -67,9 +41,37 @@ add_executable(Rail_simulator
         libs/rapidjson/writer.h
         tests/graph_tests/test.cpp
         src/graph.cpp
-        src/graph_parser.cpp)
+        src/graph_parser.cpp
+        src/main.cpp
+        src/application.cpp
+        src/camera.cpp
+        src/render.cpp
+        src/state.cpp)
+
+if (WIN32)
+    set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc")
+    set(SFML_STATIC_LIBRARIES TRUE)
+    set(SFML_ROOT "libs/SFML-2.5.1-Windows")
+    set(SFML_DIR "libs/SFML-2.5.1-Windows/lib/cmake/SFML")
+    set(SFML_INCLUDE_DIR "libs/SFML-2.5.1-Windows/include")
+    set(SFML_LIBRARY_DIR "libs/SFML-2.5.1-Windows/lib")
+endif ()
+
+if (UNIX)
+    set(SFML_ROOT "libs/SFML-2.5.1-Linux")
+    set(SFML_DIR "libs/SFML-2.5.1-Linux/lib/cmake/SFML")
+    set(SFML_INCLUDE_DIR "libs/SFML-2.5.1-Linux/include")
+    set(SFML_LIBRARY_DIR "libs/SFML-2.5.1-Linux/lib")
+endif ()
+
+find_package(SFML 2.5.1 REQUIRED graphics network audio window system)
+
+if (SFML_FOUND)
+    include_directories(${SFML_INCLUDE_DIR})
+    target_link_libraries(Rail-simulator sfml-graphics sfml-network sfml-audio sfml-window sfml-system)
+endif ()
 
 include(libs/RapidJson.cmake)
 include(libs/GTest.cmake)
 
-set_target_properties(Rail_simulator PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(Rail-simulator PROPERTIES LINKER_LANGUAGE CXX)

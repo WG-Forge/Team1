@@ -2,8 +2,7 @@
 
 const Config config;
 
-int main()
-{
-    Application app(config);
-    return app.run();
+int main() {
+  Application app(config);
+  return app.run();
 }

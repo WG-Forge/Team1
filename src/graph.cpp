@@ -1,38 +1,45 @@
 #include "graph.h"
-graph::graph(const std::string &name, size_t id,
+Graph::Graph(const std::string &name, size_t id,
              const std::vector<Point> &points, const std::vector<Line> &lines)
-    : name_(name), idx_(id), points_(points), lines_(lines) {}
+    : name(name), idx(id), points(points), lines(lines) {
+  for (size_t i = 0; i < points.size(); ++i) {
+    idxToNum[points[i].idx] = i;
+  }
+}
 
-void graph::SetName(const std::string &name) { name_ = name; }
+void Graph::SetName(const std::string &name) { this->name = name; }
 
-void graph::SetId(size_t id) { idx_ = id; }
-void graph::SetPoints(const std::vector<Point> &points) { points_ = points; }
-void graph::SetLines(const std::vector<Line> &lines) { lines_ = lines; }
+void Graph::SetId(size_t id) { idx = id; }
+void Graph::SetPoints(const std::vector<Point> &points) {
+  this->points = points;
+}
+void Graph::SetLines(const std::vector<Line> &lines) { this->lines = lines; }
 
-const std::string &graph::GetName() const { return name_; }
-size_t graph::GetIdx() const { return idx_; }
-const std::vector<graph::Point> &graph::GetPoints() const { return points_; }
-const std::vector<graph::Line> &graph::GetLines() const { return lines_; }
+const std::string &Graph::GetName() const { return name; }
+size_t Graph::GetIdx() const { return idx; }
+const std::vector<Graph::Point> &Graph::GetPoints() const { return points; }
+const std::vector<Graph::Line> &Graph::GetLines() const { return lines; }
+size_t Graph::GetNum(size_t pointIdx) const { return idxToNum.at(pointIdx); }
 
-graph::Point::Point(size_t idx, std::optional<size_t> postIdx)
+Graph::Point::Point(size_t idx, std::optional<size_t> postIdx)
     : postIdx(postIdx), idx(idx) {}
 
-bool graph::Point::operator==(const graph::Point &rhs) const {
+bool Graph::Point::operator==(const Graph::Point &rhs) const {
   return idx == rhs.idx && postIdx == rhs.postIdx;
 }
 
-bool graph::Point::operator!=(const graph::Point &rhs) const {
+bool Graph::Point::operator!=(const Graph::Point &rhs) const {
   return !(rhs == *this);
 }
 
-graph::Line::Line(size_t idx, double length,
+Graph::Line::Line(size_t idx, double length,
                   const std::pair<size_t, size_t> &points)
     : idx(idx), length(length), points(points) {}
 
-bool graph::Line::operator==(const graph::Line &rhs) const {
+bool Graph::Line::operator==(const Graph::Line &rhs) const {
   return idx == rhs.idx && length == rhs.length && points == rhs.points;
 }
 
-bool graph::Line::operator!=(const graph::Line &rhs) const {
+bool Graph::Line::operator!=(const Graph::Line &rhs) const {
   return !(rhs == *this);
 }

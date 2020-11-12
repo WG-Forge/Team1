@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <vector>
 
-class graph {
+class Graph {
 public:
   struct Point {
     explicit Point(size_t idx, std::optional<size_t> postIdx = std::nullopt);
@@ -23,7 +23,7 @@ public:
   };
 
 public:
-  graph(const std::string &name, size_t id, const std::vector<Point> &points,
+  Graph(const std::string &name, size_t id, const std::vector<Point> &points,
         const std::vector<Line> &lines);
 
   void SetName(const std::string &name);
@@ -35,12 +35,14 @@ public:
   size_t GetIdx() const;
   const std::vector<Point> &GetPoints() const;
   const std::vector<Line> &GetLines() const;
+  size_t GetNum(size_t pointIdx) const;
 
 private:
-  std::string name_;
-  size_t idx_;
-  std::vector<Point> points_;
-  std::vector<Line> lines_;
+  std::string name;
+  size_t idx;
+  std::vector<Point> points;
+  std::vector<Line> lines;
+  std::unordered_map<size_t, size_t> idxToNum;
 };
 
 #endif
