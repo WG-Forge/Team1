@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <vector>
 
+namespace RailGraph {
 class Graph {
 public:
   struct Point {
@@ -44,5 +45,5 @@ private:
   std::vector<Line> lines;
   std::unordered_map<size_t, size_t> idxToNum;
 };
-
+} // namespace RailGraph
 #endif

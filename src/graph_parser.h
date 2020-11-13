@@ -4,6 +4,7 @@
 #include "libs/rapidjson/document.h"
 #include <string>
 
+namespace RailGraph {
 class GraphParser {
 public:
   explicit GraphParser(const std::string &parseText) {
@@ -14,5 +15,5 @@ public:
 private:
   rapidjson::Document document;
 };
-
+} // namespace RailGraph
 #endif

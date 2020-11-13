@@ -16,7 +16,7 @@ public:
     bool operator!=(const Point &rhs) const;
     float x = 0, y = 0;
     size_t idx{};
-    Point(float x_, float y_, size_t idx_) : x(x_), y(y_), idx(idx_) {};
+    Point(float x_, float y_, size_t idx_) : x(x_), y(y_), idx(idx_){};
     Point() = default;
   };
 
@@ -25,8 +25,8 @@ public:
   GraphState(std::vector<Point> points,
              std::vector<std::vector<int>> adjencyList);
 
-  [[nodiscard]] std::vector<Point> &GetPoints();
-  [[nodiscard]] const std::vector<std::vector<int>> &GetAdjencyList() const;
+  std::vector<Point> &GetPoints();
+  const std::vector<std::vector<int>> &GetAdjencyList() const;
 
   void SetPoints(const std::vector<Point> &points);
   void SetAdjencyList(const std::vector<std::vector<int>> &adjencyList);
@@ -36,45 +36,48 @@ private:
   std::vector<std::vector<int>> adjencyList;
 };
 
-GraphState CreateCircleGraphStateFromGraph(const Graph &graph);
+GraphState CreateCircleGraphStateFromGraph(const RailGraph::Graph &graph);
+GraphState CreateKamadaKawaiGraphStateFromGraph(const RailGraph::Graph &graph);
 
 class State {
 private:
-    void AddLine(float x1, float y1, float x2, float y2);
+  void AddLine(float x1, float y1, float x2, float y2);
 
-    void AddCircle(float x, float y, float r);
+  void AddCircle(float x, float y, float r);
 
 public:
-    State() = default;
+  State() = default;
 
-    State(GraphState graphState, std::vector<std::pair<sf::Text, std::string>> information);
+  State(GraphState graphState,
+        std::vector<std::pair<sf::Text, std::string>> information);
 
-    void AddInformation(float x, float y, const std::string &title,
-                        const std::string &fontName, int size, sf::Color color);
+  void AddInformation(float x, float y, const std::string &title,
+                      const std::string &fontName, int size, sf::Color color);
 
-    const std::vector<std::pair<sf::Text, std::string>> &GetInformation();
+  const std::vector<std::pair<sf::Text, std::string>> &GetInformation();
 
-    const std::vector<sf::CircleShape> &GetCircles();
+  const std::vector<sf::CircleShape> &GetCircles();
 
-    const std::vector<std::vector<sf::Vertex>> &GetLines();
+  const std::vector<std::vector<sf::Vertex>> &GetLines();
 
-    void AddText(float x, float y, const std::string &title,
-                 const std::string &fontName, int size, sf::Color color);
+  void AddText(float x, float y, const std::string &title,
+               const std::string &fontName, int size, sf::Color color);
 
-    const std::vector<std::pair<sf::Text, std::string>> &GetTexts();
+  const std::vector<std::pair<sf::Text, std::string>> &GetTexts();
 
-    void Resize(float X, float Y, float delta);
+  void Resize(float delta);
 
-    GraphState::Point GetCenter();
+  GraphState::Point GetCenter();
 
-    static float GetLen (GraphState::Point point1, GraphState::Point point2);
+  static float GetLen(GraphState::Point point1, GraphState::Point point2);
+
 private:
-    float radius = 1.f;
-    std::vector<sf::CircleShape> circles;
-    std::vector<std::vector<sf::Vertex>> lines;
-    std::vector<std::pair<sf::Text, std::string>> texts;
-    std::vector<std::pair<sf::Text, std::string>> pointInformation;
-    GraphState graphState;
+  float radius = 1.f;
+  std::vector<sf::CircleShape> circles;
+  std::vector<std::vector<sf::Vertex>> lines;
+  std::vector<std::pair<sf::Text, std::string>> texts;
+  std::vector<std::pair<sf::Text, std::string>> pointInformation;
+  GraphState graphState;
 };
 
 #endif // RAIL_SIMULATOR_STATE_H

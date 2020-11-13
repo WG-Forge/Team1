@@ -1,4 +1,6 @@
 #include "graph.h"
+
+namespace RailGraph {
 Graph::Graph(const std::string &name, size_t id,
              const std::vector<Point> &points, const std::vector<Line> &lines)
     : name(name), idx(id), points(points), lines(lines) {
@@ -43,3 +45,4 @@ bool Graph::Line::operator==(const Graph::Line &rhs) const {
 bool Graph::Line::operator!=(const Graph::Line &rhs) const {
   return !(rhs == *this);
 }
+} // namespace RailGraph

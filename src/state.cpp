@@ -1,4 +1,10 @@
 #include "state.h"
+#include <boost/config.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/circle_layout.hpp>
+#include <boost/graph/fruchterman_reingold.hpp>
+#include <boost/graph/graph_utility.hpp>
+#include <boost/graph/kamada_kawai_spring_layout.hpp>
 #include <math.h>
 #include <utility>
 #include <vector>
@@ -21,9 +27,7 @@ GraphState::Point &GraphState::Point::operator=(const GraphState::Point &rhs) {
   return *this;
 }
 
-std::vector<GraphState::Point> &GraphState::GetPoints() {
-  return points;
-}
+std::vector<GraphState::Point> &GraphState::GetPoints() { return points; }
 
 const std::vector<std::vector<int>> &GraphState::GetAdjencyList() const {
   return adjencyList;
@@ -38,7 +42,7 @@ void GraphState::SetAdjencyList(
   GraphState::adjencyList = adjencyList;
 }
 
-GraphState CreateCircleGraphStateFromGraph(const Graph &graph) {
+GraphState CreateCircleGraphStateFromGraph(const RailGraph::Graph &graph) {
   std::vector<GraphState::Point> vertices(graph.GetPoints().size());
   std::vector<std::vector<int>> adjencyList(vertices.size());
   for (int i = 0; i < vertices.size(); ++i) {
@@ -55,9 +59,85 @@ GraphState CreateCircleGraphStateFromGraph(const Graph &graph) {
   return GraphState(std::move(vertices), std::move(adjencyList));
 }
 
-State::State(GraphState graphState, std::vector<std::pair<sf::Text, std::string>> texts) : graphState(std::move(
-        graphState)), texts(std::move(texts)) {
-    Resize(0, 0, 0);
+GraphState
+CreateKamadaKawaiGraphStateFromGraph(const RailGraph::Graph &railGraph) {
+  typedef boost::square_topology<>::point_type Point;
+
+  struct VertexProperties {
+    VertexProperties() = default;
+    std::size_t index;
+    Point point;
+  };
+
+  struct EdgeProperty {
+    explicit EdgeProperty(const std::size_t &w) : weight(w) {}
+    double weight;
+  };
+
+  typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
+                                VertexProperties, EdgeProperty>
+      Graph;
+  typedef boost::property_map<Graph, std::size_t VertexProperties::*>::type
+      VertexIndexPropertyMap;
+  typedef boost::property_map<Graph, Point VertexProperties::*>::type
+      PositionMap;
+  typedef boost::property_map<Graph, double EdgeProperty::*>::type
+      WeightPropertyMap;
+  typedef boost::graph_traits<Graph>::vertex_descriptor VirtexDescriptor;
+
+  Graph graph;
+  VertexIndexPropertyMap vertexIdPropertyMap =
+      boost::get(&VertexProperties::index, graph);
+
+  const auto &points = railGraph.GetPoints();
+  const auto &lines = railGraph.GetLines();
+  for (const auto &point : points) {
+    VirtexDescriptor vd = boost::add_vertex(graph);
+    vertexIdPropertyMap[vd] = railGraph.GetNum(point.idx);
+  }
+  for (const auto &line : lines) {
+    boost::add_edge(boost::vertex(railGraph.GetNum(line.points.first), graph),
+                    boost::vertex(railGraph.GetNum(line.points.second), graph),
+                    EdgeProperty(line.length), graph);
+  }
+
+  PositionMap positionMap = boost::get(&VertexProperties::point, graph);
+  WeightPropertyMap weightPropertyMap =
+      boost::get(&EdgeProperty::weight, graph);
+
+  boost::circle_graph_layout(graph, positionMap, 100);
+  //  boost::kamada_kawai_spring_layout(
+  //      graph, positionMap, weightPropertyMap, boost::square_topology<>(),
+  //      boost::edge_length<double>(100), boost::layout_tolerance<>(), 1,
+  //      vertexIdPropertyMap);
+  boost::fruchterman_reingold_force_directed_layout(graph, positionMap,
+                                                    boost::square_topology<>());
+
+  std::vector<GraphState::Point> vertices(railGraph.GetPoints().size());
+  std::vector<std::vector<int>> adjencyList(vertices.size());
+  boost::graph_traits<Graph>::vertex_iterator i, end;
+  for (boost::tie(i, end) = boost::vertices(graph); i != end; ++i) {
+    vertices[vertexIdPropertyMap[*i]] = {
+        static_cast<float>(100 * positionMap[*i][0]),
+        static_cast<float>(100 * positionMap[*i][1]),
+        railGraph.GetPoints()[vertexIdPropertyMap[*i]].idx};
+  }
+  for (const auto &line : railGraph.GetLines()) {
+    size_t firstNum = railGraph.GetNum(line.points.first),
+           secondNum = railGraph.GetNum(line.points.second);
+    adjencyList[firstNum].emplace_back(secondNum);
+    adjencyList[secondNum].emplace_back(firstNum);
+  }
+  return GraphState(std::move(vertices), std::move(adjencyList));
+}
+
+State::State(GraphState graphState,
+             std::vector<std::pair<sf::Text, std::string>> texts)
+    : graphState(std::move(graphState)), texts(std::move(texts)) {
+  Resize(1000);
+  for (int i = 0; i <= 2000; i++) {
+    Resize(-i);
+  }
 }
 
 void State::AddLine(float x1, float y1, float x2, float y2) {
@@ -93,74 +173,78 @@ const std::vector<std::vector<sf::Vertex>> &State::GetLines() {
 
 void State::AddText(float x, float y, const std::string &title,
                     const std::string &fontName, int size, sf::Color color) {
-    sf::Text text;
-    text.setString(title);
-    text.setPosition(x, y);
-    text.setCharacterSize(size);
-    text.setFillColor(color);
-    texts.emplace_back(text, fontName);
+  sf::Text text;
+  text.setString(title);
+  text.setPosition(x, y);
+  text.setCharacterSize(size);
+  text.setFillColor(color);
+  texts.emplace_back(text, fontName);
 }
 
 const std::vector<std::pair<sf::Text, std::string>> &State::GetTexts() {
-    return State::texts;
+  return State::texts;
 }
 
 void State::AddInformation(float x, float y, const std::string &title,
-                           const std::string &fontName, int size, sf::Color color) {
-    sf::Text text;
-    text.setString(title);
-    text.setPosition(x, y);
-    text.setCharacterSize(size);
-    text.setFillColor(color);
-    pointInformation.emplace_back(text, fontName);
+                           const std::string &fontName, int size,
+                           sf::Color color) {
+  sf::Text text;
+  text.setString(title);
+  text.setPosition(x, y);
+  text.setCharacterSize(size);
+  text.setFillColor(color);
+  pointInformation.emplace_back(text, fontName);
 }
 
 const std::vector<std::pair<sf::Text, std::string>> &State::GetInformation() {
-    pointInformation.clear();
-    for (size_t i = 0; i < State::graphState.GetPoints().size(); ++i) {
-        AddInformation(circles[i].getPosition().x + circles[i].getRadius() * 2,
-                circles[i].getPosition().y + circles[i].getRadius() * 2,
-                std::to_string(State::graphState.GetPoints()[i].idx),
-                "8-bit-pusab", 10, sf::Color::White);
-    }
-    return State::pointInformation;
+  pointInformation.clear();
+  for (size_t i = 0; i < State::graphState.GetPoints().size(); ++i) {
+    AddInformation(circles[i].getPosition().x + circles[i].getRadius() * 2,
+                   circles[i].getPosition().y + circles[i].getRadius() * 2,
+                   std::to_string(State::graphState.GetPoints()[i].idx),
+                   "8-bit-pusab", 10, sf::Color::White);
+  }
+  return State::pointInformation;
 }
 
-float State::GetLen (GraphState::Point point1, GraphState::Point point2) {
-    return sqrt((point1.x - point2.x) * (point1.x - point2.x) +
-                (point1.y - point2.y) * (point1.y - point2.y));
+float State::GetLen(GraphState::Point point1, GraphState::Point point2) {
+  return sqrt((point1.x - point2.x) * (point1.x - point2.x) +
+              (point1.y - point2.y) * (point1.y - point2.y));
 }
 
-void State::Resize(float X, float Y, float delta) {
-    float len = (State::graphState.GetPoints().empty() ? 0 : GetLen(State::graphState.GetPoints()[0], GraphState::Point()));
-    for (auto &point : State::graphState.GetPoints()) {
-        if (len < 100 && delta < 0) {
-            continue;
-        }
-        point.x += point.x / len * delta;
-        point.y += point.y / len * delta;
+void State::Resize(float delta) {
+  float len =
+      (State::graphState.GetPoints().empty()
+           ? 0
+           : GetLen(State::graphState.GetPoints()[0], GraphState::Point()));
+  for (auto &point : State::graphState.GetPoints()) {
+    if (len < 100 && delta < 0) {
+      break;
     }
-    float min = 30.f;
-    for (const auto &point1 : State::graphState.GetPoints()) {
-        for (const auto &point2 : State::graphState.GetPoints()) {
-            if (point1 != point2) {
-                min = std::min(GetLen(point1, point2), min);
-            }
-        }
+    point.x += point.x / len * delta;
+    point.y += point.y / len * delta;
+  }
+  float min = 30.f;
+  for (const auto &point1 : State::graphState.GetPoints()) {
+    for (const auto &point2 : State::graphState.GetPoints()) {
+      if (point1 != point2) {
+        min = std::min(GetLen(point1, point2), min);
+      }
     }
-    State::radius = std::max(1.f, min / 3);
+  }
+  State::radius = std::max(1.f, min / 3);
 }
 
 GraphState::Point State::GetCenter() {
-    float minX = std::numeric_limits<float>::max();
-    float maxX = std::numeric_limits<float>::min();
-    float minY = std::numeric_limits<float>::max();
-    float maxY = std::numeric_limits<float>::min();
-    for (const auto &point : graphState.GetPoints()) {
-        minX = std::min(minX, point.x);
-        maxX = std::max(maxX, point.x);
-        minY = std::min(minY, point.y);
-        maxY = std::max(maxY, point.y);
-    }
-    return GraphState::Point((minX + maxX) / 2.f, (minY + maxY) / 2.f, 0);
+  float minX = std::numeric_limits<float>::max();
+  float maxX = std::numeric_limits<float>::min();
+  float minY = std::numeric_limits<float>::max();
+  float maxY = std::numeric_limits<float>::min();
+  for (const auto &point : graphState.GetPoints()) {
+    minX = std::min(minX, point.x);
+    maxX = std::max(maxX, point.x);
+    minY = std::min(minY, point.y);
+    maxY = std::max(maxY, point.y);
+  }
+  return GraphState::Point((minX + maxX) / 2.f, (minY + maxY) / 2.f, 0);
 }
