@@ -18,17 +18,48 @@ void Render::draw(State &state) {
         };
         window->draw(line, 2, sf::Lines);
     }
-    for (auto circle : state.GetCircles()) {
-        circle.setPosition(circle.getPosition().x - (float)camera->getCameraX(),
-                           circle.getPosition().y - (float)camera->getCameraY());
+    int picked = -1;
+    auto circles = state.GetCircles();
+    float dist = std::numeric_limits<float>::max();
+    sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
+    for (size_t i = 0; i < circles.size(); ++i) {
+        float cur_dist = State::GetLen(
+                GraphState::Point(circles[i].getPosition().x + circles[i].getRadius(),
+                                  circles[i].getPosition().y + circles[i].getRadius(), 0),
+                GraphState::Point((float)(mousePos.x + camera->getCameraX()),
+                                  (float)(mousePos.y + camera->getCameraY()), 0));
+        if (cur_dist < circles[i].getRadius() && cur_dist < dist) {
+            dist = cur_dist;
+            picked = i;
+        }
+    }
+    for (size_t i = 0; i < circles.size(); ++i) {
+        sf::CircleShape circle(circles[i].getRadius());
+        circle.setPosition(circles[i].getPosition().x - (float)camera->getCameraX(),
+                           circles[i].getPosition().y - (float)camera->getCameraY());
+        if (picked == i) {
+            circle.setFillColor(sf::Color::Blue);
+        }
         window->draw(circle);
     }
-    for (auto [text, fontPath]: state.GetTexts()) {
-        sf::Font font;
-        if (!font.loadFromFile(fontPath)) {
-            exit(228);
+    if (!hide) {
+        for (auto [text, fontName]: state.GetInformation()) {
+            text.setPosition(text.getPosition().x - (float)camera->getCameraX(),
+                             text.getPosition().y - (float)camera->getCameraY());
+            text.setFont(font[fontName]);
+            window->draw(text);
         }
-        text.setFont(font);
+    }
+    for (auto [text, fontName]: state.GetTexts()) {
+        text.setFont(font[fontName]);
         window->draw(text);
     }
+}
+
+void Render::loadFont(const std::string& name, const std::string& path) {
+    sf::Font font_;
+    if (!font_.loadFromFile(path)) {
+        exit(228);
+    }
+    Render::font[name] = font_;
 }

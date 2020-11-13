@@ -71,16 +71,6 @@ void State::AddCircle(float x, float y, float r) {
   circles.push_back(circle);
 }
 
-void State::AddText(float x, float y, const std::string &title,
-                    const std::string &fontPath) {
-  sf::Text text;
-  text.setString(title);
-  text.setPosition(x, y);
-  text.setCharacterSize(14);
-  text.setFillColor(sf::Color::White);
-  texts.emplace_back(text, fontPath);
-}
-
 const std::vector<sf::CircleShape> &State::GetCircles() {
   State::circles.clear();
   for (const auto &point : State::graphState.GetPoints()) {
@@ -101,11 +91,42 @@ const std::vector<std::vector<sf::Vertex>> &State::GetLines() {
   return State::lines;
 }
 
-const std::vector<std::pair<sf::Text, std::string>> &State::GetTexts() {
-  return State::texts;
+void State::AddText(float x, float y, const std::string &title,
+                    const std::string &fontName, int size, sf::Color color) {
+    sf::Text text;
+    text.setString(title);
+    text.setPosition(x, y);
+    text.setCharacterSize(size);
+    text.setFillColor(color);
+    texts.emplace_back(text, fontName);
 }
 
-float GetLen (GraphState::Point point1, GraphState::Point point2) {
+const std::vector<std::pair<sf::Text, std::string>> &State::GetTexts() {
+    return State::texts;
+}
+
+void State::AddInformation(float x, float y, const std::string &title,
+                           const std::string &fontName, int size, sf::Color color) {
+    sf::Text text;
+    text.setString(title);
+    text.setPosition(x, y);
+    text.setCharacterSize(size);
+    text.setFillColor(color);
+    pointInformation.emplace_back(text, fontName);
+}
+
+const std::vector<std::pair<sf::Text, std::string>> &State::GetInformation() {
+    pointInformation.clear();
+    for (size_t i = 0; i < State::graphState.GetPoints().size(); ++i) {
+        AddInformation(circles[i].getPosition().x + circles[i].getRadius() * 2,
+                circles[i].getPosition().y + circles[i].getRadius() * 2,
+                std::to_string(State::graphState.GetPoints()[i].idx),
+                "8-bit-pusab", 10, sf::Color::White);
+    }
+    return State::pointInformation;
+}
+
+float State::GetLen (GraphState::Point point1, GraphState::Point point2) {
     return sqrt((point1.x - point2.x) * (point1.x - point2.x) +
                 (point1.y - point2.y) * (point1.y - point2.y));
 }
@@ -128,7 +149,6 @@ void State::Resize(float X, float Y, float delta) {
         }
     }
     State::radius = std::max(1.f, min / 3);
-    std::cout << radius << '\n';
 }
 
 GraphState::Point State::GetCenter() {

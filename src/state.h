@@ -43,28 +43,37 @@ private:
     void AddLine(float x1, float y1, float x2, float y2);
 
     void AddCircle(float x, float y, float r);
+
 public:
     State() = default;
 
-    State(GraphState graphState, std::vector<std::pair<sf::Text, std::string>> texts);
+    State(GraphState graphState, std::vector<std::pair<sf::Text, std::string>> information);
 
-    void AddText(float x, float y, const std::string &title,
-                 const std::string &fontPath);
+    void AddInformation(float x, float y, const std::string &title,
+                        const std::string &fontName, int size, sf::Color color);
+
+    const std::vector<std::pair<sf::Text, std::string>> &GetInformation();
 
     const std::vector<sf::CircleShape> &GetCircles();
 
     const std::vector<std::vector<sf::Vertex>> &GetLines();
+
+    void AddText(float x, float y, const std::string &title,
+                 const std::string &fontName, int size, sf::Color color);
 
     const std::vector<std::pair<sf::Text, std::string>> &GetTexts();
 
     void Resize(float X, float Y, float delta);
 
     GraphState::Point GetCenter();
+
+    static float GetLen (GraphState::Point point1, GraphState::Point point2);
 private:
     float radius = 1.f;
     std::vector<sf::CircleShape> circles;
     std::vector<std::vector<sf::Vertex>> lines;
     std::vector<std::pair<sf::Text, std::string>> texts;
+    std::vector<std::pair<sf::Text, std::string>> pointInformation;
     GraphState graphState;
 };
 

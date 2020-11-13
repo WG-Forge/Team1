@@ -4,10 +4,10 @@
 struct Config {
     int windowX = 800;
     int windowY = 600;
-    bool isFullscreen = true;
+    bool isFullscreen = false;
     bool hideCursor = false;
     int fps = 60;
-    std::string pathToJson = "../tests/graph_tests/small_graph.json";
+    std::string pathToJson = "../tests/graph_tests/big_graph.json";
 
     Config() = default;
 };
