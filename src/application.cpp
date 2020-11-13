@@ -33,7 +33,8 @@ int Application::run() {
                 mouseX = mouseY = cameraX = cameraY = -1;
             }
             if (event.type == sf::Event::MouseWheelMoved) {
-                delta += event.mouseWheel.delta;
+                delta = event.mouseWheel.delta;
+                states.front().Resize(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y, delta * 10);
             }
         }
 
@@ -42,6 +43,7 @@ int Application::run() {
             render.draw(states.front());
         }
 
+
         window.display();
     }
 
@@ -49,32 +51,32 @@ int Application::run() {
 }
 
 void Application::init() {
-      sf::ContextSettings settings;
-      settings.antialiasingLevel = 0;
-      settings.majorVersion = 3;
-      settings.minorVersion = 3;
-      settings.depthBits = 24;
-      settings.stencilBits = 8;
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 0;
+    settings.majorVersion = 3;
+    settings.minorVersion = 3;
+    settings.depthBits = 24;
+    settings.stencilBits = 8;
 
-      if (config.isFullscreen) {
-          window.create(sf::VideoMode::getDesktopMode(), "Rail-simulator",
-                        sf::Style::Fullscreen, settings);
-      } else {
-          sf::VideoMode winMode(config.windowX, config.windowY);
-          window.create(winMode, "Rail-simulator", sf::Style::Close,
-          settings);
-      }
+    if (config.isFullscreen) {
+        window.create(sf::VideoMode::getDesktopMode(), "Rail-simulator",
+                      sf::Style::Fullscreen, settings);
+    } else {
+        sf::VideoMode winMode(config.windowX, config.windowY);
+        window.create(winMode, "Rail-simulator", sf::Style::Close,
+                      settings);
+    }
 
-      if (config.hideCursor) {
-          window.setMouseCursorVisible(false);
-      }
+    if (config.hideCursor) {
+        window.setMouseCursorVisible(false);
+    }
 
-      render.setCamera(&camera);
-      render.setWindow(&window);
+    render.setCamera(&camera);
+    render.setWindow(&window);
 
   //test
     {
-        std::ifstream fin("../tests/graph_tests/big_graph.json");
+        std::ifstream fin(config.pathToJson);
         std::stringstream ss;
         ss << fin.rdbuf();
         GraphParser graphParser(ss.str());
@@ -85,4 +87,8 @@ void Application::init() {
                       "Press esc to exit program", "../resourses/8-bit-pusab.ttf");
         states.push(state);
     }
+
+    auto center = states.front().GetCenter();
+    camera.setCameraX((int)(center.x - window.getSize().x / 2));
+    camera.setCameraY((int)(center.y - window.getSize().y / 2));
 }

@@ -571,7 +571,7 @@ private:
 /// like Qt or wxWidgets.
 ///
 /// The sf::Сanvas class provides a simple interface for manipulating
-/// the window: move, resize, show/hide, control mouse cursor, etc.
+/// the window: move, Resize, show/hide, control mouse cursor, etc.
 /// It also provides event handling through its pollEvent() and waitEvent()
 /// functions.
 ///

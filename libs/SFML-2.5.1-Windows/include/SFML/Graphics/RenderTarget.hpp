@@ -158,7 +158,7 @@ public:
     /// initial position of a rendered pixel.
     ///
     /// Initially, both coordinate systems (world units and target pixels)
-    /// match perfectly. But if you define a custom view or resize your
+    /// match perfectly. But if you define a custom view or Resize your
     /// render target, this assertion is not true anymore, i.e. a point
     /// located at (10, 50) in your render target may map to the point
     /// (150, 75) in your 2D world -- if the view is translated by (140, 25).
@@ -208,7 +208,7 @@ public:
     /// as the graphics card, to compute the final position of a rendered point.
     ///
     /// Initially, both coordinate systems (world units and target pixels)
-    /// match perfectly. But if you define a custom view or resize your
+    /// match perfectly. But if you define a custom view or Resize your
     /// render target, this assertion is not true anymore, i.e. a point
     /// located at (150, 75) in your 2D world may map to the pixel
     /// (10, 50) of your render target -- if the view is translated by (140, 25).

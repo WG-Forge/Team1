@@ -14,8 +14,10 @@ public:
     Point &operator=(const Point &rhs);
     bool operator==(const Point &rhs) const;
     bool operator!=(const Point &rhs) const;
-    float x, y;
-    size_t idx;
+    float x = 0, y = 0;
+    size_t idx{};
+    Point(float x_, float y_, size_t idx_) : x(x_), y(y_), idx(idx_) {};
+    Point() = default;
   };
 
 public:
@@ -23,7 +25,7 @@ public:
   GraphState(std::vector<Point> points,
              std::vector<std::vector<int>> adjencyList);
 
-  [[nodiscard]] const std::vector<Point> &GetPoints() const;
+  [[nodiscard]] std::vector<Point> &GetPoints();
   [[nodiscard]] const std::vector<std::vector<int>> &GetAdjencyList() const;
 
   void SetPoints(const std::vector<Point> &points);
@@ -44,8 +46,7 @@ private:
 public:
     State() = default;
 
-    State(GraphState graphState, std::vector<std::pair<sf::Text, std::string>> texts) : graphState(std::move(
-            graphState)), texts(std::move(texts)) {};
+    State(GraphState graphState, std::vector<std::pair<sf::Text, std::string>> texts);
 
     void AddText(float x, float y, const std::string &title,
                  const std::string &fontPath);
@@ -55,6 +56,10 @@ public:
     const std::vector<std::vector<sf::Vertex>> &GetLines();
 
     const std::vector<std::pair<sf::Text, std::string>> &GetTexts();
+
+    void Resize(float X, float Y, float delta);
+
+    GraphState::Point GetCenter();
 private:
     float radius = 1.f;
     std::vector<sf::CircleShape> circles;
