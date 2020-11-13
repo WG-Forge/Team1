@@ -48,6 +48,8 @@ add_executable(Rail-simulator
         src/render.cpp
         src/state.cpp)
 
+include_directories(libs/boost/graph)
+
 if (WIN32)
     set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc")
     set(SFML_STATIC_LIBRARIES TRUE)
