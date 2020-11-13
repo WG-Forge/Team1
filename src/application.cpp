@@ -39,7 +39,6 @@ int Application::run() {
 
         if (!states.empty()) {
             window.clear();
-            states.front().resize(delta);
             render.draw(states.front());
         }
 
@@ -74,16 +73,15 @@ void Application::init() {
 
     //test
     {
-        State state;
-        state.addLine(10, 10, 30, 30);
-        state.addLine(30, 30, 234, 123);
-        state.addLine(123, 430, 234, 123);
-        state.addCircle(10, 10, 10);
-        state.addCircle(30, 30, 10);
-        state.addCircle(234, 123, 10);
-        state.addCircle(123, 430, 10);
-        state.addText((int)(window.getSize().x / 2) - 150, (int)window.getSize().y - 50,
-                "Press esc to exit program", "../resourses/8-bit-pusab.ttf");
+        std::ifstream fin("../tests/graph_tests/small_graph.json");
+        std::stringstream ss;
+        ss << fin.rdbuf();
+        GraphParser graphParser(ss.str());
+        GraphState graphState = CreateCircleGraphStateFromGraph(graphParser.GetGraph());
+        std::vector<std::pair<sf::Text, std::string>> texts;
+        State state(graphState, texts);
+        state.AddText(window.getSize().x / 2.f - 150, window.getSize().y - 50.f,
+                      "Press esc to exit program", "../resourses/8-bit-pusab.ttf");
         states.push(state);
     }
 }

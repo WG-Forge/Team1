@@ -9,7 +9,7 @@ void Render::setCamera(Camera *pCamera) {
 }
 
 void Render::draw(State &state) {
-    for (auto l : state.lines) {
+    for (auto l : state.GetLines()) {
         sf::Vertex line[] = {
                 sf::Vertex(sf::Vector2f(l[0].position.x - (float)camera->getCameraX(),
                                     l[0].position.y - (float)camera->getCameraY())),
@@ -18,12 +18,12 @@ void Render::draw(State &state) {
         };
         window->draw(line, 2, sf::Lines);
     }
-    for (auto circle : state.circles) {
+    for (auto circle : state.GetCircles()) {
         circle.setPosition(circle.getPosition().x - (float)camera->getCameraX(),
                            circle.getPosition().y - (float)camera->getCameraY());
         window->draw(circle);
     }
-    for (auto [text, fontPath]: state.texts) {
+    for (auto [text, fontPath]: state.GetTexts()) {
         sf::Font font;
         if (!font.loadFromFile(fontPath)) {
             exit(228);

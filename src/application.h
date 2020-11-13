@@ -1,13 +1,14 @@
 #ifndef RAIL_SIMULATOR_APPLICATION_H
 #define RAIL_SIMULATOR_APPLICATION_H
 
-#include <iostream>
+#include <fstream>
 #include <queue>
+#include <sstream>
 
 #include "camera.h"
 #include "config.h"
+#include "graph_parser.h"
 #include "render.h"
-#include "state.h"
 
 class Application {
 private:

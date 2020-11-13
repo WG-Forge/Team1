@@ -44,8 +44,9 @@ GraphState CreateCircleGraphStateFromGraph(const Graph &graph) {
   std::vector<GraphState::Point> vertices(graph.GetPoints().size());
   std::vector<std::vector<GraphState::Point *>> adjencyList(vertices.size());
   for (int i = 0; i < vertices.size(); ++i) {
-    vertices[i] = {cosf(i * M_PI / vertices.size()),
-                   sinf(i * M_PI / vertices.size()), graph.GetPoints()[i].idx};
+    vertices[i] = {cosf(i * 2 * M_PI / vertices.size()) * 300,
+                   sinf(i * 2 * M_PI / vertices.size()) * 300, graph.GetPoints()[i].idx};
+    std::cout << vertices[i].x << ' ' << vertices[i].y << '\n';
   }
   for (const auto &line : graph.GetLines()) {
     size_t firstNum = graph.GetNum(line.points.first),
@@ -54,4 +55,50 @@ GraphState CreateCircleGraphStateFromGraph(const Graph &graph) {
     adjencyList[secondNum].emplace_back(&vertices[firstNum]);
   }
   return GraphState(vertices, adjencyList);
+}
+
+void State::AddLine(float x1, float y1, float x2, float y2) {
+    lines.push_back({
+        sf::Vertex(sf::Vector2f(x1, y1)),
+        sf::Vertex(sf::Vector2f(x2, y2))
+    });
+}
+
+void State::AddCircle(float x, float y, float r) {
+    sf::CircleShape circle(r);
+    circle.setPosition(x - r, y - r);
+    circles.push_back(circle);
+}
+
+void State::AddText(float x, float y, const std::string &title, const std::string &fontPath) {
+    sf::Text text;
+    text.setString(title);
+    text.setPosition(x, y);
+    text.setCharacterSize(14);
+    text.setFillColor(sf::Color::White);
+    texts.emplace_back(text, fontPath);
+}
+
+const std::vector<sf::CircleShape> &State::GetCircles() {
+    State::circles.clear();
+    for (const auto &point : State::graphState.GetPoints()) {
+        State::AddCircle(point.x, point.y, radius);
+    }
+    return State::circles;
+}
+
+const std::vector<std::vector<sf::Vertex>> &State::GetLines() {
+    State::lines.clear();
+    auto points = State::graphState.GetPoints();
+    auto edges = State::graphState.GetAdjencyList();
+    for (size_t i = 0; i < points.size(); ++i) {
+        for (const auto &v : edges[i]) {
+            State::AddLine(points[i].x, points[i].y, v->x, v->y);
+        }
+    }
+    return State::lines;
+}
+
+const std::vector<std::pair<sf::Text, std::string>> &State::GetTexts() {
+    return State::texts;
 }
