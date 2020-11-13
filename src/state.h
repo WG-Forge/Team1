@@ -20,18 +20,18 @@ public:
 
 public:
   GraphState() = default;
-  GraphState(const std::vector<Point> &points,
-             const std::vector<std::vector<Point *>> &adjencyList);
+  GraphState(std::vector<Point> points,
+             std::vector<std::vector<int>> adjencyList);
 
   [[nodiscard]] const std::vector<Point> &GetPoints() const;
-  [[nodiscard]] const std::vector<std::vector<Point *>> &GetAdjencyList() const;
+  [[nodiscard]] const std::vector<std::vector<int>> &GetAdjencyList() const;
 
   void SetPoints(const std::vector<Point> &points);
-  void SetAdjencyList(const std::vector<std::vector<Point *>> &adjencyList);
+  void SetAdjencyList(const std::vector<std::vector<int>> &adjencyList);
 
 private:
   std::vector<Point> points;
-  std::vector<std::vector<Point *>> adjencyList;
+  std::vector<std::vector<int>> adjencyList;
 };
 
 GraphState CreateCircleGraphStateFromGraph(const Graph &graph);
@@ -56,7 +56,7 @@ public:
 
     const std::vector<std::pair<sf::Text, std::string>> &GetTexts();
 private:
-    float radius = 10.f;
+    float radius = 1.f;
     std::vector<sf::CircleShape> circles;
     std::vector<std::vector<sf::Vertex>> lines;
     std::vector<std::pair<sf::Text, std::string>> texts;

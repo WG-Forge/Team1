@@ -49,31 +49,32 @@ int Application::run() {
 }
 
 void Application::init() {
-    sf::ContextSettings settings;
-    settings.antialiasingLevel = 0;
-    settings.majorVersion = 3;
-    settings.minorVersion = 3;
-    settings.depthBits = 24;
-    settings.stencilBits = 8;
+      sf::ContextSettings settings;
+      settings.antialiasingLevel = 0;
+      settings.majorVersion = 3;
+      settings.minorVersion = 3;
+      settings.depthBits = 24;
+      settings.stencilBits = 8;
 
-    if (config.isFullscreen) {
-        window.create(sf::VideoMode::getDesktopMode(), "Rail-simulator",
-                      sf::Style::Fullscreen, settings);
-    } else {
-        sf::VideoMode winMode(config.windowX, config.windowY);
-        window.create(winMode, "Rail-simulator", sf::Style::Close, settings);
-    }
+      if (config.isFullscreen) {
+          window.create(sf::VideoMode::getDesktopMode(), "Rail-simulator",
+                        sf::Style::Fullscreen, settings);
+      } else {
+          sf::VideoMode winMode(config.windowX, config.windowY);
+          window.create(winMode, "Rail-simulator", sf::Style::Close,
+          settings);
+      }
 
-    if (config.hideCursor) {
-        window.setMouseCursorVisible(false);
-    }
+      if (config.hideCursor) {
+          window.setMouseCursorVisible(false);
+      }
 
-    render.setCamera(&camera);
-    render.setWindow(&window);
+      render.setCamera(&camera);
+      render.setWindow(&window);
 
-    //test
+  //test
     {
-        std::ifstream fin("../tests/graph_tests/small_graph.json");
+        std::ifstream fin("../tests/graph_tests/big_graph.json");
         std::stringstream ss;
         ss << fin.rdbuf();
         GraphParser graphParser(ss.str());
