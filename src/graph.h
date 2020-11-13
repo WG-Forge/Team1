@@ -15,7 +15,7 @@ public:
   };
 
   struct Line {
-    Line(size_t idx, double length, const std::pair<size_t, size_t> &points);
+    Line(size_t idx, double length, std::pair<size_t, size_t> points);
     bool operator==(const Line &rhs) const;
     bool operator!=(const Line &rhs) const;
     size_t idx;
@@ -24,8 +24,8 @@ public:
   };
 
 public:
-  Graph(const std::string &name, size_t id, const std::vector<Point> &points,
-        const std::vector<Line> &lines);
+  Graph(std::string name, size_t id, const std::vector<Point> &points,
+        std::vector<Line> lines);
 
   void SetName(const std::string &name);
   void SetId(size_t id);

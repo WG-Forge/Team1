@@ -248,3 +248,8 @@ GraphState::Point State::GetCenter() {
   }
   return GraphState::Point((minX + maxX) / 2.f, (minY + maxY) / 2.f, 0);
 }
+
+void State::changePointLocation(int index, float X, float Y) {
+  State::graphState.GetPoints()[index].x = X;
+  State::graphState.GetPoints()[index].y = Y;
+}

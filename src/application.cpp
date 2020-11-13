@@ -1,6 +1,8 @@
 #include "application.h"
 
-Application::Application(const Config config) : config(config) {}
+#include <utility>
+
+Application::Application(Config config) : config(std::move(config)) {}
 
 int Application::run() {
   init();
@@ -27,7 +29,7 @@ int Application::run() {
       if (event.type == sf::Event::Closed) {
         window.close();
       }
-      if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+      if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !render.isTarget()) {
         if (mouseX == -1 && mouseY == -1) {
           mouseX = sf::Mouse::getPosition().x,
           mouseY = sf::Mouse::getPosition().y;
@@ -48,11 +50,21 @@ int Application::run() {
     if (!states.empty()) {
       window.clear();
       render.draw(states.front());
+    } else {
+      mouseX = mouseY = cameraX = cameraY = -1;
     }
-
-    window.display();
+    if (event.type == sf::Event::MouseWheelMoved) {
+      delta = event.mouseWheel.delta;
+      states.front().Resize(delta * 10);
+    }
   }
 
+  if (!states.empty()) {
+    window.clear();
+    render.draw(states.front());
+  }
+
+  window.display();
   return EXIT_SUCCESS;
 }
 
@@ -82,30 +94,34 @@ void Application::init() {
 
   // test
   {
-    using namespace RailGraph;
     std::ifstream fin(config.pathToJson);
     std::stringstream ss;
     ss << fin.rdbuf();
-    GraphParser graphParser(ss.str());
+    RailGraph::GraphParser graphParser(ss.str());
     GraphState graphState =
         CreateKamadaKawaiGraphStateFromGraph(graphParser.GetGraph());
     std::vector<std::pair<sf::Text, std::string>> texts;
     State state(graphState, texts);
     state.AddText(window.getSize().x / 2.f - 150, window.getSize().y - 50.f,
-                  "Press esc to exit program", "8-bit-pusab", 14,
+                  "Press esc to exit program", "8-bit-pusab", 10,
                   sf::Color::White);
-    state.AddText(window.getSize().x - 220.f, 10.f, "Press 'X' to show ",
+    state.AddText(window.getSize().x - 270.f, 10.f,
+                  "left click on the point to move", "8-bit-pusab", 10,
+                  sf::Color::White);
+    state.AddText(window.getSize().x - 270.f, 30.f, "right click to release",
+                  "8-bit-pusab", 10, sf::Color::White);
+    state.AddText(window.getSize().x - 220.f, 60.f, "Press 'X' to show ",
                   "8-bit-pusab", 14, sf::Color::White);
-    state.AddText(window.getSize().x - 220.f, 30.f, "vertex numbering",
+    state.AddText(window.getSize().x - 220.f, 80.f, "vertex numbering",
                   "8-bit-pusab", 13, sf::Color::White);
-    state.AddText(window.getSize().x - 190.f, 60.f, "Scroll wheel",
+    state.AddText(window.getSize().x - 190.f, 110.f, "Scroll wheel",
                   "8-bit-pusab", 14, sf::Color::White);
-    state.AddText(window.getSize().x - 170.f, 80.f, "to resize", "8-bit-pusab",
+    state.AddText(window.getSize().x - 170.f, 130.f, "to resize", "8-bit-pusab",
                   14, sf::Color::White);
     states.push(state);
   }
 
   auto center = states.front().GetCenter();
-  camera.setCameraX((int)(center.x - window.getSize().x / 2));
-  camera.setCameraY((int)(center.y - window.getSize().y / 2));
+  camera.setCameraX((int)(center.x - (float)window.getSize().x / 2));
+  camera.setCameraY((int)(center.y - (float)window.getSize().y / 2));
 }
