@@ -44,8 +44,8 @@ GraphState CreateCircleGraphStateFromGraph(const Graph &graph) {
   std::vector<GraphState::Point> vertices(graph.GetPoints().size());
   std::vector<std::vector<GraphState::Point *>> adjencyList(vertices.size());
   for (int i = 0; i < vertices.size(); ++i) {
-    vertices[i] = {cosf(i * M_PI / vertices.size()),
-                   sinf(i * M_PI / vertices.size()), graph.GetPoints()[i].idx};
+    vertices[i] = {cosf(i * 2 * M_PI / vertices.size()),
+                   sinf(i * 2 * M_PI / vertices.size()), graph.GetPoints()[i].idx};
   }
   for (const auto &line : graph.GetLines()) {
     size_t firstNum = graph.GetNum(line.points.first),
