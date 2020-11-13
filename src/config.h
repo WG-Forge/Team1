@@ -7,7 +7,7 @@ struct Config {
   bool isFullscreen = true;
   bool hideCursor = false;
   int fps = 60;
-  std::string pathToJson = "../tests/graph_tests/small_graph.json";
+  std::string pathToJson = "../tests/graph_tests/big_graph.json";
 
   Config() = default;
 };

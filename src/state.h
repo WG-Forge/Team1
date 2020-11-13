@@ -37,7 +37,7 @@ private:
 };
 
 GraphState CreateCircleGraphStateFromGraph(const RailGraph::Graph &graph);
-GraphState CreateKamadaKawaiGraphStateFromGraph(const RailGraph::Graph &graph);
+GraphState CreateReingoldGraphStateFromGraph(const RailGraph::Graph &railGraph);
 
 class State {
 private:

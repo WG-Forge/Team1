@@ -59,8 +59,7 @@ GraphState CreateCircleGraphStateFromGraph(const RailGraph::Graph &graph) {
   return GraphState(std::move(vertices), std::move(adjencyList));
 }
 
-GraphState
-CreateKamadaKawaiGraphStateFromGraph(const RailGraph::Graph &railGraph) {
+GraphState CreateReingoldGraphStateFromGraph(const RailGraph::Graph &railGraph) {
   typedef boost::square_topology<>::point_type Point;
 
   struct VertexProperties {
@@ -106,10 +105,6 @@ CreateKamadaKawaiGraphStateFromGraph(const RailGraph::Graph &railGraph) {
       boost::get(&EdgeProperty::weight, graph);
 
   boost::circle_graph_layout(graph, positionMap, 100);
-  //  boost::kamada_kawai_spring_layout(
-  //      graph, positionMap, weightPropertyMap, boost::square_topology<>(),
-  //      boost::edge_length<double>(100), boost::layout_tolerance<>(), 1,
-  //      vertexIdPropertyMap);
   boost::fruchterman_reingold_force_directed_layout(graph, positionMap,
                                                     boost::square_topology<>());
 

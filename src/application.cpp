@@ -57,14 +57,14 @@ int Application::run() {
       delta = event.mouseWheel.delta;
       states.front().Resize(delta * 10);
     }
+    if (!states.empty()) {
+      window.clear();
+      render.draw(states.front());
+    }
+
+    window.display();
   }
 
-  if (!states.empty()) {
-    window.clear();
-    render.draw(states.front());
-  }
-
-  window.display();
   return EXIT_SUCCESS;
 }
 
@@ -99,7 +99,7 @@ void Application::init() {
     ss << fin.rdbuf();
     RailGraph::GraphParser graphParser(ss.str());
     GraphState graphState =
-        CreateKamadaKawaiGraphStateFromGraph(graphParser.GetGraph());
+        CreateReingoldGraphStateFromGraph(graphParser.GetGraph());
     std::vector<std::pair<sf::Text, std::string>> texts;
     State state(graphState, texts);
     state.AddText(window.getSize().x / 2.f - 150, window.getSize().y - 50.f,
