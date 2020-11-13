@@ -20,7 +20,7 @@ private:
 
     void init();
 public:
-    explicit Application(Config config);
+    explicit Application(Config  config);
 
     int run();
 };

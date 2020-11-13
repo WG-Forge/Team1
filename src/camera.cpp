@@ -9,14 +9,14 @@ int Camera::getCameraX() const {
     return cameraX;
 }
 
-void Camera::setCameraX(int cameraX) {
-    Camera::cameraX = cameraX;
+void Camera::setCameraX(int cameraX_) {
+    Camera::cameraX = cameraX_;
 }
 
 int Camera::getCameraY() const {
     return cameraY;
 }
 
-void Camera::setCameraY(int cameraY) {
-    Camera::cameraY = cameraY;
+void Camera::setCameraY(int cameraY_) {
+    Camera::cameraY = cameraY_;
 }

@@ -1,6 +1,8 @@
 #include "application.h"
 
-Application::Application(const Config config) : config(config) {
+#include <utility>
+
+Application::Application(Config  config) : config(std::move(config)) {
 }
 
 int Application::run() {
@@ -108,6 +110,6 @@ void Application::init() {
     }
 
     auto center = states.front().GetCenter();
-    camera.setCameraX((int)(center.x - window.getSize().x / 2));
-    camera.setCameraY((int)(center.y - window.getSize().y / 2));
+    camera.setCameraX((int)(center.x - (float)window.getSize().x / 2));
+    camera.setCameraY((int)(center.y - (float)window.getSize().y / 2));
 }
