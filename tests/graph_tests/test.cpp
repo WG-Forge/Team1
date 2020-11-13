@@ -2,6 +2,8 @@
 #include <gtest/gtest.h>
 #include <src/graph_parser.h>
 
+using namespace RailGraph;
+
 TEST(small_test, just_test) {
   std::ifstream fin("../tests/graph_tests/small_graph.json");
   std::stringstream ss;

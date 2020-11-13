@@ -1,5 +1,6 @@
 #include "graph_parser.h"
 
+namespace RailGraph {
 Graph GraphParser::GetGraph() const {
   std::string name = document["name"].GetString();
   size_t id = document["idx"].GetUint();
@@ -23,3 +24,4 @@ Graph GraphParser::GetGraph() const {
 
   return Graph(name, id, points, lines);
 }
+} // namespace RailGraph
