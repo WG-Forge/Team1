@@ -21,7 +21,6 @@
 #include <boost/range/irange.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <memory>
-#include <iterator>
 #include <algorithm>
 #include <boost/limits.hpp>
 
@@ -2371,7 +2370,7 @@ namespace detail
             typedef typename OutEdgeList::size_type degree_size_type;
             typedef typename OutEdgeList::iterator OutEdgeIter;
 
-            typedef std::iterator_traits< OutEdgeIter >
+            typedef boost::detail::iterator_traits< OutEdgeIter >
                 OutEdgeIterTraits;
             typedef
                 typename OutEdgeIterTraits::iterator_category OutEdgeIterCat;
@@ -2399,7 +2398,7 @@ namespace detail
 
             // Edge Iterator
 
-            typedef std::iterator_traits< EdgeIter > EdgeIterTraits;
+            typedef boost::detail::iterator_traits< EdgeIter > EdgeIterTraits;
             typedef typename EdgeIterTraits::iterator_category EdgeIterCat;
             typedef typename EdgeIterTraits::difference_type EdgeIterDiff;
 

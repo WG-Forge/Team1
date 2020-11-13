@@ -10,7 +10,7 @@
 #ifndef BOOST_ADJACENCY_ITERATOR_HPP
 #define BOOST_ADJACENCY_ITERATOR_HPP
 
-#include <iterator>
+#include <boost/detail/iterator.hpp>
 #include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/graph/graph_traits.hpp>
 
@@ -45,7 +45,7 @@ template < class Graph,
 class adjacency_iterator_generator
 {
     typedef
-        typename std::iterator_traits< OutEdgeIter >::difference_type
+        typename boost::detail::iterator_traits< OutEdgeIter >::difference_type
             difference_type;
 
 public:
@@ -81,7 +81,7 @@ template < class Graph,
 class inv_adjacency_iterator_generator
 {
     typedef
-        typename std::iterator_traits< InEdgeIter >::difference_type
+        typename boost::detail::iterator_traits< InEdgeIter >::difference_type
             difference_type;
 
 public:

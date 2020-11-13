@@ -10,11 +10,9 @@
 #include <vector>
 #include <list>
 #include <algorithm>
-#include <functional>
 #include <limits>
 
-#include <boost/bind/bind.hpp>
-#include <boost/tuple/tuple.hpp>
+#include <boost/bind.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/remove_const.hpp>
 #include <boost/concept_check.hpp>
@@ -240,8 +238,6 @@ namespace detail
             typename graph_traits< Graph >::out_edge_iterator oei, oeie;
             for (boost::tie(vi, vie) = vertices(m_g); vi != vie; ++vi)
             {
-                using namespace boost::placeholders;
-
                 boost::tie(oei, oeie) = out_edges(*vi, m_g);
                 typename graph_traits< Graph >::out_edge_iterator mei
                     = std::max_element(oei, oeie,
@@ -355,8 +351,6 @@ namespace detail
          */
         float_t policy_mcr()
         {
-            using namespace boost::placeholders;
-
             std::fill(m_col_bfs.begin(), m_col_bfs.end(), my_white);
             color_map_t vcm_ = color_map_t(m_col_bfs.begin(), m_vim);
             typename graph_traits< Graph >::vertex_iterator uv_itr, vie;

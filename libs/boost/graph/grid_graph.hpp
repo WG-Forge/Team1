@@ -15,6 +15,7 @@
 #include <numeric>
 
 #include <boost/array.hpp>
+#include <boost/bind.hpp>
 #include <boost/limits.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/properties.hpp>
