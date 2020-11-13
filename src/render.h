@@ -5,11 +5,6 @@
 #include "state.h"
 
 class Render {
-private:
-    sf::RenderWindow *window = nullptr;
-    Camera *camera = nullptr;
-    std::unordered_map<std::string, sf::Font> font;
-    bool hide = true;
 public:
     Render() = default;
 
@@ -22,6 +17,14 @@ public:
     void loadFont(const std::string& name, const std::string& path);
 
     void hideInformationSwitch () { hide ^= true; }
+
+    bool isTarget() const;
+private:
+    sf::RenderWindow *window = nullptr;
+    Camera *camera = nullptr;
+    std::unordered_map<std::string, sf::Font> font;
+    bool hide = true;
+    int target = -1;
 };
 
 

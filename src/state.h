@@ -68,6 +68,8 @@ public:
     GraphState::Point GetCenter();
 
     static float GetLen (GraphState::Point point1, GraphState::Point point2);
+
+    void changePointLocation(int index, float X, float Y);
 private:
     float radius = 1.f;
     std::vector<sf::CircleShape> circles;

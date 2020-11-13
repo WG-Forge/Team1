@@ -28,7 +28,7 @@ int Application::run() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !render.isTarget()) {
                 if (mouseX == -1 && mouseY == -1) {
                     mouseX = sf::Mouse::getPosition().x, mouseY = sf::Mouse::getPosition().y;
                     cameraX = camera.getCameraX(), cameraY = camera.getCameraY();
@@ -91,14 +91,18 @@ void Application::init() {
         std::vector<std::pair<sf::Text, std::string>> texts;
         State state(graphState, texts);
         state.AddText(window.getSize().x / 2.f - 150, window.getSize().y - 50.f,
-                      "Press esc to exit program", "8-bit-pusab", 14, sf::Color::White);
-        state.AddText(window.getSize().x - 220.f, 10.f,
+                      "Press esc to exit program", "8-bit-pusab", 10, sf::Color::White);
+        state.AddText(window.getSize().x - 270.f, 10.f,
+                      "left click on the point to move", "8-bit-pusab", 10, sf::Color::White);
+        state.AddText(window.getSize().x - 270.f, 30.f,
+                      "right click to release", "8-bit-pusab", 10, sf::Color::White);
+        state.AddText(window.getSize().x - 220.f, 60.f,
                       "Press 'X' to show ", "8-bit-pusab", 14, sf::Color::White);
-        state.AddText(window.getSize().x - 220.f, 30.f,
+        state.AddText(window.getSize().x - 220.f, 80.f,
                       "vertex numbering", "8-bit-pusab", 13, sf::Color::White);
-        state.AddText(window.getSize().x - 190.f, 60.f,
+        state.AddText(window.getSize().x - 190.f,  110.f,
                       "Scroll wheel", "8-bit-pusab", 14, sf::Color::White);
-        state.AddText(window.getSize().x - 170.f, 80.f,
+        state.AddText(window.getSize().x - 170.f, 130.f,
                       "to resize", "8-bit-pusab", 14, sf::Color::White);
         states.push(state);
     }
