@@ -10,8 +10,9 @@
 #include "graph_parser.h"
 #include "render.h"
 
-class Application {
-private:
+class Application
+{
+  private:
     const Config config;
     Camera camera;
     sf::RenderWindow window;
@@ -19,11 +20,11 @@ private:
     std::queue<State> states;
 
     void init();
-public:
-    explicit Application(Config  config);
+
+  public:
+    explicit Application(Config config);
 
     int run();
 };
 
-
-#endif //RAIL_SIMULATOR_APPLICATION_H
+#endif // RAIL_SIMULATOR_APPLICATION_H
