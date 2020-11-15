@@ -1,11 +1,13 @@
 #include "state.h"
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/circle_layout.hpp>
 #include <boost/graph/fruchterman_reingold.hpp>
-#include <boost/graph/graph_utility.hpp>
-#include <boost/graph/kamada_kawai_spring_layout.hpp>
-#include <math.h>
+#include <boost/graph/gursoy_atun_layout.hpp>
+#include <boost/graph/random_layout.hpp>
+#include <boost/graph/topology.hpp>
+#include <boost/progress.hpp>
+#include <boost/random/linear_congruential.hpp>
+#include <cmath>
 #include <utility>
 #include <vector>
 
@@ -59,62 +61,60 @@ GraphState CreateCircleGraphStateFromGraph(const RailGraph::Graph &graph) {
   return GraphState(std::move(vertices), std::move(adjencyList));
 }
 
-GraphState CreateReingoldGraphStateFromGraph(const RailGraph::Graph &railGraph) {
-  typedef boost::square_topology<>::point_type Point;
+GraphState
+CreateReingoldGraphStateFromGraph(const RailGraph::Graph &railGraph) {
+  using namespace boost;
+  typedef square_topology<>::point_type Point;
 
   struct VertexProperties {
     VertexProperties() = default;
     std::size_t index;
     Point point;
   };
-
   struct EdgeProperty {
     explicit EdgeProperty(const std::size_t &w) : weight(w) {}
     double weight;
   };
 
-  typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
-                                VertexProperties, EdgeProperty>
+  typedef adjacency_list<vecS, vecS, undirectedS, VertexProperties,
+                         EdgeProperty>
       Graph;
-  typedef boost::property_map<Graph, std::size_t VertexProperties::*>::type
+  typedef property_map<Graph, std::size_t VertexProperties::*>::type
       VertexIndexPropertyMap;
-  typedef boost::property_map<Graph, Point VertexProperties::*>::type
-      PositionMap;
-  typedef boost::property_map<Graph, double EdgeProperty::*>::type
-      WeightPropertyMap;
-  typedef boost::graph_traits<Graph>::vertex_descriptor VirtexDescriptor;
+  typedef property_map<Graph, Point VertexProperties::*>::type PositionMap;
+  typedef property_map<Graph, double EdgeProperty::*>::type WeightPropertyMap;
+  typedef graph_traits<Graph>::vertex_descriptor VirtexDescriptor;
 
   Graph graph;
   VertexIndexPropertyMap vertexIdPropertyMap =
-      boost::get(&VertexProperties::index, graph);
+      get(&VertexProperties::index, graph);
 
   const auto &points = railGraph.GetPoints();
   const auto &lines = railGraph.GetLines();
   for (const auto &point : points) {
-    VirtexDescriptor vd = boost::add_vertex(graph);
+    VirtexDescriptor vd = add_vertex(graph);
     vertexIdPropertyMap[vd] = railGraph.GetNum(point.idx);
   }
   for (const auto &line : lines) {
-    boost::add_edge(boost::vertex(railGraph.GetNum(line.points.first), graph),
-                    boost::vertex(railGraph.GetNum(line.points.second), graph),
-                    EdgeProperty(line.length), graph);
+    add_edge(vertex(railGraph.GetNum(line.points.first), graph),
+             vertex(railGraph.GetNum(line.points.second), graph),
+             EdgeProperty(line.length), graph);
   }
 
-  PositionMap positionMap = boost::get(&VertexProperties::point, graph);
-  WeightPropertyMap weightPropertyMap =
-      boost::get(&EdgeProperty::weight, graph);
-
-  boost::circle_graph_layout(graph, positionMap, 100);
-  boost::fruchterman_reingold_force_directed_layout(graph, positionMap,
-                                                    boost::square_topology<>());
+  PositionMap positionMap = get(&VertexProperties::point, graph);
+  minstd_rand gen;
+  rectangle_topology<> topo(gen, -2000.0 / 2, -2000.0 / 2, 2000.0 / 2,
+                            2000.0 / 2);
+  random_graph_layout(graph, positionMap, topo);
+  gursoy_atun_layout(graph, topo, positionMap, 1000);
 
   std::vector<GraphState::Point> vertices(railGraph.GetPoints().size());
   std::vector<std::vector<int>> adjencyList(vertices.size());
-  boost::graph_traits<Graph>::vertex_iterator i, end;
+  graph_traits<Graph>::vertex_iterator i, end;
   for (boost::tie(i, end) = boost::vertices(graph); i != end; ++i) {
     vertices[vertexIdPropertyMap[*i]] = {
-        static_cast<float>(100 * positionMap[*i][0]),
-        static_cast<float>(100 * positionMap[*i][1]),
+        static_cast<float>(115 * positionMap[*i][0]),
+        static_cast<float>(115 * positionMap[*i][1]),
         railGraph.GetPoints()[vertexIdPropertyMap[*i]].idx};
   }
   for (const auto &line : railGraph.GetLines()) {
