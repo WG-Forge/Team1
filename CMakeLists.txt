@@ -3,6 +3,8 @@ project(Rail-simulator)
 
 set(CMAKE_CXX_STANDARD 20)
 
+include_directories(libs)
+
 add_executable(Rail-simulator
         libs/rapidjson/error/en.h
         libs/rapidjson/error/error.h
@@ -47,8 +49,6 @@ add_executable(Rail-simulator
         src/camera.cpp
         src/render.cpp
         src/state.cpp)
-
-include_directories(libs/boost/graph)
 
 if (WIN32)
     set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc")

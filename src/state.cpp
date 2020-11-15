@@ -1,5 +1,4 @@
 #include "state.h"
-#include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/fruchterman_reingold.hpp>
 #include <boost/graph/gursoy_atun_layout.hpp>
