@@ -58,11 +58,12 @@ void Render::draw(State &state)
     {
         picked = target;
     }
-    if (target == -1)
+    if (target == -1 && canTarget)
     {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && picked != -1)
         {
             target = picked;
+            backups.push(GraphState::Point(circles[picked].getPosition().x, circles[picked].getPosition().y, picked));
         }
     }
     else
@@ -101,5 +102,31 @@ void Render::draw(State &state)
     {
         text.setFont(font[fontName]);
         window->draw(text);
+    }
+}
+
+bool Render::isPicked(State &state) const
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
+    for (const auto &circle : state.GetCircles())
+    {
+        float cur_dist = State::GetLen(GraphState::Point(circle.getPosition().x + circle.getRadius(),
+                                                         circle.getPosition().y + circle.getRadius(), 0),
+                                       GraphState::Point((float)(mousePos.x + camera->getCameraX()),
+                                                         (float)(mousePos.y + camera->getCameraY()), 0));
+        if (cur_dist <= circle.getRadius())
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Render::backUp(State &state)
+{
+    if (!backups.empty())
+    {
+        state.changePointLocation(backups.top().idx, backups.top().x, backups.top().y);
+        backups.pop();
     }
 }

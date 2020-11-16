@@ -4,9 +4,13 @@
 #include "camera.h"
 #include "state.h"
 
+#include <stack>
+
 class Render
 {
   public:
+    bool canTarget = true;
+
     Render() = default;
 
     void setWindow(sf::RenderWindow *renderWindow);
@@ -24,10 +28,15 @@ class Render
 
     bool isTarget() const;
 
+    bool isPicked(State &state) const;
+
+    void backUp(State &state);
+
   private:
     sf::RenderWindow *window = nullptr;
     Camera *camera = nullptr;
     std::unordered_map<std::string, sf::Font> font;
+    std::stack<GraphState::Point> backups;
     bool hide = true;
     int target = -1;
 };

@@ -28,6 +28,7 @@ class Graph
     };
 
   public:
+    Graph() = default;
     Graph(std::string name, size_t id, const std::vector<Point> &points, std::vector<Line> lines);
 
     void SetName(const std::string &name);

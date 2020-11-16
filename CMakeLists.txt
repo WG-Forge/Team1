@@ -44,8 +44,9 @@ add_executable(Rail-simulator
         tests/graph_tests/test.cpp
         src/graph.cpp
         src/graph_parser.cpp
-        src/main.cpp
         src/application.cpp
+#        tests/graph_tests/test_generator.cpp
+        src/main.cpp
         src/camera.cpp
         src/render.cpp
         src/state.cpp)

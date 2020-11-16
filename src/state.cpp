@@ -114,7 +114,7 @@ GraphState CreateReingoldGraphStateFromGraph(const RailGraph::Graph &railGraph)
 
     PositionMap positionMap = get(&VertexProperties::point, graph);
     minstd_rand gen;
-    rectangle_topology<> topo(gen, -2000.0 / 2, -2000.0 / 2, 2000.0 / 2, 2000.0 / 2);
+    rectangle_topology<> topo(gen, -1200.0 / 2, -1200.0 / 2, 1200.0 / 2, 1200.0 / 2);
     random_graph_layout(graph, positionMap, topo);
     gursoy_atun_layout(graph, topo, positionMap, 1000);
 

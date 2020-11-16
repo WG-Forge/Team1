@@ -18,6 +18,7 @@ class Application
     sf::RenderWindow window;
     Render render;
     std::queue<State> states;
+    std::unordered_map<sf::Keyboard::Key, bool> touched;
 
     void init();
 

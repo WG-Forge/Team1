@@ -12,7 +12,6 @@ int Application::run()
     sf::Clock dtTimer;
 
     int mouseX = -1, mouseY = -1, cameraX = -1, cameraY = -1, delta;
-    bool touchedX = false;
     while (window.isOpen())
     {
         if (dtTimer.getElapsedTime().asMilliseconds() * config.fps <= 1000)
@@ -27,21 +26,32 @@ int Application::run()
             {
                 window.close();
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::X) && !touchedX)
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) &&
+                !touched[sf::Keyboard::Z])
             {
-                render.hideInformationSwitch();
-                touchedX = true;
+                render.backUp(states.front());
+                touched[sf::Keyboard::Z] = true;
             }
             else
             {
-                touchedX = false;
+                touched[sf::Keyboard::Z] = false;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::X) && !touched[sf::Keyboard::X])
+            {
+                render.hideInformationSwitch();
+                touched[sf::Keyboard::X] = true;
+            }
+            else
+            {
+                touched[sf::Keyboard::X] = false;
             }
             if (event.type == sf::Event::Closed)
             {
                 window.close();
             }
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !render.isTarget())
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !render.isTarget() && !render.isPicked(states.front()))
             {
+                render.canTarget = false;
                 if (mouseX == -1 && mouseY == -1)
                 {
                     mouseX = sf::Mouse::getPosition().x, mouseY = sf::Mouse::getPosition().y;
@@ -55,6 +65,7 @@ int Application::run()
             }
             else
             {
+                render.canTarget = true;
                 mouseX = mouseY = cameraX = cameraY = -1;
             }
             if (event.type == sf::Event::MouseWheelMoved)
