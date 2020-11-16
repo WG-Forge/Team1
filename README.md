@@ -1,3 +1,13 @@
-# Rail-simulator
+***Team name: Akatsuki***
 
-Testing with new branch and pull request. #2
+Lineup:
+   • **Meleh Alexei**     (https://github.com/MelehAlexei)
+   • **Kazakov Alexandr** (https://github.com/MelehAlexei)
+   
+Written in: **C++**
+
+Used frameworks:
+   • **SFML**             (https://www.sfml-dev.org/)
+   • **Rapidjson**        (https://rapidjson.org/)
+   • **Boost library**    (https://www.boost.org/)
+   • **Google test**      (https://github.com/google/googletest)
