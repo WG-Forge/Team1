@@ -2,11 +2,13 @@
 #include <fstream>
 #include <iostream>
 #include <random>
+#include <set>
+#include <time.h>
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 
-const int kPoints = 50;
+const int kPoints = 100;
 
 int GetRand(int l, int r)
 {
@@ -70,6 +72,8 @@ class Dsu
 
 int main()
 {
+    srand(time(nullptr));
+
     rapidjson::Document document;
     document.SetObject();
 
@@ -99,24 +103,42 @@ int main()
     }
     shuffle(edges.begin(), edges.end(), std::mt19937(std::random_device()()));
 
+    std::vector<int> vert;
+    for (int i = 1; i <= kPoints; ++i)
+    {
+        vert.emplace_back(i);
+    }
+    shuffle(vert.begin(), vert.end(), std::mt19937(std::random_device()()));
+
     rapidjson::Value lines(rapidjson::kArrayType);
 
-    for (size_t i = 0; i < edges.size(); ++i)
+    std::set<std::pair<int, int>> st;
+    for (int i = 1; i < kPoints; ++i)
+    {
+        int u = vert[i - 1], v = vert[i];
+        if (u > v)
+        {
+            std::swap(u, v);
+        }
+        st.insert({u, v});
+    }
+
+    for (int i = 0; i < 2 * kPoints; ++i)
     {
         int u = edges[i].first, v = edges[i].second;
-        dsu.Unite(u, v);
+        st.insert({u, v});
+    }
+
+    for (const auto &[u, v] : st)
+    {
         rapidjson::Value object(rapidjson::kObjectType);
-        object.AddMember("idx", i + 1, allocator);
+        object.AddMember("idx", lines.Size() + 1, allocator);
         object.AddMember("length", GetRand(1, 1), allocator);
         rapidjson::Value pointsObject(rapidjson::kArrayType);
         pointsObject.PushBack(u, allocator);
         pointsObject.PushBack(v, allocator);
         object.AddMember("points", pointsObject, allocator);
         lines.PushBack(object, allocator);
-        if (dsu.GetComponents() == 1)
-        {
-            break;
-        }
     }
 
     document.AddMember("lines", lines, allocator);
@@ -126,7 +148,7 @@ int main()
     rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
     document.Accept(writer);
 
-    std::ofstream out("../tests/graph_tests/test_graph_1.json");
+    std::ofstream out("../tests/graph_tests/test100.json");
 
     out << strbuf.GetString() << std::endl;
 

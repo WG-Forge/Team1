@@ -140,7 +140,7 @@ State::State(GraphState graphState, std::vector<std::pair<sf::Text, std::string>
     : graphState(std::move(graphState)), texts(std::move(texts))
 {
     Resize(1000);
-    for (int i = 0; i <= 2000; i++)
+    for (int i = 0; i <= 1500; i++)
     {
         Resize(-i);
     }
@@ -228,8 +228,15 @@ float State::GetLen(GraphState::Point point1, GraphState::Point point2)
 
 void State::Resize(float delta)
 {
-    float len =
-        (State::graphState.GetPoints().empty() ? 0 : GetLen(State::graphState.GetPoints()[0], GraphState::Point()));
+    float len = 0;
+    for (const auto &point : State::graphState.GetPoints())
+    {
+        len += GetLen(point, GraphState::Point());
+    }
+    if (!State::graphState.GetPoints().empty())
+    {
+        len /= State::graphState.GetPoints().size();
+    }
     for (auto &point : State::graphState.GetPoints())
     {
         if (len < 100 && delta < 0)
