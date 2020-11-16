@@ -2,7 +2,7 @@
 
 Lineup:
    • **Meleh Alexei**     (https://github.com/MelehAlexei)
-   • **Kazakov Alexandr** (https://github.com/MelehAlexei)
+   • **Kazakov Alexandr** (https://github.com/Karial)
    
 Written in: **C++**
 
