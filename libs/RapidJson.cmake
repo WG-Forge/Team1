@@ -1,0 +1,5 @@
+include_directories(.)
+include_directories(include)
+include_directories(rapidjson)
+include_directories(rapidjson/error)
+include_directories(rapidjson/internal)
