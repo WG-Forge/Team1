@@ -36,6 +36,36 @@ Client::ResponseMessage Client::Login(const std::string &name, const std::string
     return ReceiveResponse();
 }
 
+Client::ResponseMessage Client::Player()
+{
+    ActionMessage actionMessage{};
+    actionMessage.actionCode = Action::PLAYER;
+    Send(actionMessage);
+    return ReceiveResponse();
+}
+
+Client::ResponseMessage Client::Logout()
+{
+    ActionMessage actionMessage{};
+    actionMessage.actionCode = Action::LOGOUT;
+    Send(actionMessage);
+    return ReceiveResponse();
+}
+
+Client::ResponseMessage Client::Map(int layer)
+{
+    ActionMessage actionMessage{};
+    actionMessage.actionCode = Action::MAP;
+    Poco::JSON::Object::Ptr data = new Poco::JSON::Object;
+    data->set("name", layer);
+    std::ostringstream ss;
+    Poco::JSON::Stringifier::stringify(data, ss);
+    actionMessage.data = ss.str();
+    actionMessage.dataLength = actionMessage.data.length();
+    Send(actionMessage);
+    return ReceiveResponse();
+}
+
 void Client::Send(const Client::ActionMessage &actionMessage)
 {
     ss_.sendBytes(&actionMessage.actionCode, sizeof(actionMessage.actionCode));

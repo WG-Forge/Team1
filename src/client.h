@@ -51,6 +51,9 @@ class Client
     Client();
     ResponseMessage Login(const std::string &name, const std::string &password = "", const std::string &game = "",
                          int num_turns = -1, int num_players = 1);
+    ResponseMessage Player();
+    ResponseMessage Logout();
+    ResponseMessage Map(int layer);
 
   private:
     void Send(const ActionMessage &actionMessage);
