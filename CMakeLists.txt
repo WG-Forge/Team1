@@ -49,7 +49,9 @@ add_executable(Rail-simulator
         src/main.cpp
         src/camera.cpp
         src/render.cpp
-        src/state.cpp)
+        src/state.cpp
+        src/client.cpp
+        src/main.cpp)
 
 if (WIN32)
     set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc")
