@@ -1,14 +1,11 @@
 #ifndef RAIL_SIMULATOR_CLIENT_H
 #define RAIL_SIMULATOR_CLIENT_H
 
-#include <Poco/Dynamic/Var.h>
-#include <Poco/JSON/JSON.h>
-#include <Poco/JSON/Object.h>
-#include <Poco/JSON/Stringifier.h>
-#include <Poco/Net/SocketAddress.h>
-#include <Poco/Net/StreamSocket.h>
+#include <boost/asio.hpp>
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
 
-using namespace Poco::Net;
+using namespace boost::asio;
 
 class Client
 {
@@ -48,7 +45,7 @@ class Client
     };
 
   public:
-    Client();
+    explicit Client(io_service& io_service);
     ResponseMessage Login(const std::string &name, const std::string &password = "", const std::string &game = "",
                          int num_turns = -1, int num_players = 1);
     ResponseMessage Player();
@@ -58,7 +55,7 @@ class Client
   private:
     void Send(const ActionMessage &actionMessage);
     ResponseMessage ReceiveResponse();
-    StreamSocket ss_;
+    ip::tcp::socket socket_;
 };
 
 #endif // RAIL_SIMULATOR_CLIENT_H

@@ -1,14 +1,14 @@
 #include "client.h"
-#include "rapidjson/document.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/writer.h"
+#include <iostream>
 
 // const Config config;
 
 int main()
 {
-    Client client;
-    auto res = client.Login("Boris");
+    io_service service;
+    Client client(service);
+    client.Login("Leha");
+    auto res = client.Map(1);
     rapidjson::Document document;
     document.Parse(res.data.c_str());
     rapidjson::StringBuffer buffer{};

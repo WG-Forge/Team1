@@ -1,8 +1,9 @@
 #include "client.h"
 
-Client::Client()
+Client::Client(io_service &io_service) : socket_(io_service)
 {
-    ss_.connect(SocketAddress("wgforge-srv.wargaming.net", 443));
+    ip::tcp::endpoint ep(ip::address::from_string("92.223.2.79"), 443);
+    socket_.connect(ep);
 }
 
 Client::ResponseMessage Client::Login(const std::string &name, const std::string &password, const std::string &game,
@@ -10,27 +11,34 @@ Client::ResponseMessage Client::Login(const std::string &name, const std::string
 {
     ActionMessage actionMessage{};
     actionMessage.actionCode = Action::LOGIN;
-    Poco::JSON::Object::Ptr data = new Poco::JSON::Object;
-    data->set("name", name);
+
+    rapidjson::Document data;
+    data.SetObject();
+
+    rapidjson::Document::AllocatorType &allocator = data.GetAllocator();
+
+    data.AddMember("name", rapidjson::Value(name.c_str(), name.size(), allocator), allocator);
     if (!password.empty())
     {
-        data->set("password", password);
+        data.AddMember("password", rapidjson::Value(password.c_str(), password.size(), allocator), allocator);
     }
     if (!password.empty())
     {
-        data->set("game", game);
+        data.AddMember("game", rapidjson::Value(game.c_str(), game.size(), allocator), allocator);
     }
     if (num_turns != -1)
     {
-        data->set("num_turns", num_turns);
+        data.AddMember("num_turns", num_turns, allocator);
     }
     if (num_players != 1)
     {
-        data->set("num_players", num_players);
+        data.AddMember("num_players", num_players, allocator);
     }
-    std::ostringstream ss;
-    Poco::JSON::Stringifier::stringify(data, ss);
-    actionMessage.data = ss.str();
+    rapidjson::StringBuffer strbuf;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+    data.Accept(writer);
+
+    actionMessage.data = strbuf.GetString();
     actionMessage.dataLength = actionMessage.data.length();
     Send(actionMessage);
     return ReceiveResponse();
@@ -56,11 +64,19 @@ Client::ResponseMessage Client::Map(int layer)
 {
     ActionMessage actionMessage{};
     actionMessage.actionCode = Action::MAP;
-    Poco::JSON::Object::Ptr data = new Poco::JSON::Object;
-    data->set("name", layer);
-    std::ostringstream ss;
-    Poco::JSON::Stringifier::stringify(data, ss);
-    actionMessage.data = ss.str();
+
+    rapidjson::Document data;
+    data.SetObject();
+
+    rapidjson::Document::AllocatorType &allocator = data.GetAllocator();
+
+    data.AddMember("layer", layer, allocator);
+
+    rapidjson::StringBuffer strbuf;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+    data.Accept(writer);
+
+    actionMessage.data = strbuf.GetString();
     actionMessage.dataLength = actionMessage.data.length();
     Send(actionMessage);
     return ReceiveResponse();
@@ -68,17 +84,17 @@ Client::ResponseMessage Client::Map(int layer)
 
 void Client::Send(const Client::ActionMessage &actionMessage)
 {
-    ss_.sendBytes(&actionMessage.actionCode, sizeof(actionMessage.actionCode));
-    ss_.sendBytes(&actionMessage.dataLength, sizeof(actionMessage.dataLength));
-    ss_.sendBytes(&actionMessage.data[0], actionMessage.dataLength);
+    write(socket_, buffer(&actionMessage.actionCode, sizeof(actionMessage.actionCode)));
+    write(socket_, buffer(&actionMessage.dataLength, sizeof(actionMessage.dataLength)));
+    write(socket_, buffer(&actionMessage.data[0], actionMessage.dataLength));
 }
 
 Client::ResponseMessage Client::ReceiveResponse()
 {
     ResponseMessage responseMessage;
-    ss_.receiveBytes(&responseMessage.result, sizeof(responseMessage.result));
-    ss_.receiveBytes(&responseMessage.dataLength, sizeof(responseMessage.dataLength));
+    read(socket_, buffer(&responseMessage.result, sizeof(responseMessage.result)));
+    read(socket_, buffer(&responseMessage.dataLength, sizeof(responseMessage.dataLength)));
     responseMessage.data.resize(responseMessage.dataLength);
-    ss_.receiveBytes(&responseMessage.data[0], responseMessage.dataLength);
+    read(socket_, buffer(&responseMessage.data[0], responseMessage.dataLength));
     return responseMessage;
 }
