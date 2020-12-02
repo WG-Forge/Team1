@@ -55,7 +55,7 @@ class Client
     ResponseMessage Upgrade(const std::vector<size_t> &posts, const std::vector<size_t> &trains);
     ResponseMessage Turn();
     ResponseMessage Games();
-
+    ip::tcp::socket &GetSocket();
   private:
     void Send(const ActionMessage &actionMessage);
     ResponseMessage ReceiveResponse();

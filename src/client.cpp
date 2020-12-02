@@ -171,3 +171,7 @@ Client::ResponseMessage Client::ReceiveResponse()
     read(socket_, buffer(&responseMessage.data[0], responseMessage.dataLength));
     return responseMessage;
 }
+ip::tcp::socket &Client::GetSocket()
+{
+    return socket_;
+}

@@ -51,7 +51,12 @@ add_executable(Rail-simulator
         src/render.cpp
         src/state.cpp
         src/client.cpp
-        src/main.cpp)
+        src/main.cpp
+        libs/imgui/imgui.cpp
+        libs/imgui/imgui_demo.cpp
+        libs/imgui/imgui_draw.cpp
+        libs/imgui/imgui_widgets.cpp
+        libs/imgui-sfml/imgui-SFML.cpp)
 
 if (WIN32)
     set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc")
