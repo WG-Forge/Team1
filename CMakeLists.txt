@@ -68,6 +68,11 @@ if (WIN32)
 endif ()
 
 if (UNIX)
+    find_package(OpenGL REQUIRED)
+    find_package(GLUT REQUIRED)
+    include_directories(${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} )
+    target_link_libraries(Rail-simulator ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+
     set(SFML_ROOT "libs/SFML-2.5.1-Linux")
     set(SFML_DIR "libs/SFML-2.5.1-Linux/lib/cmake/SFML")
     set(SFML_INCLUDE_DIR "libs/SFML-2.5.1-Linux/include")
