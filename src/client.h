@@ -1,9 +1,9 @@
 #ifndef RAIL_SIMULATOR_CLIENT_H
 #define RAIL_SIMULATOR_CLIENT_H
 
-#include <boost/asio.hpp>
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
+#include <boost/asio.hpp>
 
 using namespace boost::asio;
 
@@ -45,12 +45,16 @@ class Client
     };
 
   public:
-    explicit Client(io_service& io_service);
+    explicit Client(io_service &io_service);
     ResponseMessage Login(const std::string &name, const std::string &password = "", const std::string &game = "",
-                         int num_turns = -1, int num_players = 1);
-    ResponseMessage Player();
+                          int num_turns = -1, int num_players = 1);
     ResponseMessage Logout();
+    ResponseMessage Player();
     ResponseMessage Map(int layer);
+    ResponseMessage Move(size_t line_idx, int speed, size_t train_idx);
+    ResponseMessage Upgrade(const std::vector<size_t> &posts, const std::vector<size_t> &trains);
+    ResponseMessage Turn();
+    ResponseMessage Games();
 
   private:
     void Send(const ActionMessage &actionMessage);

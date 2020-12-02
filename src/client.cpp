@@ -82,6 +82,79 @@ Client::ResponseMessage Client::Map(int layer)
     return ReceiveResponse();
 }
 
+Client::ResponseMessage Client::Move(size_t line_idx, int speed, size_t train_idx)
+{
+    ActionMessage actionMessage{};
+    actionMessage.actionCode = Action::MOVE;
+
+    rapidjson::Document data;
+    data.SetObject();
+
+    rapidjson::Document::AllocatorType &allocator = data.GetAllocator();
+    data.AddMember("line_idx", line_idx, allocator);
+    data.AddMember("speed", speed, allocator);
+    data.AddMember("train_idx", train_idx, allocator);
+
+    rapidjson::StringBuffer strbuf;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+    data.Accept(writer);
+
+    actionMessage.data = strbuf.GetString();
+    actionMessage.dataLength = actionMessage.data.length();
+    Send(actionMessage);
+    return ReceiveResponse();
+}
+
+Client::ResponseMessage Client::Upgrade(const std::vector<size_t> &posts, const std::vector<size_t> &trains)
+{
+    ActionMessage actionMessage{};
+    actionMessage.actionCode = Action::UPGRADE;
+
+    rapidjson::Document data;
+    data.SetObject();
+
+    rapidjson::Document::AllocatorType &allocator = data.GetAllocator();
+
+    rapidjson::Value jposts(rapidjson::kArrayType);
+    for (const auto &post : posts)
+    {
+        jposts.PushBack(post, allocator);
+    }
+    data.AddMember("posts", jposts, allocator);
+
+    rapidjson::Value jtrains(rapidjson::kArrayType);
+    for (const auto &train : trains)
+    {
+        jtrains.PushBack(train, allocator);
+    }
+    data.AddMember("trains", jtrains, allocator);
+
+    rapidjson::StringBuffer strbuf;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+    data.Accept(writer);
+
+    actionMessage.data = strbuf.GetString();
+    actionMessage.dataLength = actionMessage.data.length();
+    Send(actionMessage);
+    return ReceiveResponse();
+}
+
+Client::ResponseMessage Client::Turn()
+{
+    ActionMessage actionMessage{};
+    actionMessage.actionCode = Action::TURN;
+    Send(actionMessage);
+    return ReceiveResponse();
+}
+
+Client::ResponseMessage Client::Games()
+{
+    ActionMessage actionMessage{};
+    actionMessage.actionCode = Action::GAMES;
+    Send(actionMessage);
+    return ReceiveResponse();
+}
+
 void Client::Send(const Client::ActionMessage &actionMessage)
 {
     write(socket_, buffer(&actionMessage.actionCode, sizeof(actionMessage.actionCode)));
