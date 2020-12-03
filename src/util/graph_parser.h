@@ -1,7 +1,7 @@
 #ifndef RAIL_SIMULATOR_GRAPH_PARSER_H
 #define RAIL_SIMULATOR_GRAPH_PARSER_H
-#include "graph.h"
 #include "libs/rapidjson/document.h"
+#include "src/graph/graph.h"
 #include <string>
 
 namespace RailGraph

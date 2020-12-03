@@ -84,7 +84,7 @@ void Application::HandleCommand(std::string command)
     }
     else
     {
-        consoleHistory.append("Unknown command " + command + "\n");
+        consoleHistory.append("Unknown command '" + command + "'\n");
     }
 }
 
@@ -121,7 +121,7 @@ void Application::PollEvent(sf::Event &event)
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::X) && !touched[sf::Keyboard::X])
     {
-        render.hideInformationSwitch();
+        states.front().ResetPointInformation();
         touched[sf::Keyboard::X] = true;
     }
     else
@@ -138,12 +138,12 @@ void Application::PollEvent(sf::Event &event)
         if (mouseX == -1 && mouseY == -1)
         {
             mouseX = sf::Mouse::getPosition().x, mouseY = sf::Mouse::getPosition().y;
-            cameraX = camera.getCameraX(), cameraY = camera.getCameraY();
+            cameraX = camera.GetCameraX(), cameraY = camera.GetCameraY();
         }
         else
         {
-            camera.setCameraX(cameraX + mouseX - sf::Mouse::getPosition().x);
-            camera.setCameraY(cameraY + mouseY - sf::Mouse::getPosition().y);
+            camera.SetCameraX(cameraX + mouseX - sf::Mouse::getPosition().x);
+            camera.SetCameraY(cameraY + mouseY - sf::Mouse::getPosition().y);
         }
     }
     else

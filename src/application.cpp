@@ -35,16 +35,6 @@ int Application::Run()
         {
             mouseX = mouseY = cameraX = cameraY = -1;
         }
-        if (event.type == sf::Event::MouseWheelMoved)
-        {
-            delta = (float)event.mouseWheel.delta;
-            states.front().Resize(delta * 10);
-        }
-        if (!states.empty())
-        {
-            window.clear();
-            render.draw(states.front());
-        }
 
         ImGui::SFML::Update(window, deltaClock.restart());
         if (firstRender)
@@ -131,6 +121,6 @@ void Application::Init()
     }
 
     auto center = states.front().GetCenter();
-    camera.setCameraX((int)(center.x - (float)window.getSize().x / 2));
-    camera.setCameraY((int)(center.y - (float)window.getSize().y / 2));
+    camera.SetCameraX((int)(center.x - (float)window.getSize().x / 2));
+    camera.SetCameraY((int)(center.y - (float)window.getSize().y / 2));
 }

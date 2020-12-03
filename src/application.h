@@ -6,10 +6,10 @@
 #include <sstream>
 
 #include "camera.h"
-#include "client.h"
 #include "config.h"
-#include "graph_parser.h"
 #include "render.h"
+#include "src/client/client.h"
+#include "src/util/graph_parser.h"
 
 class Application
 {

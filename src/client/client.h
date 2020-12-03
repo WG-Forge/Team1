@@ -56,9 +56,11 @@ class Client
     ResponseMessage Turn();
     ResponseMessage Games();
     ip::tcp::socket &GetSocket();
+
   private:
     void Send(const ActionMessage &actionMessage);
     ResponseMessage ReceiveResponse();
+
     ip::tcp::socket socket_;
 };
 

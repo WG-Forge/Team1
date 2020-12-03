@@ -2,7 +2,7 @@
 #define RAIL_SIMULATOR_RENDER_H
 
 #include "camera.h"
-#include "state.h"
+#include "src/states/state.h"
 
 #include <stack>
 
@@ -21,11 +21,6 @@ class Render
 
     void loadFont(const std::string &name, const std::string &path);
 
-    void hideInformationSwitch()
-    {
-        hide ^= true;
-    }
-
     bool isTarget() const;
 
     bool isPicked(State &state) const;
@@ -37,7 +32,6 @@ class Render
     Camera *camera = nullptr;
     std::unordered_map<std::string, sf::Font> font;
     std::stack<GraphState::Point> backups;
-    bool hide = true;
     int target = -1;
 };
 
