@@ -110,14 +110,8 @@ void Application::Init()
     render.LoadTexture("default", "../resourses/default.png");
 
     HandleCommand("login " + config.teamName);
+    HandleCommand("map 0");
+    HandleCommand("map 1");
+    HandleCommand("map 10");
     ImGui::SFML::Init(window);
-
-    std::vector<std::pair<sf::Text, std::string>> texts;
-    texts.emplace_back(SfmlTool::GetText((float)window.getSize().x / 2, (float)window.getSize().y / 2,
-                                         "No data to show", 15, sf::Color(82, 73, 73)), "8-bit-pusab");
-    State state(GraphState(), texts);
-    states.push(state);
-
-    camera.SetCameraX(0);
-    camera.SetCameraY(0);
 }

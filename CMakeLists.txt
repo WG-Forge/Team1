@@ -43,7 +43,7 @@ add_executable(Rail-simulator
         libs/rapidjson/writer.h
         tests/graph_tests/test.cpp
         src/graph/graph.cpp
-        src/util/graph_parser.cpp
+        src/util/parser.cpp
         src/application.cpp
         src/application_controller.cpp
 #        tests/graph_tests/test_generator.cpp

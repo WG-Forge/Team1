@@ -43,6 +43,7 @@ class GraphState
     std::vector<std::vector<int>> adjencyList;
 };
 
+GraphState CreateGraphStateFromGraph(const RailGraph::Graph &railGraph);
 GraphState CreateReingoldGraphStateFromGraph(const RailGraph::Graph &railGraph);
 
 #endif // RAIL_SIMULATOR_GRAPH_STATE_H

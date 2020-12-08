@@ -9,7 +9,7 @@
 #include "config.h"
 #include "render.h"
 #include "src/client/client.h"
-#include "src/util/graph_parser.h"
+#include "src/util/parser.h"
 
 class Application
 {
@@ -20,6 +20,7 @@ class Application
     sf::RenderWindow window;
     Render render;
     std::queue<State> states;
+    RailGraph::Graph map;
 
     void Init();
 

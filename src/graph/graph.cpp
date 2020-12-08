@@ -22,13 +22,27 @@ void Graph::SetId(size_t id)
 {
     idx = id;
 }
-void Graph::SetPoints(const std::vector<Point> &points_)
+
+void Graph::SetPointsCoordinates(const std::vector<std::tuple<size_t, int, int>> &coordinates)
 {
-    points = points_;
+    for (const auto & coordinate : coordinates) {
+        points[idxToNum[std::get<0>(coordinate)]].x = std::get<1>(coordinate);
+        points[idxToNum[std::get<0>(coordinate)]].y = std::get<2>(coordinate);
+    }
 }
+
 void Graph::SetLines(const std::vector<Line> &lines_)
 {
     lines = lines_;
+}
+
+void Graph::SetPosts(const std::vector<Post> &posts)
+{
+    this->posts = posts;
+    for (size_t i = 0; i < posts.size(); ++i)
+    {
+        pointToPost[posts[i].info.point_idx] = i;
+    }
 }
 
 const std::string &Graph::GetName() const
@@ -64,6 +78,11 @@ bool Graph::Point::operator==(const Graph::Point &rhs) const
 bool Graph::Point::operator!=(const Graph::Point &rhs) const
 {
     return !(rhs == *this);
+}
+
+Graph::Post::Post(const Graph::Info &info, const std::variant<MarketInfo, CityInfo, StorageInfo> &postInfo)
+    : info(info), postInfo(postInfo)
+{
 }
 
 Graph::Line::Line(size_t idx, double length, std::pair<size_t, size_t> points)

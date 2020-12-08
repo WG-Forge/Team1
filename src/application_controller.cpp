@@ -39,21 +39,29 @@ void Application::HandleCommand(std::string command)
     {
         consoleHistory.append("Map successful\n");
         std::string result = client.Map(stoi(tokens.back())).data;
-        std::string str = result + "\n";
-        ParseMessage(str);
-        consoleHistory.append(str);
+        consoleHistory.append(result + '\n');
+        while (!states.empty())
+        {
+            states.pop();
+        }
         if (tokens.back() == "0")
         {
-            while (!states.empty())
-            {
-                states.pop();
-            }
-            RailGraph::GraphParser graphParser(result);
-            GraphState graphState = CreateReingoldGraphStateFromGraph(graphParser.GetGraph());
+            map = RailGraph::ParseMap0FromJson(result);
+            GraphState graphState = CreateReingoldGraphStateFromGraph(map);
             states.push(State(graphState, std::vector<std::pair<sf::Text, std::string>>{}));
             auto center = states.front().GetCenter();
             camera.SetCameraX((int)(center.x - (float)window.getSize().x / 2));
             camera.SetCameraY((int)(center.y - (float)window.getSize().y / 2));
+        }
+        else if (tokens.back() == "1")
+        {
+            map.SetPosts(RailGraph::ParseMap1FromJson(result));
+        }
+        else if (tokens.back() == "10")
+        {
+            map.SetPointsCoordinates(RailGraph::ParseMap10FromJson(result));
+            GraphState graphState = CreateGraphStateFromGraph(map);
+            states.push(State(graphState, std::vector<std::pair<sf::Text, std::string>>{}));
         }
     }
     else if (clientCommand == "move" && tokens.size() == 4 && IsNumber(tokens[1]) && IsNumber(tokens[2]) &&

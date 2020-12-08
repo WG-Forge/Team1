@@ -47,6 +47,25 @@ float GraphState::GetDist(const GraphState::Point &point1, const GraphState::Poi
     return sqrt((point1.x - point2.x) * (point1.x - point2.x) + (point1.y - point2.y) * (point1.y - point2.y));
 }
 
+GraphState CreateGraphStateFromGraph(const RailGraph::Graph &railGraph)
+{
+    std::vector<GraphState::Point> vertices(railGraph.GetPoints().size());
+    std::vector<std::vector<int>> adjencyList(vertices.size());
+    for (size_t i = 0; i < vertices.size(); ++i)
+    {
+        vertices[i] = {static_cast<float>(railGraph.GetPoints()[i].x), static_cast<float>(railGraph.GetPoints()[i].y),
+                       railGraph.GetPoints()[i].idx};
+    }
+    for (const auto &line : railGraph.GetLines())
+    {
+        size_t firstNum = railGraph.GetNum(line.points.first), secondNum = railGraph.GetNum(line.points.second);
+        adjencyList[firstNum].emplace_back(secondNum);
+        adjencyList[secondNum].emplace_back(firstNum);
+    }
+
+    return GraphState(std::move(vertices), std::move(adjencyList));
+}
+
 GraphState CreateReingoldGraphStateFromGraph(const RailGraph::Graph &railGraph)
 {
     using namespace boost;
