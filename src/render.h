@@ -13,24 +13,20 @@ class Render
 
     Render() = default;
 
-    void setWindow(sf::RenderWindow *renderWindow);
-
-    void setCamera(Camera *pCamera);
-
-    void draw(State &state);
-
-    void loadFont(const std::string &name, const std::string &path);
-
-    bool isTarget() const;
-
-    bool isPicked(State &state) const;
-
-    void backUp(State &state);
+    void SetWindow(sf::RenderWindow *renderWindow);
+    void SetCamera(Camera *pCamera);
+    void Draw(State &state);
+    void LoadFont(const std::string &name, const std::string &path);
+    void LoadTexture(const std::string &name, const std::string &path);
+    bool IsTarget() const;
+    bool IsPicked(State &state) const;
+    void BackUp(State &state);
 
   private:
     sf::RenderWindow *window = nullptr;
     Camera *camera = nullptr;
     std::unordered_map<std::string, sf::Font> font;
+    std::unordered_map<std::string, sf::Texture> texture;
     std::stack<GraphState::Point> backups;
     int target = -1;
 };

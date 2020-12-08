@@ -38,9 +38,23 @@ void Application::HandleCommand(std::string command)
     if (clientCommand == "map" && tokens.size() == 2 && IsNumber(tokens.back()))
     {
         consoleHistory.append("Map successful\n");
-        std::string str = client.Map(stoi(tokens.back())).data + "\n";
+        std::string result = client.Map(stoi(tokens.back())).data;
+        std::string str = result + "\n";
         ParseMessage(str);
         consoleHistory.append(str);
+        if (tokens.back() == "0")
+        {
+            while (!states.empty())
+            {
+                states.pop();
+            }
+            RailGraph::GraphParser graphParser(result);
+            GraphState graphState = CreateReingoldGraphStateFromGraph(graphParser.GetGraph());
+            states.push(State(graphState, std::vector<std::pair<sf::Text, std::string>>{}));
+            auto center = states.front().GetCenter();
+            camera.SetCameraX((int)(center.x - (float)window.getSize().x / 2));
+            camera.SetCameraY((int)(center.y - (float)window.getSize().y / 2));
+        }
     }
     else if (clientCommand == "move" && tokens.size() == 4 && IsNumber(tokens[1]) && IsNumber(tokens[2]) &&
              IsNumber(tokens[3]))
@@ -112,7 +126,7 @@ void Application::PollEvent(sf::Event &event)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) &&
         !touched[sf::Keyboard::Z])
     {
-        render.backUp(states.front());
+        render.BackUp(states.front());
         touched[sf::Keyboard::Z] = true;
     }
     else
@@ -132,7 +146,7 @@ void Application::PollEvent(sf::Event &event)
     {
         window.close();
     }
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !render.isTarget() && !render.isPicked(states.front()))
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !render.IsTarget() && !render.IsPicked(states.front()))
     {
         render.canTarget = false;
         if (mouseX == -1 && mouseY == -1)

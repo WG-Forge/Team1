@@ -2,8 +2,8 @@
 #define RAIL_SIMULATOR_SFML_TOOL_H
 
 #include <iostream>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "SFML/Graphics.hpp"
 
@@ -28,6 +28,10 @@ class SfmlTool
         text.setCharacterSize(size);
         text.setFillColor(color);
         return text;
+    }
+    static void SetTextureOnCircleShape(sf::CircleShape &circleShape, sf::Texture* texture)
+    {
+        circleShape.setTexture(texture, false);
     }
 };
 

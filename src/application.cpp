@@ -29,7 +29,7 @@ int Application::Run()
         if (!states.empty())
         {
             window.clear();
-            render.draw(states.front());
+            render.Draw(states.front());
         }
         else
         {
@@ -101,26 +101,23 @@ void Application::Init()
         window.setMouseCursorVisible(false);
     }
 
-    render.setCamera(&camera);
-    render.setWindow(&window);
-    render.loadFont("8-bit-pusab", "../resourses/8-bit-pusab.ttf");
+    render.SetCamera(&camera);
+    render.SetWindow(&window);
+    render.LoadFont("8-bit-pusab", "../resourses/8-bit-pusab.ttf");
+    render.LoadTexture("town", "../resourses/town.png");
+    render.LoadTexture("market", "../resourses/market.png");
+    render.LoadTexture("storage", "../resourses/storage.png");
+    render.LoadTexture("default", "../resourses/default.png");
 
     HandleCommand("login " + config.teamName);
     ImGui::SFML::Init(window);
 
-    // test
-    {
-        std::ifstream fin(config.pathToJson);
-        std::stringstream ss;
-        ss << fin.rdbuf();
-        RailGraph::GraphParser graphParser(ss.str());
-        GraphState graphState = CreateReingoldGraphStateFromGraph(graphParser.GetGraph());
-        std::vector<std::pair<sf::Text, std::string>> texts;
-        State state(graphState, texts);
-        states.push(state);
-    }
+    std::vector<std::pair<sf::Text, std::string>> texts;
+    texts.emplace_back(SfmlTool::GetText((float)window.getSize().x / 2, (float)window.getSize().y / 2,
+                                         "No data to show", 15, sf::Color(82, 73, 73)), "8-bit-pusab");
+    State state(GraphState(), texts);
+    states.push(state);
 
-    auto center = states.front().GetCenter();
-    camera.SetCameraX((int)(center.x - (float)window.getSize().x / 2));
-    camera.SetCameraY((int)(center.y - (float)window.getSize().y / 2));
+    camera.SetCameraX(0);
+    camera.SetCameraY(0);
 }

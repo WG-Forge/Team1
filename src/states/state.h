@@ -10,15 +10,17 @@ class State
   private:
     void AddLine(const std::vector<sf::Vertex> &);
     void AddCircle(const sf::CircleShape &);
-    void AddText(const sf::Text &, const std::string &);
+    void AddStaticText(const sf::Text &, const std::string &);
+    void AddNonStaticText(const sf::Text &, const std::string &);
 
   public:
     State() = default;
     State(GraphState graphState, std::vector<std::pair<sf::Text, std::string>> information);
 
-    const std::vector<sf::CircleShape> &GetCircles();
+    std::vector<std::pair<sf::CircleShape, std::string>> GetCircles();
     const std::vector<std::vector<sf::Vertex>> &GetLines();
-    std::vector<std::pair<sf::Text, std::string>> GetTexts();
+    std::vector<std::pair<sf::Text, std::string>> GetNonStaticTexts();
+    std::vector<std::pair<sf::Text, std::string>> GetStaticTexts();
 
     GraphState::Point GetCenter();
     void Resize(float delta);
@@ -31,7 +33,7 @@ class State
 
     std::vector<sf::CircleShape> circles;
     std::vector<std::vector<sf::Vertex>> lines;
-    std::vector<std::pair<sf::Text, std::string>> texts, pointTexts;
+    std::vector<std::pair<sf::Text, std::string>> nonStaticTexts, staticTexts;
 
     GraphState graphState;
 };
