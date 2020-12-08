@@ -4,17 +4,14 @@ void Render::SetWindow(sf::RenderWindow *renderWindow)
 {
     Render::window = renderWindow;
 }
-
 void Render::SetCamera(Camera *pCamera)
 {
     Render::camera = pCamera;
 }
-
 bool Render::IsTarget() const
 {
     return target != -1;
 }
-
 void Render::LoadFont(const std::string &name, const std::string &path)
 {
     sf::Font font_;
@@ -24,7 +21,6 @@ void Render::LoadFont(const std::string &name, const std::string &path)
     }
     Render::font[name] = font_;
 }
-
 void Render::LoadTexture(const std::string &name, const std::string &path)
 {
     sf::Texture texture_;
@@ -34,7 +30,6 @@ void Render::LoadTexture(const std::string &name, const std::string &path)
     }
     Render::texture[name] = texture_;
 }
-
 void Render::Draw(State &state)
 {
     for (auto l : state.GetLines())
@@ -55,11 +50,10 @@ void Render::Draw(State &state)
         float dist = std::numeric_limits<float>::max();
         for (size_t i = 0; i < circles.size(); ++i)
         {
-            float cur_dist = GraphState::GetDist(
-                GraphState::Point(circles[i].first.getPosition().x + circles[i].first.getRadius(),
-                                  circles[i].first.getPosition().y + circles[i].first.getRadius(), 0),
-                GraphState::Point((float)(mousePos.x + camera->GetCameraX()),
-                                  (float)(mousePos.y + camera->GetCameraY()), 0));
+            float cur_dist = RailGraph::Graph::GetDist(
+                RailGraph::Graph::Point(circles[i].first.getPosition().x + circles[i].first.getRadius(),
+                                        circles[i].first.getPosition().y + circles[i].first.getRadius(), 0, 0),
+                RailGraph::Graph::Point(mousePos.x + camera->GetCameraX(), mousePos.y + camera->GetCameraY(), 0, 0));
             if (cur_dist <= circles[i].first.getRadius() && cur_dist < dist)
             {
                 dist = cur_dist;
@@ -76,8 +70,10 @@ void Render::Draw(State &state)
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && picked != -1)
         {
             target = picked;
-            backups.push(GraphState::Point(circles[picked].first.getPosition().x, circles[picked].first.getPosition().y,
-                                           picked));
+            RailGraph::Graph::Point oldPoint = RailGraph::Graph::Point(0, 0, circles[picked].first.getPosition().x,
+                                                                       circles[picked].first.getPosition().y);
+            oldPoint.idx = picked;
+            backups.push(oldPoint);
         }
     }
     else
@@ -117,22 +113,20 @@ void Render::Draw(State &state)
     }
     for (auto [text, fontName] : state.GetStaticTexts())
     {
-        text.setPosition(text.getPosition().x,
-                         text.getPosition().y);
+        text.setPosition(text.getPosition().x, text.getPosition().y);
         text.setFont(font[fontName]);
         window->draw(text);
     }
 }
-
 bool Render::IsPicked(State &state) const
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
     for (const auto &circle : state.GetCircles())
     {
-        float cur_dist = GraphState::GetDist(GraphState::Point(circle.first.getPosition().x + circle.first.getRadius(),
-                                                               circle.first.getPosition().y + circle.first.getRadius(), 0),
-                                             GraphState::Point((float)(mousePos.x + camera->GetCameraX()),
-                                                               (float)(mousePos.y + camera->GetCameraY()), 0));
+        float cur_dist = RailGraph::Graph::GetDist(
+            RailGraph::Graph::Point(circle.first.getPosition().x + circle.first.getRadius(),
+                                    circle.first.getPosition().y + circle.first.getRadius(), 0, 0),
+            RailGraph::Graph::Point(mousePos.x + camera->GetCameraX(), mousePos.y + camera->GetCameraY(), 0, 0));
         if (cur_dist <= circle.first.getRadius())
         {
             return true;
@@ -140,12 +134,11 @@ bool Render::IsPicked(State &state) const
     }
     return false;
 }
-
 void Render::BackUp(State &state)
 {
     if (!backups.empty())
     {
-        state.ChangePointLocation(backups.top().idx, backups.top().x, backups.top().y);
+        state.ChangePointLocation(backups.top().idx, backups.top().renderX, backups.top().renderY);
         backups.pop();
     }
 }

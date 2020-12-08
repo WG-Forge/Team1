@@ -114,4 +114,9 @@ void Application::Init()
     HandleCommand("map 1");
     HandleCommand("map 10");
     ImGui::SFML::Init(window);
+
+    states.push(State(map, std::vector<std::pair<sf::Text, std::string>>{}));
+    auto center = states.front().GetCenter();
+    camera.SetCameraX(center.renderX - window.getSize().x / 2);
+    camera.SetCameraY(center.renderY - window.getSize().y / 2);
 }

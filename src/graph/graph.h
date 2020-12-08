@@ -1,6 +1,7 @@
 #ifndef RAIL_SIMULATOR_GRAPH_H
 #define RAIL_SIMULATOR_GRAPH_H
 #include <unordered_map>
+#include <cmath>
 #include <variant>
 #include <vector>
 
@@ -36,16 +37,19 @@ class Graph
     };
     struct Post
     {
-        Post(const Info &info, const std::variant<MarketInfo, CityInfo, StorageInfo> &postInfo);
+        Post(Info info, std::variant<MarketInfo, CityInfo, StorageInfo> postInfo);
         Info info;
         std::variant<MarketInfo, CityInfo, StorageInfo> postInfo;
     };
     struct Point
     {
+        Point() = default;
         explicit Point(size_t idx, std::optional<size_t> postIdx = std::nullopt);
+        explicit Point(float x, float y, float renderX, float renderY);
         bool operator==(const Point &rhs) const;
         bool operator!=(const Point &rhs) const;
-        int x{0}, y{0};
+        float renderX{0}, renderY{0};
+        float x{0}, y{0};
         size_t idx;
         std::optional<size_t> postIdx;
     };
@@ -71,9 +75,13 @@ class Graph
 
     const std::string &GetName() const;
     size_t GetIdx() const;
-    const std::vector<Point> &GetPoints() const;
+    std::vector<Point> &GetPoints();
     const std::vector<Line> &GetLines() const;
+    std::vector<Post> GetPosts() const;
+    std::string GetInfo(int index) const;
     size_t GetNum(size_t pointIdx) const;
+    static float GetDist(const Point &first, const Point &second);
+    static float GetRenderDist(const Point &first, const Point &second);
 
   private:
     std::string name;

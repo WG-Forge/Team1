@@ -1,5 +1,6 @@
 #include "graph.h"
 
+#include <iostream>
 #include <utility>
 
 namespace RailGraph
@@ -25,9 +26,12 @@ void Graph::SetId(size_t id)
 
 void Graph::SetPointsCoordinates(const std::vector<std::tuple<size_t, int, int>> &coordinates)
 {
-    for (const auto & coordinate : coordinates) {
-        points[idxToNum[std::get<0>(coordinate)]].x = std::get<1>(coordinate);
-        points[idxToNum[std::get<0>(coordinate)]].y = std::get<2>(coordinate);
+    for (const auto &coordinate : coordinates)
+    {
+        points[idxToNum[std::get<0>(coordinate)]].renderX = points[idxToNum[std::get<0>(coordinate)]].x =
+            std::get<1>(coordinate);
+        points[idxToNum[std::get<0>(coordinate)]].renderY = points[idxToNum[std::get<0>(coordinate)]].y =
+            std::get<2>(coordinate);
     }
 }
 
@@ -53,7 +57,7 @@ size_t Graph::GetIdx() const
 {
     return idx;
 }
-const std::vector<Graph::Point> &Graph::GetPoints() const
+std::vector<Graph::Point> &Graph::GetPoints()
 {
     return points;
 }
@@ -65,8 +69,80 @@ size_t Graph::GetNum(size_t pointIdx) const
 {
     return idxToNum.at(pointIdx);
 }
-
+float Graph::GetDist(const Graph::Point &first, const Graph::Point &second)
+{
+    return sqrtf((first.x - second.x) * (first.x - second.x) + (first.y - second.y) * (first.y - second.y));
+}
+float Graph::GetRenderDist(const Graph::Point &first, const Graph::Point &second)
+{
+    return sqrtf((first.renderX - second.renderX) * (first.renderX - second.renderX) +
+                 (first.renderY - second.renderY) * (first.renderY - second.renderY));
+}
+std::vector<RailGraph::Graph::Post> Graph::GetPosts() const
+{
+    return posts;
+}
+std::string Graph::GetInfo(int index) const
+{
+    std::optional<std::string> info(std::nullopt);
+    for (const auto &post : posts)
+    {
+        if (post.info.point_idx == index)
+        {
+            std::string result = "{\n";
+            switch (post.postInfo.index())
+            {
+            case 0: {
+                auto market = std::get<MarketInfo>(post.postInfo);
+                result.append("    type: market\n");
+                result.append("    product: " + std::to_string(market.product) + "\n");
+                result.append("    productCapacity: " + std::to_string(market.productCapacity) + "\n");
+                result.append("    replenishment: " + std::to_string(market.replenishment) + "\n");
+                break;
+            }
+            case 1: {
+                auto city = std::get<CityInfo>(post.postInfo);
+                result.append("    type: city\n");
+                result.append("    armor: " + std::to_string(city.armor) + "\n");
+                result.append("    armorCapacity: " + std::to_string(city.armorCapacity) + "\n");
+                result.append("    level: " + std::to_string(city.level) + "\n");
+                result.append(
+                    "    nextLevelPrice: " +
+                    (city.nextLevelPrice == std::nullopt ? "null" : std::to_string(city.nextLevelPrice.value())) +
+                    "\n");
+                result.append("    population: " + std::to_string(city.population) + "\n");
+                result.append("    populationCapacity: " + std::to_string(city.populationCapacity) + "\n");
+                result.append("    product: " + std::to_string(city.product) + "\n");
+                result.append("    productCapacity: " + std::to_string(city.productCapacity) + "\n");
+                result.append("    trainCooldown: " + std::to_string(city.trainCooldown) + "\n");
+                result.append("    playerIdx: " + (city.playerIdx == std::nullopt ? "null" : city.playerIdx.value()) +
+                              "\n");
+                break;
+            }
+            case 2: {
+                auto storage = std::get<StorageInfo>(post.postInfo);
+                result.append("    type: storage\n");
+                result.append("    armor: " + std::to_string(storage.armor) + "\n");
+                result.append("    armorCapacity: " + std::to_string(storage.armorCapacity) + "\n");
+                result.append("    replenishment: " + std::to_string(storage.replenishment) + "\n");
+                break;
+            }
+            default: {
+                break;
+            }
+            }
+            result.append("}");
+            info = result;
+            break;
+        }
+    }
+    return (info == std::nullopt ? "no such post '" + std::to_string(index) + "'" : info.value());
+}
 Graph::Point::Point(size_t idx_, std::optional<size_t> postIdx_) : postIdx(std::move(postIdx_)), idx(idx_)
+{
+}
+
+Graph::Point::Point(float x, float y, float renderX, float renderY) : x(x), y(y), renderX(renderX), renderY(renderY)
 {
 }
 
@@ -74,14 +150,13 @@ bool Graph::Point::operator==(const Graph::Point &rhs) const
 {
     return idx == rhs.idx && postIdx == rhs.postIdx;
 }
-
 bool Graph::Point::operator!=(const Graph::Point &rhs) const
 {
     return !(rhs == *this);
 }
 
-Graph::Post::Post(const Graph::Info &info, const std::variant<MarketInfo, CityInfo, StorageInfo> &postInfo)
-    : info(info), postInfo(postInfo)
+Graph::Post::Post(Graph::Info info, std::variant<MarketInfo, CityInfo, StorageInfo> postInfo)
+    : info(std::move(info)), postInfo(std::move(postInfo))
 {
 }
 

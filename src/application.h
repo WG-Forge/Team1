@@ -23,14 +23,11 @@ class Application
     RailGraph::Graph map;
 
     void Init();
-
     void HandleCommand(std::string);
-
     void PollEvent(sf::Event &);
 
   public:
     Application(Config config, io_service &ioService);
-
     int Run();
 
   private:

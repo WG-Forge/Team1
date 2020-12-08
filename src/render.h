@@ -27,7 +27,7 @@ class Render
     Camera *camera = nullptr;
     std::unordered_map<std::string, sf::Font> font;
     std::unordered_map<std::string, sf::Texture> texture;
-    std::stack<GraphState::Point> backups;
+    std::stack<RailGraph::Graph::Point> backups;
     int target = -1;
 };
 

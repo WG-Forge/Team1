@@ -2,7 +2,7 @@
 #define RAIL_SIMULATOR_STATE_H
 
 #include "SFML/Graphics.hpp"
-#include "graph_state.h"
+#include "src/graph/graph.h"
 #include "src/util/sfml_tool.h"
 
 class State
@@ -15,14 +15,14 @@ class State
 
   public:
     State() = default;
-    State(GraphState graphState, std::vector<std::pair<sf::Text, std::string>> information);
+    State(RailGraph::Graph &graphState, std::vector<std::pair<sf::Text, std::string>> information);
 
     std::vector<std::pair<sf::CircleShape, std::string>> GetCircles();
     const std::vector<std::vector<sf::Vertex>> &GetLines();
     std::vector<std::pair<sf::Text, std::string>> GetNonStaticTexts();
     std::vector<std::pair<sf::Text, std::string>> GetStaticTexts();
 
-    GraphState::Point GetCenter();
+    RailGraph::Graph::Point GetCenter();
     void Resize(float delta);
     void ChangePointLocation(int index, float X, float Y);
     void ResetPointInformation();
@@ -35,7 +35,7 @@ class State
     std::vector<std::vector<sf::Vertex>> lines;
     std::vector<std::pair<sf::Text, std::string>> nonStaticTexts, staticTexts;
 
-    GraphState graphState;
+    RailGraph::Graph graphState;
 };
 
 #endif // RAIL_SIMULATOR_STATE_H

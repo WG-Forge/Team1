@@ -9,7 +9,6 @@ std::string ParseMessage(std::string &message)
     document.Accept(writer);
     return buffer.GetString();
 }
-
 bool IsNumber(std::string s)
 {
     auto it = s.begin();
@@ -47,11 +46,6 @@ void Application::HandleCommand(std::string command)
         if (tokens.back() == "0")
         {
             map = RailGraph::ParseMap0FromJson(result);
-            GraphState graphState = CreateReingoldGraphStateFromGraph(map);
-            states.push(State(graphState, std::vector<std::pair<sf::Text, std::string>>{}));
-            auto center = states.front().GetCenter();
-            camera.SetCameraX((int)(center.x - (float)window.getSize().x / 2));
-            camera.SetCameraY((int)(center.y - (float)window.getSize().y / 2));
         }
         else if (tokens.back() == "1")
         {
@@ -60,17 +54,14 @@ void Application::HandleCommand(std::string command)
         else if (tokens.back() == "10")
         {
             map.SetPointsCoordinates(RailGraph::ParseMap10FromJson(result));
-            GraphState graphState = CreateGraphStateFromGraph(map);
-            states.push(State(graphState, std::vector<std::pair<sf::Text, std::string>>{}));
         }
     }
     else if (clientCommand == "move" && tokens.size() == 4 && IsNumber(tokens[1]) && IsNumber(tokens[2]) &&
              IsNumber(tokens[3]))
     {
         consoleHistory.append("Move successful\n");
-        std::string str = client.Move(stoi(tokens[1]), stoi(tokens[2]), stoi(tokens[3])).data + "\n";
-        ParseMessage(str);
-        consoleHistory.append(str);
+        std::string str = client.Move(stoi(tokens[1]), stoi(tokens[2]), stoi(tokens[3])).data;
+        consoleHistory.append(str + '\n');
     }
     else if (clientCommand == "upgrade")
     {
@@ -78,23 +69,20 @@ void Application::HandleCommand(std::string command)
     else if (clientCommand == "turn" && tokens.size() == 1)
     {
         consoleHistory.append("Turn successful\n");
-        std::string str = client.Turn().data + "\n";
-        ParseMessage(str);
-        consoleHistory.append(str);
+        std::string str = client.Turn().data;
+        consoleHistory.append(str + '\n');
     }
     else if (clientCommand == "games" && tokens.size() == 1)
     {
         consoleHistory.append("Games successful\n");
-        std::string str = client.Games().data + "\n";
-        ParseMessage(str);
-        consoleHistory.append(str);
+        std::string str = client.Games().data;
+        consoleHistory.append(str + '\n');
     }
     else if (clientCommand == "login" && tokens.size() == 2)
     {
         consoleHistory.append("Login to " + client.GetSocket().remote_endpoint().address().to_string() + "\n");
-        std::string str = client.Login(tokens.back()).data + "\n";
-        ParseMessage(str);
-        consoleHistory.append(str);
+        std::string str = client.Login(tokens.back()).data;
+        consoleHistory.append(str + '\n');
     }
     else if (clientCommand == "clear")
     {
@@ -104,12 +92,16 @@ void Application::HandleCommand(std::string command)
     {
         consoleHistory.append("Logout from " + client.GetSocket().remote_endpoint().address().to_string() + "\n");
     }
+    else if (clientCommand == "info" && tokens.size() == 2 && IsNumber(tokens[1]))
+    {
+        std::string str = map.GetInfo(stoi(tokens[1]));
+        consoleHistory.append(str + '\n');
+    }
     else
     {
         consoleHistory.append("Unknown command '" + command + "'\n");
     }
 }
-
 void Application::PollEvent(sf::Event &event)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && Application::focusedConsole && !touched[sf::Keyboard::Enter])
