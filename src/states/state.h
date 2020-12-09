@@ -2,7 +2,7 @@
 #define RAIL_SIMULATOR_STATE_H
 
 #include "SFML/Graphics.hpp"
-#include "src/graph/graph.h"
+#include "src/game/graph.h"
 #include "src/util/sfml_tool.h"
 
 class State

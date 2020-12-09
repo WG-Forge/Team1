@@ -21,6 +21,7 @@ bool IsNumber(std::string s)
 
 void Application::HandleCommand(std::string command)
 {
+    consoleHistory.append(command + "\n");
     std::stringstream ss(command);
     std::string current;
     std::vector<std::string> tokens;
@@ -50,6 +51,7 @@ void Application::HandleCommand(std::string command)
         else if (tokens.back() == "1")
         {
             map.SetPosts(RailGraph::ParseMap1FromJson(result));
+            map.SetTrains(RailGraph::ParseTrainsFromJson(result));
         }
         else if (tokens.back() == "10")
         {
@@ -63,8 +65,51 @@ void Application::HandleCommand(std::string command)
         std::string str = client.Move(stoi(tokens[1]), stoi(tokens[2]), stoi(tokens[3])).data;
         consoleHistory.append(str + '\n');
     }
-    else if (clientCommand == "upgrade")
+    else if (clientCommand == "upgrade" && tokens.size() == 2)
     {
+        std::string parseStr = tokens.back();
+        if (parseStr.front() == '{' && parseStr.back() == '}')
+        {
+            parseStr.back() = ',';
+            std::vector<size_t> posts, trains;
+            std::string number{};
+            bool flag = false;
+            for (size_t i = 1; i < parseStr.size(); ++i)
+            {
+                if (parseStr[i] == ',' || parseStr[i] == '|')
+                {
+                    if (!flag && !number.empty())
+                    {
+                        posts.emplace_back(std::stoi(number));
+                    }
+                    else if (flag && !number.empty())
+                    {
+                        trains.emplace_back(std::stoi(number));
+                    }
+                    if (parseStr[i] == '|')
+                    {
+                        flag = true;
+                    }
+                    number.clear();
+                }
+                else if (parseStr[i] >= '0' && parseStr[i] <= '9')
+                {
+                    number += parseStr[i];
+                }
+                else
+                {
+                    consoleHistory.append("Wrong arguments '" + command + "'\n");
+                    return;
+                }
+            }
+            consoleHistory.append("Upgrade successful\n");
+            std::string result = client.Upgrade(posts, trains).data;
+            consoleHistory.append(result + '\n');
+        }
+        else
+        {
+            consoleHistory.append("Unknown command '" + command + "'\n");
+        }
     }
     else if (clientCommand == "turn" && tokens.size() == 1)
     {
@@ -92,9 +137,14 @@ void Application::HandleCommand(std::string command)
     {
         consoleHistory.append("Logout from " + client.GetSocket().remote_endpoint().address().to_string() + "\n");
     }
-    else if (clientCommand == "info" && tokens.size() == 2 && IsNumber(tokens[1]))
+    else if (clientCommand == "point" && tokens.size() == 2 && IsNumber(tokens[1]))
     {
-        std::string str = map.GetInfo(stoi(tokens[1]));
+        std::string str = map.GetPointInfo(stoi(tokens[1]));
+        consoleHistory.append(str + '\n');
+    }
+    else if (clientCommand == "train" && tokens.size() == 2 && IsNumber(tokens[1]))
+    {
+        std::string str = map.GetTrainInfo(stoi(tokens[1]));
         consoleHistory.append(str + '\n');
     }
     else

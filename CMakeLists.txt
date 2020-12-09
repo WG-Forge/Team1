@@ -42,7 +42,7 @@ add_executable(Rail-simulator
         libs/rapidjson/stringbuffer.h
         libs/rapidjson/writer.h
         tests/graph_tests/test.cpp
-        src/graph/graph.cpp
+        src/game/graph.cpp
         src/util/parser.cpp
         src/application.cpp
         src/application_controller.cpp
@@ -57,7 +57,7 @@ add_executable(Rail-simulator
         libs/imgui/imgui_demo.cpp
         libs/imgui/imgui_draw.cpp
         libs/imgui/imgui_widgets.cpp
-        libs/imgui-sfml/imgui-SFML.cpp src/application_controller.cpp src/util/sfml_tool.h)
+        libs/imgui-sfml/imgui-SFML.cpp src/application_controller.cpp src/util/sfml_tool.h src/game/brain.cpp src/game/brain.h)
 
 if (WIN32)
     set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc")

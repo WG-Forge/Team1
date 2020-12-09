@@ -49,6 +49,11 @@ void Graph::SetPosts(const std::vector<Post> &posts)
     }
 }
 
+void Graph::SetTrains(const std::vector<Train> &trains_)
+{
+    trains = trains_;
+}
+
 const std::string &Graph::GetName() const
 {
     return name;
@@ -82,7 +87,11 @@ std::vector<RailGraph::Graph::Post> Graph::GetPosts() const
 {
     return posts;
 }
-std::string Graph::GetInfo(int index) const
+std::vector<Graph::Train> Graph::GetTrains() const
+{
+    return trains;
+}
+std::string Graph::GetPointInfo(int index) const
 {
     std::optional<std::string> info(std::nullopt);
     for (const auto &post : posts)
@@ -90,6 +99,9 @@ std::string Graph::GetInfo(int index) const
         if (post.info.point_idx == index)
         {
             std::string result = "{\n";
+            result.append("    name: " + post.info.name + "\n");
+            result.append("    idx: " + std::to_string(post.info.idx) + "\n");
+            result.append("    pointIdx: " + std::to_string(post.info.point_idx) + "\n");
             switch (post.postInfo.index())
             {
             case 0: {
@@ -138,6 +150,40 @@ std::string Graph::GetInfo(int index) const
     }
     return (info == std::nullopt ? "no such post '" + std::to_string(index) + "'" : info.value());
 }
+std::string Graph::GetTrainInfo(int index) const
+{
+    std::optional<std::string> info(std::nullopt);
+    for (const auto &train : trains)
+    {
+        if (train.info.idx == index)
+        {
+            auto trainInfo = train.info;
+            std::string result = "{\n";
+            result.append("    type: " + std::to_string(trainInfo.idx) + "\n");
+            result.append("    cooldown: " + std::to_string(trainInfo.cooldown) + "\n");
+            result.append("    fuel: " + std::to_string(trainInfo.fuel) + "\n");
+            result.append("    fuelCapacity: " + std::to_string(trainInfo.fuelCapacity) + "\n");
+            result.append("    fuelConsumption: " + std::to_string(trainInfo.fuelConsumption) + "\n");
+            result.append("    goods: " + std::to_string(trainInfo.goods) + "\n");
+            result.append("    goodsCapacity: " + std::to_string(trainInfo.goodsCapacity) + "\n");
+            result.append("    goodsType: " +
+                          (trainInfo.goodsType == std::nullopt ? "null" : std::to_string(trainInfo.goodsType.value())) +
+                          "\n");
+            result.append("    idx: " + std::to_string(trainInfo.idx) + "\n");
+            result.append("    lineIdx: " + std::to_string(trainInfo.lineIdx) + "\n");
+            result.append("    level: " + std::to_string(trainInfo.level) + "\n");
+            result.append("    nextLevelPrice: " + std::to_string(trainInfo.nextLevelPrice) + "\n");
+            result.append("    playerIdx: " +
+                          (trainInfo.playerIdx == std::nullopt ? "null" : trainInfo.playerIdx.value()) + "\n");
+            result.append("    position: " + std::to_string(trainInfo.position) + "\n");
+            result.append("    speed: " + std::to_string(trainInfo.speed) + "\n");
+            result.append("}");
+            info = result;
+            break;
+        }
+    }
+    return (info == std::nullopt ? "no such train '" + std::to_string(index) + "'" : info.value());
+}
 Graph::Point::Point(size_t idx_, std::optional<size_t> postIdx_) : postIdx(std::move(postIdx_)), idx(idx_)
 {
 }
@@ -157,6 +203,9 @@ bool Graph::Point::operator!=(const Graph::Point &rhs) const
 
 Graph::Post::Post(Graph::Info info, std::variant<MarketInfo, CityInfo, StorageInfo> postInfo)
     : info(std::move(info)), postInfo(std::move(postInfo))
+{
+}
+Graph::Train::Train(Graph::TrainInfo info) : info(std::move(info))
 {
 }
 

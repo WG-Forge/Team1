@@ -41,6 +41,22 @@ class Graph
         Info info;
         std::variant<MarketInfo, CityInfo, StorageInfo> postInfo;
     };
+    struct TrainInfo
+    {
+        int cooldown;
+        int fuel, fuelCapacity, fuelConsumption;
+        int goods, goodsCapacity;
+        std::optional<int> goodsType;
+        int idx, lineIdx;
+        int level, nextLevelPrice;
+        std::optional<std::string> playerIdx;
+        int position, speed;
+    };
+    struct Train
+    {
+        explicit Train(TrainInfo info);
+        TrainInfo info;
+    };
     struct Point
     {
         Point() = default;
@@ -72,13 +88,16 @@ class Graph
     void SetPointsCoordinates(const std::vector<std::tuple<size_t, int, int>> &coordinates);
     void SetLines(const std::vector<Line> &lines);
     void SetPosts(const std::vector<Post> &posts);
+    void SetTrains(const std::vector<Train> &trains);
 
     const std::string &GetName() const;
     size_t GetIdx() const;
     std::vector<Point> &GetPoints();
     const std::vector<Line> &GetLines() const;
     std::vector<Post> GetPosts() const;
-    std::string GetInfo(int index) const;
+    std::vector<Train> GetTrains() const;
+    std::string GetPointInfo(int index) const;
+    std::string GetTrainInfo(int index) const;
     size_t GetNum(size_t pointIdx) const;
     static float GetDist(const Point &first, const Point &second);
     static float GetRenderDist(const Point &first, const Point &second);
@@ -89,6 +108,7 @@ class Graph
     std::vector<Point> points;
     std::vector<Line> lines;
     std::vector<Post> posts;
+    std::vector<Train> trains;
     std::unordered_map<size_t, size_t> idxToNum;
     std::unordered_map<size_t, size_t> pointToPost;
 };
