@@ -170,6 +170,7 @@ void Application::HandleCommand(std::string command)
         consoleHistory.append("Unknown command '" + command + "'\n");
     }
 }
+
 void Application::PollEvent(sf::Event &event)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && Application::focusedConsole && !touched[sf::Keyboard::Enter])

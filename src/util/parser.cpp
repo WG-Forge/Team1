@@ -30,6 +30,14 @@ Graph GraphParser::GetGraph() const
     return Graph(name, id, points, lines);
 }
 
+std::pair<size_t, size_t> ParseLoginFromJson(const std::string &parseText)
+{
+    rapidjson::Document document;
+    document.Parse(parseText.c_str());
+
+    return {document["home"]["idx"].GetInt(), document["home"]["post_idx"].GetInt()};
+}
+
 Graph ParseMap0FromJson(const std::string &parseText)
 {
     rapidjson::Document document;
@@ -137,9 +145,9 @@ std::vector<Graph::Train> ParseTrainsFromJson(const std::string &parseText)
 
     for (const auto &train : document["trains"].GetArray())
     {
-//        .fuel = train["fuel"].GetInt(),
-//        .fuelCapacity = train["fuel_capacity"].GetInt(),
-//        .fuelConsumption = train["fuel_consumption"].GetInt(),
+        //        .fuel = train["fuel"].GetInt(),
+        //        .fuelCapacity = train["fuel_capacity"].GetInt(),
+        //        .fuelConsumption = train["fuel_consumption"].GetInt(),
         result.emplace_back(Graph::TrainInfo{
             .cooldown = train["cooldown"].GetInt(),
             .fuel = 0,

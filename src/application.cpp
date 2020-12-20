@@ -33,6 +33,7 @@ int Application::Run()
         }
         else
         {
+            states.push(State(map, std::vector<std::pair<sf::Text, std::string>>{}));
             mouseX = mouseY = cameraX = cameraY = -1;
         }
 

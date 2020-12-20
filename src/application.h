@@ -21,6 +21,7 @@ class Application
     Render render;
     std::queue<State> states;
     RailGraph::Graph map;
+    size_t homeIdx, homePostIdx;
 
     void Init();
     void HandleCommand(std::string);
