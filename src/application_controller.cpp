@@ -9,8 +9,12 @@ std::string ParseMessage(std::string &message)
     document.Accept(writer);
     return buffer.GetString();
 }
+
 bool IsNumber(std::string s)
 {
+    if (!s.empty() && s[0] == '-') {
+        s.erase(begin(s));
+    }
     auto it = s.begin();
     while (it != s.end() && std::isdigit(*it))
     {
@@ -126,8 +130,10 @@ void Application::HandleCommand(std::string command)
     else if (clientCommand == "login" && tokens.size() == 2)
     {
         consoleHistory.append("Login to " + client.GetSocket().remote_endpoint().address().to_string() + "\n");
-        std::string str = client.Login(tokens.back()).data;
-        consoleHistory.append(str + '\n');
+        std::string result = client.Login(tokens.back()).data;
+        auto parsingResult = RailGraph::ParseLoginFromJson(result);
+        homeIdx = parsingResult.first, homePostIdx = parsingResult.second;
+        consoleHistory.append(result + '\n');
     }
     else if (clientCommand == "clear")
     {
@@ -146,6 +152,18 @@ void Application::HandleCommand(std::string command)
     {
         std::string str = map.GetTrainInfo(stoi(tokens[1]));
         consoleHistory.append(str + '\n');
+    }
+    else if (clientCommand == "adjacent" && tokens.size() == 2 && IsNumber(tokens[1]))
+    {
+        std::string result = "[";
+        for (const auto &line : map.GetLines())
+        {
+            if (line.points.first == stoi(tokens[1]) || line.points.second == stoi(tokens[1]))
+            {
+                result += std::to_string(line.idx) + ",\n";
+            }
+        }
+        consoleHistory.append(result + "]\n");
     }
     else
     {
