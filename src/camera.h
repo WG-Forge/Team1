@@ -3,22 +3,17 @@
 
 class Camera
 {
-  private:
-    int cameraX = 0;
-    int cameraY = 0;
-
   public:
     Camera() = default;
 
-    void update(int dx, int dy);
+    int GetCameraX() const;
+    int GetCameraY() const;
+    void SetCameraX(int cameraX);
+    void SetCameraY(int cameraY);
 
-    int getCameraX() const;
-
-    void setCameraX(int cameraX);
-
-    int getCameraY() const;
-
-    void setCameraY(int cameraY);
+  private:
+    int cameraX = 0;
+    int cameraY = 0;
 };
 
 #endif // RAIL_SIMULATOR_CAMERA_H
