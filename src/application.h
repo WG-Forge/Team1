@@ -10,6 +10,7 @@
 #include "render.h"
 #include "src/client/client.h"
 #include "src/util/parser.h"
+#include "src/game/brain.h"
 
 class Application
 {
@@ -21,7 +22,7 @@ class Application
     Render render;
     std::queue<State> states;
     RailGraph::Graph map;
-    size_t homeIdx, homePostIdx;
+    Brain brain;
 
     void Init();
     void HandleCommand(std::string);

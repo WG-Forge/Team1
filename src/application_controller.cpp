@@ -44,18 +44,23 @@ void Application::HandleCommand(std::string command)
         consoleHistory.append("Map successful\n");
         std::string result = client.Map(stoi(tokens.back())).data;
         consoleHistory.append(result + '\n');
-        while (!states.empty())
-        {
-            states.pop();
-        }
         if (tokens.back() == "0")
         {
+            while (!states.empty())
+            {
+                states.pop();
+            }
             map = RailGraph::ParseMap0FromJson(result);
         }
         else if (tokens.back() == "1")
         {
             map.SetPosts(RailGraph::ParseMap1FromJson(result));
-            map.SetTrains(RailGraph::ParseTrainsFromJson(result));
+            auto trains = RailGraph::ParseTrainsFromJson(result);
+            map.SetTrains(trains);
+            if (!states.empty())
+            {
+                states.front().UpdateTrains(trains);
+            }
         }
         else if (tokens.back() == "10")
         {
@@ -132,7 +137,7 @@ void Application::HandleCommand(std::string command)
         consoleHistory.append("Login to " + client.GetSocket().remote_endpoint().address().to_string() + "\n");
         std::string result = client.Login(tokens.back()).data;
         auto parsingResult = RailGraph::ParseLoginFromJson(result);
-        homeIdx = parsingResult.first, homePostIdx = parsingResult.second;
+//        homeIdx = parsingResult.first, homePostIdx = parsingResult.second;
         consoleHistory.append(result + '\n');
     }
     else if (clientCommand == "clear")

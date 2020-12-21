@@ -21,11 +21,13 @@ class State
     const std::vector<std::vector<sf::Vertex>> &GetLines();
     std::vector<std::pair<sf::Text, std::string>> GetNonStaticTexts();
     std::vector<std::pair<sf::Text, std::string>> GetStaticTexts();
+    std::vector<std::pair<sf::CircleShape, std::string>> GetTrains();
 
     RailGraph::Graph::Point GetCenter();
     void Resize(float delta);
     void ChangePointLocation(int index, float X, float Y);
     void ResetPointInformation();
+    void UpdateTrains(std::vector<RailGraph::Graph::Train>);
 
   private:
     float circleRadius = 1.f;

@@ -34,6 +34,7 @@ int Application::Run()
         else
         {
             states.push(State(map, std::vector<std::pair<sf::Text, std::string>>{}));
+            brain.SetMap(map);
             mouseX = mouseY = cameraX = cameraY = -1;
         }
 
@@ -109,11 +110,13 @@ void Application::Init()
     render.LoadTexture("market", "../resourses/market.png");
     render.LoadTexture("storage", "../resourses/storage.png");
     render.LoadTexture("default", "../resourses/default.png");
+    render.LoadTexture("train", "../resourses/train.png");
 
     HandleCommand("login " + config.teamName);
     HandleCommand("map 0");
     HandleCommand("map 1");
     HandleCommand("map 10");
+    brain.SetMap(map);
     ImGui::SFML::Init(window);
 
     states.push(State(map, std::vector<std::pair<sf::Text, std::string>>{}));
