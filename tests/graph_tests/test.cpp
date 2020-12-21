@@ -1,6 +1,6 @@
 #include <fstream>
 #include <gtest/gtest.h>
-#include <src/graph_parser.h>
+#include <src/util/parser.h>
 
 using namespace RailGraph;
 

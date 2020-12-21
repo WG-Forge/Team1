@@ -9,6 +9,7 @@ struct Config
     bool hideCursor = false;
     int fps = 300;
     std::string pathToJson = "../tests/graph_tests/big_graph.json";
+    std::string teamName = "Team1";
 
     Config() = default;
 };

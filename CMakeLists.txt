@@ -42,14 +42,22 @@ add_executable(Rail-simulator
         libs/rapidjson/stringbuffer.h
         libs/rapidjson/writer.h
         tests/graph_tests/test.cpp
-        src/graph.cpp
-        src/graph_parser.cpp
+        src/game/graph.cpp
+        src/util/parser.cpp
         src/application.cpp
+        src/application_controller.cpp
 #        tests/graph_tests/test_generator.cpp
         src/main.cpp
         src/camera.cpp
         src/render.cpp
-        src/state.cpp)
+        src/states/state.cpp
+        src/client/client.cpp
+        src/main.cpp
+        libs/imgui/imgui.cpp
+        libs/imgui/imgui_demo.cpp
+        libs/imgui/imgui_draw.cpp
+        libs/imgui/imgui_widgets.cpp
+        libs/imgui-sfml/imgui-SFML.cpp src/application_controller.cpp src/util/sfml_tool.h src/game/brain.cpp src/game/brain.h)
 
 if (WIN32)
     set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc")
@@ -61,6 +69,11 @@ if (WIN32)
 endif ()
 
 if (UNIX)
+    find_package(OpenGL REQUIRED)
+    find_package(GLUT REQUIRED)
+    include_directories(${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} )
+    target_link_libraries(Rail-simulator ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+
     set(SFML_ROOT "libs/SFML-2.5.1-Linux")
     set(SFML_DIR "libs/SFML-2.5.1-Linux/lib/cmake/SFML")
     set(SFML_INCLUDE_DIR "libs/SFML-2.5.1-Linux/include")

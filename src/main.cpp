@@ -4,6 +4,7 @@ const Config config;
 
 int main()
 {
-    Application app(config);
-    return app.run();
+    io_service ioService;
+    Application app(config, ioService);
+    return app.Run();
 }
