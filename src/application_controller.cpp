@@ -12,7 +12,8 @@ std::string ParseMessage(std::string &message)
 
 bool IsNumber(std::string s)
 {
-    if (!s.empty() && s[0] == '-') {
+    if (!s.empty() && s[0] == '-')
+    {
         s.erase(begin(s));
     }
     auto it = s.begin();
@@ -42,7 +43,9 @@ void Application::HandleCommand(std::string command)
     if (clientCommand == "map" && tokens.size() == 2 && IsNumber(tokens.back()))
     {
         consoleHistory.append("Map successful\n");
+        clientMutex.lock();
         std::string result = client.Map(stoi(tokens.back())).data;
+        clientMutex.unlock();
         consoleHistory.append(result + '\n');
         if (tokens.back() == "0")
         {
@@ -53,7 +56,9 @@ void Application::HandleCommand(std::string command)
             map.SetPosts(RailGraph::ParseMap1FromJson(result));
             auto trains = RailGraph::ParseTrainsFromJson(result);
             map.SetTrains(trains);
+            stateMutex.lock();
             state.UpdateTrains(trains);
+            stateMutex.unlock();
         }
         else if (tokens.back() == "10")
         {
@@ -64,7 +69,9 @@ void Application::HandleCommand(std::string command)
              IsNumber(tokens[3]))
     {
         consoleHistory.append("Move successful\n");
+        clientMutex.lock();
         std::string str = client.Move(stoi(tokens[1]), stoi(tokens[2]), stoi(tokens[3])).data;
+        clientMutex.unlock();
         consoleHistory.append(str + '\n');
     }
     else if (clientCommand == "upgrade" && tokens.size() == 2)
@@ -105,7 +112,9 @@ void Application::HandleCommand(std::string command)
                 }
             }
             consoleHistory.append("Upgrade successful\n");
+            clientMutex.lock();
             std::string result = client.Upgrade(posts, trains).data;
+            clientMutex.unlock();
             consoleHistory.append(result + '\n');
         }
         else
@@ -116,21 +125,27 @@ void Application::HandleCommand(std::string command)
     else if (clientCommand == "turn" && tokens.size() == 1)
     {
         consoleHistory.append("Turn successful\n");
+        clientMutex.lock();
         std::string str = client.Turn().data;
+        clientMutex.unlock();
         consoleHistory.append(str + '\n');
     }
     else if (clientCommand == "games" && tokens.size() == 1)
     {
         consoleHistory.append("Games successful\n");
+        clientMutex.lock();
         std::string str = client.Games().data;
+        clientMutex.unlock();
         consoleHistory.append(str + '\n');
     }
     else if (clientCommand == "login" && tokens.size() == 2)
     {
+        clientMutex.lock();
         consoleHistory.append("Login to " + client.GetSocket().remote_endpoint().address().to_string() + "\n");
         std::string result = client.Login(tokens.back()).data;
+        clientMutex.unlock();
         auto parsingResult = RailGraph::ParseLoginFromJson(result);
-//        homeIdx = parsingResult.first, homePostIdx = parsingResult.second;
+        //        homeIdx = parsingResult.first, homePostIdx = parsingResult.second;
         consoleHistory.append(result + '\n');
     }
     else if (clientCommand == "clear")

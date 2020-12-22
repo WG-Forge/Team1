@@ -2,6 +2,7 @@
 #define RAIL_SIMULATOR_APPLICATION_H
 
 #include <fstream>
+#include <mutex>
 #include <queue>
 #include <sstream>
 
@@ -9,8 +10,8 @@
 #include "config.h"
 #include "render.h"
 #include "src/client/client.h"
-#include "src/util/parser.h"
 #include "src/game/brain.h"
+#include "src/util/parser.h"
 
 class Application
 {
@@ -23,6 +24,10 @@ class Application
     State state;
     RailGraph::Graph map;
     Brain brain;
+    //    std::mutex commandMutex;
+    std::mutex stateMutex;
+    std::mutex consoleMutex;
+    std::mutex clientMutex;
 
     void Init();
     void HandleCommand(std::string);

@@ -12,7 +12,21 @@ int Application::Run()
 {
     Init();
 
-    sf::Clock timer; // temp
+    std::thread brainThread([this] {
+        sf::Clock timer;
+        while (window.isOpen())
+        {
+
+            if (timer.getElapsedTime().asMilliseconds() >= 100)
+            {
+                for (const auto &command : brain.GetTurn())
+                {
+                    HandleCommand(command);
+                }
+                timer.restart();
+            }
+        }
+    });
 
     while (window.isOpen())
     {
@@ -20,22 +34,14 @@ int Application::Run()
         {
             continue;
         }
-        if (timer.getElapsedTime().asMilliseconds() >= 100) // temp
-        {
-            for (const auto &command : brain.GetTurn())
-            {
-//                sf::Clock timeHandling;
-                HandleCommand(command);
-//                std::cerr << "'" << command << "'   " << timeHandling.getElapsedTime().asMilliseconds() << " ms\n";
-            }
-            timer.restart();
-        }
         dtTimer.restart();
         sf::Event event{};
         while (window.pollEvent(event))
         {
             ImGui::SFML::ProcessEvent(event);
+            stateMutex.lock();
             PollEvent(event);
+            stateMutex.unlock();
         }
 
         window.clear();
@@ -79,6 +85,7 @@ int Application::Run()
     }
 
     ImGui::SFML::Shutdown();
+    brainThread.join();
     return EXIT_SUCCESS;
 }
 
