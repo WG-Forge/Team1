@@ -12,11 +12,23 @@ int Application::Run()
 {
     Init();
 
+    sf::Clock timer; // temp
+
     while (window.isOpen())
     {
         if (dtTimer.getElapsedTime().asMilliseconds() * config.fps <= 1000)
         {
             continue;
+        }
+        if (timer.getElapsedTime().asMilliseconds() >= 100) // temp
+        {
+            for (const auto &command : brain.GetTurn())
+            {
+//                sf::Clock timeHandling;
+                HandleCommand(command);
+//                std::cerr << "'" << command << "'   " << timeHandling.getElapsedTime().asMilliseconds() << " ms\n";
+            }
+            timer.restart();
         }
         dtTimer.restart();
         sf::Event event{};

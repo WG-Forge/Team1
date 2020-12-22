@@ -29,18 +29,38 @@ Brain::Brain()
 void Brain::SetMap(RailGraph::Graph &map)
 {
     Brain::map = map;
-    UpdateDist();
+    UpdateDist(
+        std::vector<
+            std::variant<RailGraph::Graph::MarketInfo, RailGraph::Graph::CityInfo, RailGraph::Graph::StorageInfo>>{});
 }
 
-void Brain::Update()
+std::vector<std::string> Brain::GetTurn()
 {
-    UpdateDist();
+    auto trains = map.GetTrains();
+    auto path = TrainOptimalPath(trains.front(), 386);
+    return {"move " + std::to_string(std::get<1>(path)) + " " + std::to_string(std::get<2>(path)) + " " +
+            std::to_string(trains.front().info.idx), "turn", "map 1"};
+    //    UpdateDist();
 }
 
-void Brain::UpdateDist()
+void Brain::UpdateDist(const std::vector<std::variant<RailGraph::Graph::MarketInfo, RailGraph::Graph::CityInfo,
+                                                      RailGraph::Graph::StorageInfo>> &skip)
 {
     auto edges = map.GetLines();
     auto points = map.GetPoints();
+    auto posts = map.GetPosts();
+    std::unordered_map<int, bool> ban;
+    for (const auto &i : posts)
+    {
+        for (const auto &j : skip)
+        {
+            if (i.postInfo.index() == j.index())
+            {
+                ban[i.info.idx] = true;
+                break;
+            }
+        }
+    }
     for (const auto &i : points)
     {
         for (const auto &j : points)
@@ -50,6 +70,10 @@ void Brain::UpdateDist()
     }
     for (const auto &i : edges)
     {
+        if (ban[i.points.first] || ban[i.points.second])
+        {
+            continue;
+        }
         dist[i.points.first][i.points.second] = dist[i.points.second][i.points.first] =
             std::min<int>(dist[i.points.first][i.points.second], i.length);
         direction[i.points.first][i.points.second] = 1;
@@ -61,6 +85,10 @@ void Brain::UpdateDist()
         {
             for (const auto &j : points)
             {
+                if (ban[i.idx] || ban[j.idx] || ban[k.idx])
+                {
+                    continue;
+                }
                 if (dist[i.idx][j.idx] > dist[i.idx][k.idx] + dist[k.idx][j.idx])
                 {
                     dist[i.idx][j.idx] = dist[i.idx][k.idx] + dist[k.idx][j.idx];
@@ -98,7 +126,8 @@ std::tuple<int, int, int> Brain::TrainOptimalPath(RailGraph::Graph::Train &train
             int u = i.points.first, v = i.points.second;
             if (dist[u][destination] + train.info.position > dist[v][destination] + (i.length - train.info.position))
             {
-                return {dist[v][destination] + (i.length - train.info.position), train.info.lineIdx, direction[v][destination]};
+                return {dist[v][destination] + (i.length - train.info.position), train.info.lineIdx,
+                        direction[v][destination]};
             }
             return {dist[u][destination] + train.info.position, train.info.lineIdx, direction[u][destination]};
         }

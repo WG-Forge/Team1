@@ -8,12 +8,12 @@
 class Brain
 {
   private:
-    void UpdateDist();
+    void UpdateDist(const std::vector<std::variant<RailGraph::Graph::MarketInfo, RailGraph::Graph::CityInfo, RailGraph::Graph::StorageInfo>> &);
 
   public:
     Brain();
 
-    void Update();
+    std::vector<std::string> GetTurn();
     void SetMap(RailGraph::Graph &map);
     std::tuple<int, int, int> TrainOptimalPath(RailGraph::Graph::Train &train, int destination);
 
