@@ -38,17 +38,8 @@ int Application::Run()
             PollEvent(event);
         }
 
-        if (!states.empty())
-        {
-            window.clear();
-            render.Draw(states.front());
-        }
-        else
-        {
-            states.push(State(map, std::vector<std::pair<sf::Text, std::string>>{}));
-            brain.SetMap(map);
-            mouseX = mouseY = cameraX = cameraY = -1;
-        }
+        window.clear();
+        render.Draw(state);
 
         ImGui::SFML::Update(window, deltaClock.restart());
         if (firstRender)
@@ -131,8 +122,8 @@ void Application::Init()
     brain.SetMap(map);
     ImGui::SFML::Init(window);
 
-    states.push(State(map, std::vector<std::pair<sf::Text, std::string>>{}));
-    auto center = states.front().GetCenter();
+    state = State(map, std::vector<std::pair<sf::Text, std::string>>{});
+    auto center = state.GetCenter();
     camera.SetCameraX(center.renderX - window.getSize().x / 2);
     camera.SetCameraY(center.renderY - window.getSize().y / 2);
 }

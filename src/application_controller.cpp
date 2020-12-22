@@ -46,10 +46,6 @@ void Application::HandleCommand(std::string command)
         consoleHistory.append(result + '\n');
         if (tokens.back() == "0")
         {
-            while (!states.empty())
-            {
-                states.pop();
-            }
             map = RailGraph::ParseMap0FromJson(result);
         }
         else if (tokens.back() == "1")
@@ -57,10 +53,7 @@ void Application::HandleCommand(std::string command)
             map.SetPosts(RailGraph::ParseMap1FromJson(result));
             auto trains = RailGraph::ParseTrainsFromJson(result);
             map.SetTrains(trains);
-            if (!states.empty())
-            {
-                states.front().UpdateTrains(trains);
-            }
+            state.UpdateTrains(trains);
         }
         else if (tokens.back() == "10")
         {
@@ -200,7 +193,7 @@ void Application::PollEvent(sf::Event &event)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) &&
         !touched[sf::Keyboard::Z])
     {
-        render.BackUp(states.front());
+        render.BackUp(state);
         touched[sf::Keyboard::Z] = true;
     }
     else
@@ -209,7 +202,7 @@ void Application::PollEvent(sf::Event &event)
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::X) && !touched[sf::Keyboard::X])
     {
-        states.front().ResetPointInformation();
+        state.ResetPointInformation();
         touched[sf::Keyboard::X] = true;
     }
     else
@@ -220,7 +213,7 @@ void Application::PollEvent(sf::Event &event)
     {
         window.close();
     }
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !render.IsTarget() && !render.IsPicked(states.front()))
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !render.IsTarget() && !render.IsPicked(state))
     {
         render.canTarget = false;
         if (mouseX == -1 && mouseY == -1)
@@ -242,6 +235,6 @@ void Application::PollEvent(sf::Event &event)
     if (event.type == sf::Event::MouseWheelMoved)
     {
         delta = event.mouseWheel.delta;
-        states.front().Resize(delta * 10);
+        state.Resize(delta * 10);
     }
 }

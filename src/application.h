@@ -20,7 +20,7 @@ class Application
     Client client;
     sf::RenderWindow window;
     Render render;
-    std::queue<State> states;
+    State state;
     RailGraph::Graph map;
     Brain brain;
 
