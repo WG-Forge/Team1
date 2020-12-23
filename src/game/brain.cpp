@@ -29,22 +29,47 @@ Brain::Brain()
 void Brain::SetMap(RailGraph::Graph &map)
 {
     Brain::map = &map;
-    UpdateDist(
-        std::vector<
-            std::variant<RailGraph::Graph::MarketInfo, RailGraph::Graph::CityInfo, RailGraph::Graph::StorageInfo>>{});
+    UpdateDist({RailGraph::Graph::Post::StorageIndex});
 }
 
 std::vector<std::string> Brain::GetTurn()
 {
+
+    std::vector<std::string> commands;
     auto trains = map->GetTrains();
-    auto path = TrainOptimalPath(trains.front(), 386);
-    std::cout << trains.front().info.position << "\n";
-    return {"move " + std::to_string(std::get<1>(path)) + " " + std::to_string(std::get<2>(path)) + " " +
-            std::to_string(trains.front().info.idx), "turn", "map 1"};
+    if (trains.front().info.goods > 0)
+    {
+        auto path = TrainOptimalPath(trains.front(), homeIdx);
+        commands.emplace_back("move " + std::to_string(std::get<1>(path)) + " " + std::to_string(std::get<2>(path)) +
+                              " " + std::to_string(trains.front().info.idx));
+    }
+    else
+    {
+        auto points = map->GetPoints();
+        auto posts = map->GetPosts();
+        std::tuple<int, int, int> minPath{std::numeric_limits<int>::max(), -1, -1};
+
+        for (const auto &post : posts)
+        {
+            if (post.postInfo.index() == RailGraph::Graph::Post::MarketIndex &&
+                std::get<RailGraph::Graph::MarketInfo>(post.postInfo).product > 0)
+            {
+                minPath = std::min(minPath, TrainOptimalPath(trains.front(), post.info.point_idx));
+            }
+        }
+
+        if (std::get<1>(minPath) != -1)
+        {
+            commands.emplace_back("move " + std::to_string(std::get<1>(minPath)) + " " +
+                                  std::to_string(std::get<2>(minPath)) + " " + std::to_string(trains.front().info.idx));
+        }
+    }
+    commands.emplace_back("turn");
+    commands.emplace_back("map 1");
+    return commands;
 }
 
-void Brain::UpdateDist(const std::vector<std::variant<RailGraph::Graph::MarketInfo, RailGraph::Graph::CityInfo,
-                                                      RailGraph::Graph::StorageInfo>> &skip)
+void Brain::UpdateDist(const std::vector<int> &skip)
 {
     auto edges = map->GetLines();
     auto points = map->GetPoints();
@@ -54,9 +79,9 @@ void Brain::UpdateDist(const std::vector<std::variant<RailGraph::Graph::MarketIn
     {
         for (const auto &j : skip)
         {
-            if (i.postInfo.index() == j.index())
+            if (i.postInfo.index() == j)
             {
-                ban[i.info.idx] = true;
+                ban[i.info.point_idx] = true;
                 break;
             }
         }
@@ -65,7 +90,10 @@ void Brain::UpdateDist(const std::vector<std::variant<RailGraph::Graph::MarketIn
     {
         for (const auto &j : points)
         {
-            dist[i.idx][j.idx] = std::numeric_limits<int>::max() >> 1;
+            if (i != j)
+            {
+                dist[i.idx][j.idx] = std::numeric_limits<int>::max() >> 2;
+            }
         }
     }
     for (const auto &i : edges)
@@ -99,7 +127,7 @@ void Brain::UpdateDist(const std::vector<std::variant<RailGraph::Graph::MarketIn
     }
 }
 
-std::tuple<int, int, int> Brain::TrainOptimalPath(RailGraph::Graph::Train &train, int destination)
+std::tuple<int, int, int> Brain::TrainOptimalPath(const RailGraph::Graph::Train &train, int destination)
 {
     auto edges = map->GetLines();
     for (const auto &i : edges)
@@ -112,26 +140,37 @@ std::tuple<int, int, int> Brain::TrainOptimalPath(RailGraph::Graph::Train &train
                 std::tuple<int, int, int> res = {std::numeric_limits<int>::max(), -1, -1};
                 for (const auto &j : edges)
                 {
-                    if (j.points.first == start && std::get<0>(res) > dist[start][destination])
+                    if (j.points.first == start && std::get<0>(res) > j.length + dist[j.points.second][destination])
                     {
-                        res = {dist[start][destination], j.idx, direction[start][destination]};
+                        res = {j.length + dist[j.points.second][destination], j.idx, direction[start][j.points.second]};
                     }
-                    if (j.points.second == start && std::get<0>(res) > dist[start][destination])
+                    if (j.points.second == start && std::get<0>(res) > j.length + dist[j.points.first][destination])
                     {
-                        res = {dist[start][destination], j.idx, direction[start][destination]};
+                        res = {j.length + dist[j.points.first][destination], j.idx, direction[start][j.points.first]};
                     }
                 }
-                std::cout << std::get<0>(res) << ' ' << std::get<1>(res) << ' ' << std::get<2>(res) << '\n';
                 return res;
             }
             int u = i.points.first, v = i.points.second;
             if (dist[u][destination] + train.info.position > dist[v][destination] + (i.length - train.info.position))
             {
-                return {dist[v][destination] + (i.length - train.info.position), train.info.lineIdx,
-                        direction[v][destination]};
+                return {dist[v][destination] + (i.length - train.info.position), train.info.lineIdx, 1};
             }
-            return {dist[u][destination] + train.info.position, train.info.lineIdx, direction[u][destination]};
+            else
+            {
+                return {dist[u][destination] + train.info.position, train.info.lineIdx, -1};
+            }
         }
     }
     return {-1, -1, -1};
+}
+
+void Brain::SetHomeIdx(int homeIdx)
+{
+    Brain::homeIdx = homeIdx;
+}
+
+void Brain::SetHomePostIdx(int homePostIdx)
+{
+    Brain::homePostIdx = homePostIdx;
 }

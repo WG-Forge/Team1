@@ -145,7 +145,7 @@ void Application::HandleCommand(std::string command)
         std::string result = client.Login(tokens.back()).data;
         clientMutex.unlock();
         auto parsingResult = RailGraph::ParseLoginFromJson(result);
-        //        homeIdx = parsingResult.first, homePostIdx = parsingResult.second;
+        brain.SetHomeIdx(parsingResult.first), brain.SetHomePostIdx(parsingResult.second);
         consoleHistory.append(result + '\n');
     }
     else if (clientCommand == "clear")
