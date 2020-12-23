@@ -19,6 +19,7 @@ class GraphParser
     rapidjson::Document document;
 };
 
+std::pair<size_t, size_t> ParseLoginFromJson(const std::string &parseText);
 Graph ParseMap0FromJson(const std::string &parseText);
 std::vector<Graph::Post> ParseMap1FromJson(const std::string &parseText);
 std::vector<std::tuple<size_t, int, int>> ParseMap10FromJson(const std::string &parseText);

@@ -1,7 +1,7 @@
 #ifndef RAIL_SIMULATOR_GRAPH_H
 #define RAIL_SIMULATOR_GRAPH_H
-#include <unordered_map>
 #include <cmath>
+#include <unordered_map>
 #include <variant>
 #include <vector>
 
@@ -39,7 +39,10 @@ class Graph
     {
         Post(Info info, std::variant<MarketInfo, CityInfo, StorageInfo> postInfo);
         Info info;
-        std::variant<MarketInfo, CityInfo, StorageInfo> postInfo;
+
+        typedef std::variant<MarketInfo, CityInfo, StorageInfo> PostInfo;
+        static int MarketIndex, CityIndex, StorageIndex;
+        PostInfo postInfo;
     };
     struct TrainInfo
     {

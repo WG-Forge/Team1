@@ -2,6 +2,7 @@
 #define RAIL_SIMULATOR_APPLICATION_H
 
 #include <fstream>
+#include <mutex>
 #include <queue>
 #include <sstream>
 
@@ -9,6 +10,7 @@
 #include "config.h"
 #include "render.h"
 #include "src/client/client.h"
+#include "src/game/brain.h"
 #include "src/util/parser.h"
 
 class Application
@@ -19,8 +21,11 @@ class Application
     Client client;
     sf::RenderWindow window;
     Render render;
-    std::queue<State> states;
+    State state;
     RailGraph::Graph map;
+    Brain brain;
+    std::mutex stateMutex;
+    std::mutex clientMutex;
 
     void Init();
     void HandleCommand(std::string);
@@ -32,7 +37,7 @@ class Application
 
   private:
     std::unordered_map<sf::Keyboard::Key, bool> touched;
-    bool focusedConsole = true, firstRender = true;
+    bool focusedConsole = true, firstRender = true, hideConsole = false;
     std::string consoleHistory;
     char console[255] = "";
     sf::Clock deltaClock, dtTimer;
