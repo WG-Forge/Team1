@@ -24,9 +24,7 @@ class Application
     State state;
     RailGraph::Graph map;
     Brain brain;
-    //    std::mutex commandMutex;
     std::mutex stateMutex;
-    std::mutex consoleMutex;
     std::mutex clientMutex;
 
     void Init();
@@ -39,7 +37,7 @@ class Application
 
   private:
     std::unordered_map<sf::Keyboard::Key, bool> touched;
-    bool focusedConsole = true, firstRender = true;
+    bool focusedConsole = true, firstRender = true, hideConsole = false;
     std::string consoleHistory;
     char console[255] = "";
     sf::Clock deltaClock, dtTimer;

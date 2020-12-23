@@ -28,7 +28,7 @@ Brain::Brain()
 
 void Brain::SetMap(RailGraph::Graph &map)
 {
-    Brain::map = map;
+    Brain::map = &map;
     UpdateDist(
         std::vector<
             std::variant<RailGraph::Graph::MarketInfo, RailGraph::Graph::CityInfo, RailGraph::Graph::StorageInfo>>{});
@@ -36,19 +36,19 @@ void Brain::SetMap(RailGraph::Graph &map)
 
 std::vector<std::string> Brain::GetTurn()
 {
-    auto trains = map.GetTrains();
+    auto trains = map->GetTrains();
     auto path = TrainOptimalPath(trains.front(), 386);
+    std::cout << trains.front().info.position << "\n";
     return {"move " + std::to_string(std::get<1>(path)) + " " + std::to_string(std::get<2>(path)) + " " +
             std::to_string(trains.front().info.idx), "turn", "map 1"};
-    //    UpdateDist();
 }
 
 void Brain::UpdateDist(const std::vector<std::variant<RailGraph::Graph::MarketInfo, RailGraph::Graph::CityInfo,
                                                       RailGraph::Graph::StorageInfo>> &skip)
 {
-    auto edges = map.GetLines();
-    auto points = map.GetPoints();
-    auto posts = map.GetPosts();
+    auto edges = map->GetLines();
+    auto points = map->GetPoints();
+    auto posts = map->GetPosts();
     std::unordered_map<int, bool> ban;
     for (const auto &i : posts)
     {
@@ -101,7 +101,7 @@ void Brain::UpdateDist(const std::vector<std::variant<RailGraph::Graph::MarketIn
 
 std::tuple<int, int, int> Brain::TrainOptimalPath(RailGraph::Graph::Train &train, int destination)
 {
-    auto edges = map.GetLines();
+    auto edges = map->GetLines();
     for (const auto &i : edges)
     {
         if (i.idx == train.info.lineIdx)
@@ -121,6 +121,7 @@ std::tuple<int, int, int> Brain::TrainOptimalPath(RailGraph::Graph::Train &train
                         res = {dist[start][destination], j.idx, direction[start][destination]};
                     }
                 }
+                std::cout << std::get<0>(res) << ' ' << std::get<1>(res) << ' ' << std::get<2>(res) << '\n';
                 return res;
             }
             int u = i.points.first, v = i.points.second;

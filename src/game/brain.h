@@ -20,7 +20,7 @@ class Brain
   private:
     std::map<std::pair<std::string, int>, std::optional<int>> townLevelInformation, trainLevelInformation;
     std::unordered_map<int, std::unordered_map<int, int>> dist, direction;
-    RailGraph::Graph map;
+    RailGraph::Graph *map;
 };
 
 #endif // RAIL_SIMULATOR_BRAIN_H

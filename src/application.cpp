@@ -56,7 +56,11 @@ int Application::Run()
         }
         ImGui::Begin("Console");
         ImGui::InputText("input", console, sizeof(console));
-        char *history = const_cast<char *>(consoleHistory.c_str());
+        char *history = (hideConsole ? const_cast<char *>("type 'show' to show information") : const_cast<char *>(consoleHistory.c_str()));
+        if (consoleHistory.size() > 1'000'000)
+        {
+            consoleHistory.clear();
+        }
         if (ImGui::TreeNode("Help"))
         {
             ImGui::Indent();
@@ -126,6 +130,7 @@ void Application::Init()
     HandleCommand("map 0");
     HandleCommand("map 1");
     HandleCommand("map 10");
+    HandleCommand("hide");
     brain.SetMap(map);
     ImGui::SFML::Init(window);
 

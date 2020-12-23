@@ -178,6 +178,14 @@ void Application::HandleCommand(std::string command)
         }
         consoleHistory.append(result + "]\n");
     }
+    else if (clientCommand == "hide")
+    {
+        hideConsole = true;
+    }
+    else if (clientCommand == "show")
+    {
+        hideConsole = false;
+    }
     else
     {
         consoleHistory.append("Unknown command '" + command + "'\n");
