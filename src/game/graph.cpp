@@ -152,7 +152,10 @@ std::string Graph::GetPointInfo(int index) const
             break;
         }
     }
-    return (info == std::nullopt ? "no such post '" + std::to_string(index) + "'" : info.value());
+    return (
+        info == std::nullopt
+            ? "================================\n           no information\n================================"
+            : "================================\n" + info.value() + "\n================================");
 }
 std::string Graph::GetTrainInfo(int index) const
 {

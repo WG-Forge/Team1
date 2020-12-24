@@ -115,7 +115,7 @@ std::vector<std::pair<sf::CircleShape, std::string>> State::GetTrains()
                 float X = points[v].renderX - points[u].renderX, Y = points[v].renderY - points[u].renderY;
                 res.emplace_back(SfmlTool::GetCircle(points[u].renderX + X / edge.length * train.info.position,
                                                      points[u].renderY + Y / edge.length * train.info.position,
-                                                     circleRadius * 0.7),
+                                                     circleRadius * 0.55),
                                  "train");
                 break;
             }
@@ -203,4 +203,17 @@ void State::UpdateRatings(std::vector<RailGraph::Graph::Rating> ratings, int wid
             "8-bit-pusab");
         y += 25;
     }
+}
+
+int State::GetCircleIndex(sf::CircleShape circleShape)
+{
+    auto graphPoints = graphState.GetPoints();
+    for (int i = 0; i < graphPoints.size(); ++i)
+    {
+        if (circles[i].getPosition() == circleShape.getPosition())
+        {
+            return graphPoints[i].idx;
+        }
+    }
+    return -1;
 }

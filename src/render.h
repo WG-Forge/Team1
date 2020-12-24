@@ -21,6 +21,7 @@ class Render
     bool IsTarget() const;
     bool IsPicked(State &state) const;
     void BackUp(State &state);
+    int GetPicked(State &state) const;
 
   private:
     sf::RenderWindow *window = nullptr;

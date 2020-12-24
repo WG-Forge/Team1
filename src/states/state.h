@@ -22,6 +22,7 @@ class State
     std::vector<std::pair<sf::Text, std::string>> GetNonStaticTexts();
     std::vector<std::pair<sf::Text, std::string>> GetStaticTexts();
     std::vector<std::pair<sf::CircleShape, std::string>> GetTrains();
+    int GetCircleIndex(sf::CircleShape);
 
     RailGraph::Graph::Point GetCenter();
     void Resize(float delta);

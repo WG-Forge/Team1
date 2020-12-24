@@ -20,7 +20,7 @@ int Application::Run()
             {
                 for (const auto &command : brain.GetTurn())
                 {
-                    HandleCommand(command);
+                    HandleCommand(command, false);
                 }
                 timer.restart();
             }
@@ -50,13 +50,13 @@ int Application::Run()
         if (firstRender)
         {
             ImGui::SetNextWindowPos(ImVec2(10, 10));
-            ImGui::SetNextWindowSize(ImVec2(450, 600));
+            ImGui::SetNextWindowSize(ImVec2(450, 900));
             firstRender = false;
         }
         ImGui::Begin("Console");
         ImGui::InputText("input", console, sizeof(console));
         char *history = const_cast<char *>(consoleHistory.c_str());
-        if (consoleHistory.size() > 1'000'000)
+        if (consoleHistory.size() > 100'000)
         {
             consoleHistory.clear();
         }
@@ -73,7 +73,12 @@ int Application::Run()
             ImGui::TreePop();
         }
         ImGui::InputTextMultiline("output", history, consoleHistory.size(),
-                                  ImVec2(-1, ImGui::GetWindowContentRegionMax().y - 100), ImGuiInputTextFlags_ReadOnly);
+                                  ImVec2(-1, ImGui::GetWindowContentRegionMax().y / 3 * 2 - 50), ImGuiInputTextFlags_ReadOnly);
+        ImGui::Spacing(), ImGui::Spacing();
+        consoleInformation = map.GetPointInfo(render.GetPicked(state));
+        char *information = const_cast<char *>(consoleInformation.c_str());
+        ImGui::InputTextMultiline("info", information, consoleInformation.size(),
+                                  ImVec2(-1, ImGui::GetWindowContentRegionMax().y / 3 - 50), ImGuiInputTextFlags_ReadOnly);
         if (ImGui::IsWindowFocused() || ImGui::IsWindowHovered())
         {
             Application::focusedConsole = true;
@@ -125,10 +130,10 @@ void Application::Init()
     render.LoadTexture("default", "../resourses/default.png");
     render.LoadTexture("train", "../resourses/train.png");
 
-    HandleCommand("login " + config.teamName);
-    HandleCommand("map 0");
-    HandleCommand("map 1");
-    HandleCommand("map 10");
+    HandleCommand("login " + config.teamName, true);
+    HandleCommand("map 0", true);
+    HandleCommand("map 1", true);
+    HandleCommand("map 10", true);
     //    HandleCommand("hide");
     brain.SetMap(map);
     ImGui::SFML::Init(window);
