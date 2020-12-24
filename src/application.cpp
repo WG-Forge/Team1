@@ -16,7 +16,7 @@ int Application::Run()
         sf::Clock timer;
         while (window.isOpen())
         {
-            if (timer.getElapsedTime().asMilliseconds() >= 100)
+            if (timer.getElapsedTime().asMilliseconds() >= 100 && !pause)
             {
                 for (const auto &command : brain.GetTurn())
                 {
@@ -55,8 +55,7 @@ int Application::Run()
         }
         ImGui::Begin("Console");
         ImGui::InputText("input", console, sizeof(console));
-        char *history = (hideConsole ? const_cast<char *>("type 'show' to show information")
-                                     : const_cast<char *>(consoleHistory.c_str()));
+        char *history = const_cast<char *>(consoleHistory.c_str());
         if (consoleHistory.size() > 1'000'000)
         {
             consoleHistory.clear();

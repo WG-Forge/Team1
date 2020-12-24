@@ -55,9 +55,12 @@ void Application::HandleCommand(std::string command)
         {
             map.SetPosts(RailGraph::ParseMap1FromJson(result));
             auto trains = RailGraph::ParseTrainsFromJson(result);
+            auto ratings = RailGraph::ParseRatingFromJson(result, {brain.GetIdx()});
             map.SetTrains(trains);
+            map.SetRatings(ratings);
             stateMutex.lock();
             state.UpdateTrains(trains);
+            state.UpdateRatings(ratings, window.getSize().x);
             stateMutex.unlock();
         }
         else if (tokens.back() == "10")
@@ -145,7 +148,8 @@ void Application::HandleCommand(std::string command)
         std::string result = client.Login(tokens.back()).data;
         clientMutex.unlock();
         auto parsingResult = RailGraph::ParseLoginFromJson(result);
-        brain.SetHomeIdx(parsingResult.first), brain.SetHomePostIdx(parsingResult.second);
+        brain.SetHomeIdx(std::get<0>(parsingResult)), brain.SetHomePostIdx(std::get<1>(parsingResult));
+        brain.SetIdx(std::get<2>(parsingResult));
         consoleHistory.append(result + '\n');
     }
     else if (clientCommand == "clear")
@@ -178,13 +182,13 @@ void Application::HandleCommand(std::string command)
         }
         consoleHistory.append(result + "]\n");
     }
-    else if (clientCommand == "hide")
+    else if (clientCommand == "pause")
     {
-        hideConsole = true;
+        pause = true;
     }
-    else if (clientCommand == "show")
+    else if (clientCommand == "unpause")
     {
-        hideConsole = false;
+        pause = false;
     }
     else
     {

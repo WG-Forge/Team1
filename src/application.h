@@ -37,7 +37,7 @@ class Application
 
   private:
     std::unordered_map<sf::Keyboard::Key, bool> touched;
-    bool focusedConsole = true, firstRender = true, hideConsole = false;
+    bool focusedConsole = true, firstRender = true, pause = false;
     std::string consoleHistory;
     char console[255] = "";
     sf::Clock deltaClock, dtTimer;

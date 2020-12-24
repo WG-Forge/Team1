@@ -174,3 +174,13 @@ void Brain::SetHomePostIdx(int homePostIdx)
 {
     Brain::homePostIdx = homePostIdx;
 }
+
+const std::string &Brain::GetIdx() const
+{
+    return idx;
+}
+
+void Brain::SetIdx(const std::string &idx)
+{
+    Brain::idx = idx;
+}

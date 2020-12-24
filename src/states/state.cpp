@@ -191,3 +191,16 @@ void State::UpdateTrains(std::vector<RailGraph::Graph::Train> trains)
 {
     graphState.SetTrains(trains);
 }
+
+void State::UpdateRatings(std::vector<RailGraph::Graph::Rating> ratings, int width)
+{
+    staticTexts.clear();
+    int y = 20;
+    for (const auto &i : ratings)
+    {
+        AddStaticText(
+            SfmlTool::GetText(width - 200, y, i.name + ": " + std::to_string(i.rating), 15, sf::Color(82, 73, 73)),
+            "8-bit-pusab");
+        y += 25;
+    }
+}

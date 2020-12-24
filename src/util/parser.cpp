@@ -30,12 +30,12 @@ Graph GraphParser::GetGraph() const
     return Graph(name, id, points, lines);
 }
 
-std::pair<size_t, size_t> ParseLoginFromJson(const std::string &parseText)
+std::tuple<size_t, size_t, std::string> ParseLoginFromJson(const std::string &parseText)
 {
     rapidjson::Document document;
     document.Parse(parseText.c_str());
 
-    return {document["home"]["idx"].GetInt(), document["home"]["post_idx"].GetInt()};
+    return {document["home"]["idx"].GetInt(), document["home"]["post_idx"].GetInt(), document["idx"].GetString()};
 }
 
 Graph ParseMap0FromJson(const std::string &parseText)
@@ -163,6 +163,21 @@ std::vector<Graph::Train> ParseTrainsFromJson(const std::string &parseText)
             .playerIdx = train["player_idx"].IsNull() ? std::nullopt : std::optional(train["player_idx"].GetString()),
             .position = train["position"].GetInt(),
             .speed = train["speed"].GetInt()});
+    }
+    return result;
+}
+
+std::vector<Graph::Rating> ParseRatingFromJson(const std::string &parseText, const std::vector<std::string> &players)
+{
+    rapidjson::Document document;
+    document.Parse(parseText.c_str());
+    std::vector<Graph::Rating> result;
+    for (const auto &player : players)
+    {
+        result.emplace_back(Graph::Rating{.idx = document["ratings"][player.c_str()]["idx"].GetString(),
+                                          .name = document["ratings"][player.c_str()]["name"].GetString(),
+                                          .rating = document["ratings"][player.c_str()]["rating"].GetInt(),
+                                          .town = document["ratings"][player.c_str()]["town"].GetString()});
     }
     return result;
 }

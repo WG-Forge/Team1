@@ -16,7 +16,9 @@ class Brain
     std::vector<std::string> GetTurn();
     void SetMap(RailGraph::Graph &map);
     void SetHomeIdx(int homeIdx);
+    void SetIdx(const std::string &idx);
     void SetHomePostIdx(int homePostIdx);
+    const std::string &GetIdx() const;
     std::tuple<int, int, int> TrainOptimalPath(const RailGraph::Graph::Train &train, int destination);
 
   private:
@@ -24,6 +26,7 @@ class Brain
     std::unordered_map<int, std::unordered_map<int, int>> dist, direction;
     RailGraph::Graph *map;
     int homeIdx, homePostIdx;
+    std::string idx;
 };
 
 #endif // RAIL_SIMULATOR_BRAIN_H

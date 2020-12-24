@@ -188,6 +188,17 @@ std::string Graph::GetTrainInfo(int index) const
     }
     return (info == std::nullopt ? "no such train '" + std::to_string(index) + "'" : info.value());
 }
+
+std::vector<RailGraph::Graph::Rating> Graph::GetRatings() const
+{
+    return Graph::ratings;
+}
+
+void Graph::SetRatings(const std::vector<Rating> &ratings)
+{
+    Graph::ratings = ratings;
+}
+
 Graph::Point::Point(size_t idx_, std::optional<size_t> postIdx_) : postIdx(std::move(postIdx_)), idx(idx_)
 {
 }

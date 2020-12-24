@@ -28,6 +28,7 @@ class State
     void ChangePointLocation(int index, float X, float Y);
     void ResetPointInformation();
     void UpdateTrains(std::vector<RailGraph::Graph::Train>);
+    void UpdateRatings(std::vector<RailGraph::Graph::Rating>, int);
 
   private:
     float circleRadius = 1.f;
