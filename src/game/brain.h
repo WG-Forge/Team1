@@ -1,6 +1,7 @@
 #ifndef RAIL_SIMULATOR_BRAIN_H
 #define RAIL_SIMULATOR_BRAIN_H
 
+#include <functional>
 #include <iostream>
 #include <map>
 #include <src/game/graph.h>
@@ -8,7 +9,7 @@
 class Brain
 {
   private:
-    void UpdateDist(const std::vector<int> &);
+    void UpdateDist(const std::vector<int> &, const std::vector<int> &);
 
   public:
     Brain();
@@ -21,9 +22,12 @@ class Brain
     const std::string &GetIdx() const;
     std::tuple<int, int, int> TrainOptimalPath(const RailGraph::Graph::Train &train, int destination);
 
+    std::string FirstTrain(const RailGraph::Graph::Train &train);
+    std::string SecondTrain(const RailGraph::Graph::Train &train);
+
   private:
     std::map<std::pair<std::string, int>, std::optional<int>> townLevelInformation, trainLevelInformation;
-    std::unordered_map<int, std::unordered_map<int, int>> dist, direction;
+    std::array<std::array<int, 200>, 200> dist, direction;
     RailGraph::Graph *map;
     int homeIdx, homePostIdx;
     std::string idx;

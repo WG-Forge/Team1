@@ -7,6 +7,7 @@ State::State(RailGraph::Graph &graph, std::vector<std::pair<sf::Text, std::strin
     {
         Resize(-i);
     }
+    Resize(400);
 }
 
 void State::AddLine(const std::vector<sf::Vertex> &line)

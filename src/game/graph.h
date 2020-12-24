@@ -37,6 +37,7 @@ class Graph
     };
     struct Post
     {
+        Post() = default;
         Post(Info info, std::variant<MarketInfo, CityInfo, StorageInfo> postInfo);
         Info info;
 
