@@ -24,7 +24,7 @@ bool IsNumber(std::string s)
     return !s.empty() && it == s.end();
 }
 
-void Application::HandleCommand(std::string command, bool display)
+void Application::HandleCommand(std::string command, bool display, int clientIndex)
 {
     if (display)
     {
@@ -45,9 +45,9 @@ void Application::HandleCommand(std::string command, bool display)
     std::string result;
     if (clientCommand == "map" && tokens.size() == 2 && IsNumber(tokens.back()))
     {
-        clientMutex.lock();
-        auto clientResult = client.Map(stoi(tokens.back())).data;
-        clientMutex.unlock();
+        clientMutexes[clientIndex].lock();
+        auto clientResult = clients[clientIndex].Map(stoi(tokens.back())).data;
+        clientMutexes[clientIndex].unlock();
         if (tokens.back() == "0")
         {
             map = RailGraph::ParseMap0FromJson(clientResult);
@@ -73,9 +73,9 @@ void Application::HandleCommand(std::string command, bool display)
     else if (clientCommand == "move" && tokens.size() == 4 && IsNumber(tokens[1]) && IsNumber(tokens[2]) &&
              IsNumber(tokens[3]))
     {
-        clientMutex.lock();
-        auto clientResult = client.Move(stoi(tokens[1]), stoi(tokens[2]), stoi(tokens[3])).data;
-        clientMutex.unlock();
+        clientMutexes[clientIndex].lock();
+        auto clientResult = clients[clientIndex].Move(stoi(tokens[1]), stoi(tokens[2]), stoi(tokens[3])).data;
+        clientMutexes[clientIndex].unlock();
         result = clientResult + "\n";
     }
     else if (clientCommand == "upgrade" && tokens.size() == 2)
@@ -114,9 +114,9 @@ void Application::HandleCommand(std::string command, bool display)
                     std::cout << "Wrong upgrade arguments\n";
                 }
             }
-            clientMutex.lock();
-            auto clientResult = client.Upgrade(posts, trains).data;
-            clientMutex.unlock();
+            clientMutexes[clientIndex].lock();
+            auto clientResult = clients[clientIndex].Upgrade(posts, trains).data;
+            clientMutexes[clientIndex].unlock();
             result = clientResult + "\n";
         }
         else
@@ -126,24 +126,24 @@ void Application::HandleCommand(std::string command, bool display)
     }
     else if (clientCommand == "turn" && tokens.size() == 1)
     {
-        clientMutex.lock();
-        auto clientResult = client.Turn().data;
-        clientMutex.unlock();
+        clientMutexes[clientIndex].lock();
+        auto clientResult = clients[clientIndex].Turn().data;
+        clientMutexes[clientIndex].unlock();
         result = clientResult + "\n";
     }
     else if (clientCommand == "games" && tokens.size() == 1)
     {
-        clientMutex.lock();
-        auto clientResult = client.Games().data;
-        clientMutex.unlock();
+        clientMutexes[clientIndex].lock();
+        auto clientResult = clients[clientIndex].Games().data;
+        clientMutexes[clientIndex].unlock();
         result = clientResult + "\n";
     }
     else if (clientCommand == "login" && tokens.size() == 2)
     {
-        clientMutex.lock();
-        result = "Login to " + client.GetSocket().remote_endpoint().address().to_string() + "\n";
-        auto clientResult  = client.Login(tokens.back()).data;
-        clientMutex.unlock();
+        clientMutexes[clientIndex].lock();
+        result = "Login to " + clients[clientIndex].GetSocket().remote_endpoint().address().to_string() + "\n";
+        auto clientResult = clients[clientIndex].Login(tokens.back()).data;
+        clientMutexes[clientIndex].unlock();
         auto parsingResult = RailGraph::ParseLoginFromJson(clientResult);
         brain.SetHomeIdx(std::get<0>(parsingResult)), brain.SetHomePostIdx(std::get<1>(parsingResult));
         brain.SetIdx(std::get<2>(parsingResult));
@@ -155,7 +155,7 @@ void Application::HandleCommand(std::string command, bool display)
     }
     else if (clientCommand == "logout" && tokens.size() == 1)
     {
-        result = "Logout from " + client.GetSocket().remote_endpoint().address().to_string() + "\n";
+        result = "Logout from " + clients[clientIndex].GetSocket().remote_endpoint().address().to_string() + "\n";
     }
     else if (clientCommand == "point" && tokens.size() == 2 && IsNumber(tokens[1]))
     {
@@ -188,7 +188,7 @@ void Application::PollEvent(sf::Event &event)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && Application::focusedConsole && !touched[sf::Keyboard::Enter])
     {
         std::string command(console);
-        HandleCommand(command, true);
+        HandleCommand(command, true, 2);
         memset(console, 0, sizeof console);
         touched[sf::Keyboard::Enter] = true;
     }

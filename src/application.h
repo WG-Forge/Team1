@@ -18,21 +18,22 @@ class Application
   private:
     const Config config;
     Camera camera;
-    Client client;
     sf::RenderWindow window;
     Render render;
     State state;
     RailGraph::Graph map;
     Brain brain;
     std::mutex stateMutex;
-    std::mutex clientMutex;
+    static const int clientsNum = 10;
+    std::mutex clientMutexes[clientsNum];
+    Client clients[clientsNum];
 
     void Init();
-    void HandleCommand(std::string, bool);
+    void HandleCommand(std::string, bool, int);
     void PollEvent(sf::Event &);
 
   public:
-    Application(Config config, io_service &ioService);
+    Application(Config config);
     int Run();
 
   private:

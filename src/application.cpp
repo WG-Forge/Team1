@@ -4,7 +4,7 @@
 
 #include <utility>
 
-Application::Application(Config config, io_service &service) : config(std::move(config)), client(service)
+Application::Application(Config config) : config(std::move(config))
 {
 }
 
@@ -13,16 +13,24 @@ int Application::Run()
     Init();
 
     std::thread brainThread([this] {
-        sf::Clock timer;
         while (window.isOpen())
         {
-            if (timer.getElapsedTime().asMilliseconds() >= 100 && !pause)
+            if (!pause)
             {
-                for (const auto &command : brain.GetTurn())
+                sf::Clock debug;
+                std::vector<std::thread> workers;
+                auto commands = brain.GetTurn();
+                for (int i = 0; i < commands.size(); ++i)
                 {
-                    HandleCommand(command, false);
+                    workers.emplace_back([this, commands, i] { HandleCommand(commands[i], false, i % clientsNum); });
                 }
-                timer.restart();
+                for (auto &worker : workers)
+                {
+                    worker.join();
+                }
+                HandleCommand("turn", true, 0);
+                HandleCommand("map 1", true, 0);
+                std::cerr << debug.getElapsedTime().asMilliseconds() << '\n';
             }
         }
     });
@@ -132,10 +140,13 @@ void Application::Init()
     render.LoadTexture("default", "../resourses/default.png");
     render.LoadTexture("train", "../resourses/train.png");
 
-    HandleCommand("login " + config.teamName, true);
-    HandleCommand("map 0", true);
-    HandleCommand("map 1", true);
-    HandleCommand("map 10", true);
+    for (int i = 0; i < clientsNum; ++i)
+    {
+        HandleCommand("login " + config.teamName, true, i);
+    }
+    HandleCommand("map 0", true, 0);
+    HandleCommand("map 1", true, 0);
+    HandleCommand("map 10", true, 0);
     //    HandleCommand("hide");
     brain.SetMap(map);
     ImGui::SFML::Init(window);
