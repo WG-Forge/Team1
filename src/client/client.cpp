@@ -1,6 +1,6 @@
 #include "client.h"
 
-Client::Client(io_service &io_service) : socket_(io_service)
+Client::Client() : service_(), socket_(service_)
 {
     ip::tcp::endpoint ep(ip::address::from_string("92.223.2.79"), 443);
     socket_.connect(ep);
@@ -171,6 +171,7 @@ Client::ResponseMessage Client::ReceiveResponse()
     read(socket_, buffer(&responseMessage.data[0], responseMessage.dataLength));
     return responseMessage;
 }
+
 ip::tcp::socket &Client::GetSocket()
 {
     return socket_;

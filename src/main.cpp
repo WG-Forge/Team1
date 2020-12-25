@@ -1,10 +1,10 @@
 #include "application.h"
+#include "client/client.h"
 
 const Config config;
 
 int main()
 {
-    io_service ioService;
-    Application app(config, ioService);
+    Application app(config);
     return app.Run();
 }

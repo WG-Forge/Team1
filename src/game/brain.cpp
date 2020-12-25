@@ -166,8 +166,6 @@ std::vector<std::string> Brain::GetTurn()
             std::get<RailGraph::Graph::CityInfo>(mainCity.postInfo).armor -= 200;
         }
     }
-    commands.emplace_back("turn");
-    commands.emplace_back("map 1");
     return commands;
 }
 

@@ -45,7 +45,7 @@ class Client
     };
 
   public:
-    explicit Client(io_service &io_service);
+    Client();
     ResponseMessage Login(const std::string &name, const std::string &password = "", const std::string &game = "",
                           int num_turns = -1, int num_players = 1);
     ResponseMessage Logout();
@@ -61,6 +61,7 @@ class Client
     void Send(const ActionMessage &actionMessage);
     ResponseMessage ReceiveResponse();
 
+    io_service service_;
     ip::tcp::socket socket_;
 };
 
