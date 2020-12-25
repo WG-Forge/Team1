@@ -37,6 +37,7 @@ class Graph
     };
     struct Post
     {
+        Post() = default;
         Post(Info info, std::variant<MarketInfo, CityInfo, StorageInfo> postInfo);
         Info info;
 
@@ -51,7 +52,8 @@ class Graph
         int goods, goodsCapacity;
         std::optional<int> goodsType;
         int idx, lineIdx;
-        int level, nextLevelPrice;
+        int level;
+        std::optional<int> nextLevelPrice;
         std::optional<std::string> playerIdx;
         int position, speed;
     };
@@ -59,6 +61,13 @@ class Graph
     {
         explicit Train(TrainInfo info);
         TrainInfo info;
+    };
+    struct Rating
+    {
+        std::string idx;
+        std::string name;
+        int rating;
+        std::string town;
     };
     struct Point
     {
@@ -92,6 +101,7 @@ class Graph
     void SetLines(const std::vector<Line> &lines);
     void SetPosts(const std::vector<Post> &posts);
     void SetTrains(const std::vector<Train> &trains);
+    void SetRatings(const std::vector<Rating> &ratings);
 
     const std::string &GetName() const;
     size_t GetIdx() const;
@@ -104,6 +114,7 @@ class Graph
     size_t GetNum(size_t pointIdx) const;
     static float GetDist(const Point &first, const Point &second);
     static float GetRenderDist(const Point &first, const Point &second);
+    std::vector<Rating> GetRatings() const;
 
   private:
     std::string name;
@@ -112,6 +123,7 @@ class Graph
     std::vector<Line> lines;
     std::vector<Post> posts;
     std::vector<Train> trains;
+    std::vector<Rating> ratings;
     std::unordered_map<size_t, size_t> idxToNum;
     std::unordered_map<size_t, size_t> pointToPost;
 };

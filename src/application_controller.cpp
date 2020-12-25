@@ -24,9 +24,12 @@ bool IsNumber(std::string s)
     return !s.empty() && it == s.end();
 }
 
-void Application::HandleCommand(std::string command)
+void Application::HandleCommand(std::string command, bool display)
 {
-    consoleHistory.append(command + "\n");
+    if (display)
+    {
+        consoleHistory.append(command + "\n");
+    }
     std::stringstream ss(command);
     std::string current;
     std::vector<std::string> tokens;
@@ -39,40 +42,41 @@ void Application::HandleCommand(std::string command)
         return;
     }
     auto clientCommand = tokens.front();
-
+    std::string result;
     if (clientCommand == "map" && tokens.size() == 2 && IsNumber(tokens.back()))
     {
-        consoleHistory.append("Map successful\n");
         clientMutex.lock();
-        std::string result = client.Map(stoi(tokens.back())).data;
+        auto clientResult = client.Map(stoi(tokens.back())).data;
         clientMutex.unlock();
-        consoleHistory.append(result + '\n');
         if (tokens.back() == "0")
         {
-            map = RailGraph::ParseMap0FromJson(result);
+            map = RailGraph::ParseMap0FromJson(clientResult);
         }
         else if (tokens.back() == "1")
         {
-            map.SetPosts(RailGraph::ParseMap1FromJson(result));
-            auto trains = RailGraph::ParseTrainsFromJson(result);
+            map.SetPosts(RailGraph::ParseMap1FromJson(clientResult));
+            auto trains = RailGraph::ParseTrainsFromJson(clientResult);
+            auto ratings = RailGraph::ParseRatingFromJson(clientResult, {brain.GetIdx()});
             map.SetTrains(trains);
+            map.SetRatings(ratings);
             stateMutex.lock();
             state.UpdateTrains(trains);
+            state.UpdateRatings(ratings, window.getSize().x);
             stateMutex.unlock();
         }
         else if (tokens.back() == "10")
         {
-            map.SetPointsCoordinates(RailGraph::ParseMap10FromJson(result));
+            map.SetPointsCoordinates(RailGraph::ParseMap10FromJson(clientResult));
         }
+        result = clientResult + "\n";
     }
     else if (clientCommand == "move" && tokens.size() == 4 && IsNumber(tokens[1]) && IsNumber(tokens[2]) &&
              IsNumber(tokens[3]))
     {
-        consoleHistory.append("Move successful\n");
         clientMutex.lock();
-        std::string str = client.Move(stoi(tokens[1]), stoi(tokens[2]), stoi(tokens[3])).data;
+        auto clientResult = client.Move(stoi(tokens[1]), stoi(tokens[2]), stoi(tokens[3])).data;
         clientMutex.unlock();
-        consoleHistory.append(str + '\n');
+        result = clientResult + "\n";
     }
     else if (clientCommand == "upgrade" && tokens.size() == 2)
     {
@@ -107,46 +111,43 @@ void Application::HandleCommand(std::string command)
                 }
                 else
                 {
-                    consoleHistory.append("Wrong arguments '" + command + "'\n");
-                    return;
+                    std::cout << "Wrong upgrade arguments\n";
                 }
             }
-            consoleHistory.append("Upgrade successful\n");
             clientMutex.lock();
-            std::string result = client.Upgrade(posts, trains).data;
+            auto clientResult = client.Upgrade(posts, trains).data;
             clientMutex.unlock();
-            consoleHistory.append(result + '\n');
+            result = clientResult + "\n";
         }
         else
         {
-            consoleHistory.append("Unknown command '" + command + "'\n");
+            result = "Unknown command '" + command + "'\n";
         }
     }
     else if (clientCommand == "turn" && tokens.size() == 1)
     {
-        consoleHistory.append("Turn successful\n");
         clientMutex.lock();
-        std::string str = client.Turn().data;
+        auto clientResult = client.Turn().data;
         clientMutex.unlock();
-        consoleHistory.append(str + '\n');
+        result = clientResult + "\n";
     }
     else if (clientCommand == "games" && tokens.size() == 1)
     {
-        consoleHistory.append("Games successful\n");
         clientMutex.lock();
-        std::string str = client.Games().data;
+        auto clientResult = client.Games().data;
         clientMutex.unlock();
-        consoleHistory.append(str + '\n');
+        result = clientResult + "\n";
     }
     else if (clientCommand == "login" && tokens.size() == 2)
     {
         clientMutex.lock();
-        consoleHistory.append("Login to " + client.GetSocket().remote_endpoint().address().to_string() + "\n");
-        std::string result = client.Login(tokens.back()).data;
+        result = "Login to " + client.GetSocket().remote_endpoint().address().to_string() + "\n";
+        auto clientResult  = client.Login(tokens.back()).data;
         clientMutex.unlock();
-        auto parsingResult = RailGraph::ParseLoginFromJson(result);
-        brain.SetHomeIdx(parsingResult.first), brain.SetHomePostIdx(parsingResult.second);
-        consoleHistory.append(result + '\n');
+        auto parsingResult = RailGraph::ParseLoginFromJson(clientResult);
+        brain.SetHomeIdx(std::get<0>(parsingResult)), brain.SetHomePostIdx(std::get<1>(parsingResult));
+        brain.SetIdx(std::get<2>(parsingResult));
+        result += clientResult + "\n";
     }
     else if (clientCommand == "clear")
     {
@@ -154,41 +155,31 @@ void Application::HandleCommand(std::string command)
     }
     else if (clientCommand == "logout" && tokens.size() == 1)
     {
-        consoleHistory.append("Logout from " + client.GetSocket().remote_endpoint().address().to_string() + "\n");
+        result = "Logout from " + client.GetSocket().remote_endpoint().address().to_string() + "\n";
     }
     else if (clientCommand == "point" && tokens.size() == 2 && IsNumber(tokens[1]))
     {
-        std::string str = map.GetPointInfo(stoi(tokens[1]));
-        consoleHistory.append(str + '\n');
+        result = map.GetPointInfo(stoi(tokens[1])) + "\n";
     }
     else if (clientCommand == "train" && tokens.size() == 2 && IsNumber(tokens[1]))
     {
-        std::string str = map.GetTrainInfo(stoi(tokens[1]));
-        consoleHistory.append(str + '\n');
+        result = map.GetTrainInfo(stoi(tokens[1])) + "\n";
     }
-    else if (clientCommand == "adjacent" && tokens.size() == 2 && IsNumber(tokens[1]))
+    else if (clientCommand == "pause")
     {
-        std::string result = "[";
-        for (const auto &line : map.GetLines())
-        {
-            if (line.points.first == stoi(tokens[1]) || line.points.second == stoi(tokens[1]))
-            {
-                result += std::to_string(line.idx) + ",\n";
-            }
-        }
-        consoleHistory.append(result + "]\n");
+        pause = true;
     }
-    else if (clientCommand == "hide")
+    else if (clientCommand == "unpause")
     {
-        hideConsole = true;
-    }
-    else if (clientCommand == "show")
-    {
-        hideConsole = false;
+        pause = false;
     }
     else
     {
-        consoleHistory.append("Unknown command '" + command + "'\n");
+        result = "Unknown command '" + command + "'\n";
+    }
+    if (display)
+    {
+        consoleHistory += result;
     }
 }
 
@@ -197,7 +188,7 @@ void Application::PollEvent(sf::Event &event)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && Application::focusedConsole && !touched[sf::Keyboard::Enter])
     {
         std::string command(console);
-        HandleCommand(command);
+        HandleCommand(command, true);
         memset(console, 0, sizeof console);
         touched[sf::Keyboard::Enter] = true;
     }

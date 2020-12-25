@@ -130,6 +130,7 @@ void Render::Draw(State &state)
         window->draw(circle);
     }
 }
+
 bool Render::IsPicked(State &state) const
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
@@ -146,6 +147,7 @@ bool Render::IsPicked(State &state) const
     }
     return false;
 }
+
 void Render::BackUp(State &state)
 {
     if (!backups.empty())
@@ -153,4 +155,21 @@ void Render::BackUp(State &state)
         state.ChangePointLocation(backups.top().idx, backups.top().renderX, backups.top().renderY);
         backups.pop();
     }
+}
+
+int Render::GetPicked(State &state) const
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
+    for (const auto &circle : state.GetCircles())
+    {
+        float cur_dist = RailGraph::Graph::GetDist(
+            RailGraph::Graph::Point(circle.first.getPosition().x + circle.first.getRadius(),
+                                    circle.first.getPosition().y + circle.first.getRadius(), 0, 0),
+            RailGraph::Graph::Point(mousePos.x + camera->GetCameraX(), mousePos.y + camera->GetCameraY(), 0, 0));
+        if (cur_dist <= circle.first.getRadius())
+        {
+            return state.GetCircleIndex(circle.first);
+        }
+    }
+    return -1;
 }

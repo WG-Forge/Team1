@@ -16,11 +16,11 @@ int Application::Run()
         sf::Clock timer;
         while (window.isOpen())
         {
-            if (timer.getElapsedTime().asMilliseconds() >= 100)
+            if (timer.getElapsedTime().asMilliseconds() >= 100 && !pause)
             {
                 for (const auto &command : brain.GetTurn())
                 {
-                    HandleCommand(command);
+                    HandleCommand(command, false);
                 }
                 timer.restart();
             }
@@ -50,14 +50,13 @@ int Application::Run()
         if (firstRender)
         {
             ImGui::SetNextWindowPos(ImVec2(10, 10));
-            ImGui::SetNextWindowSize(ImVec2(450, 600));
+            ImGui::SetNextWindowSize(ImVec2(450, 900));
             firstRender = false;
         }
         ImGui::Begin("Console");
         ImGui::InputText("input", console, sizeof(console));
-        char *history = (hideConsole ? const_cast<char *>("type 'show' to show information")
-                                     : const_cast<char *>(consoleHistory.c_str()));
-        if (consoleHistory.size() > 1'000'000)
+        char *history = const_cast<char *>(consoleHistory.c_str());
+        if (consoleHistory.size() > 100'000)
         {
             consoleHistory.clear();
         }
@@ -74,7 +73,14 @@ int Application::Run()
             ImGui::TreePop();
         }
         ImGui::InputTextMultiline("output", history, consoleHistory.size(),
-                                  ImVec2(-1, ImGui::GetWindowContentRegionMax().y - 100), ImGuiInputTextFlags_ReadOnly);
+                                  ImVec2(-1, ImGui::GetWindowContentRegionMax().y / 3 * 2 - 50),
+                                  ImGuiInputTextFlags_ReadOnly);
+        ImGui::Spacing(), ImGui::Spacing();
+        consoleInformation = map.GetPointInfo(render.GetPicked(state));
+        char *information = const_cast<char *>(consoleInformation.c_str());
+        ImGui::InputTextMultiline("info", information, consoleInformation.size(),
+                                  ImVec2(-1, ImGui::GetWindowContentRegionMax().y / 3 - 50),
+                                  ImGuiInputTextFlags_ReadOnly);
         if (ImGui::IsWindowFocused() || ImGui::IsWindowHovered())
         {
             Application::focusedConsole = true;
@@ -126,10 +132,10 @@ void Application::Init()
     render.LoadTexture("default", "../resourses/default.png");
     render.LoadTexture("train", "../resourses/train.png");
 
-    HandleCommand("login " + config.teamName);
-    HandleCommand("map 0");
-    HandleCommand("map 1");
-    HandleCommand("map 10");
+    HandleCommand("login " + config.teamName, true);
+    HandleCommand("map 0", true);
+    HandleCommand("map 1", true);
+    HandleCommand("map 10", true);
     //    HandleCommand("hide");
     brain.SetMap(map);
     ImGui::SFML::Init(window);

@@ -28,7 +28,7 @@ class Application
     std::mutex clientMutex;
 
     void Init();
-    void HandleCommand(std::string);
+    void HandleCommand(std::string, bool);
     void PollEvent(sf::Event &);
 
   public:
@@ -37,8 +37,8 @@ class Application
 
   private:
     std::unordered_map<sf::Keyboard::Key, bool> touched;
-    bool focusedConsole = true, firstRender = true, hideConsole = false;
-    std::string consoleHistory;
+    bool focusedConsole = true, firstRender = true, pause = false;
+    std::string consoleHistory, consoleInformation;
     char console[255] = "";
     sf::Clock deltaClock, dtTimer;
     int mouseX = -1, mouseY = -1, cameraX = -1, cameraY = -1;
