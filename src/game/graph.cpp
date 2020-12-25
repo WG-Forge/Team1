@@ -179,7 +179,7 @@ std::string Graph::GetTrainInfo(int index) const
             result.append("    idx: " + std::to_string(trainInfo.idx) + "\n");
             result.append("    lineIdx: " + std::to_string(trainInfo.lineIdx) + "\n");
             result.append("    level: " + std::to_string(trainInfo.level) + "\n");
-            result.append("    nextLevelPrice: " + std::to_string(trainInfo.nextLevelPrice) + "\n");
+            result.append("    nextLevelPrice: " + std::to_string(trainInfo.nextLevelPrice.value()) + "\n");
             result.append("    playerIdx: " +
                           (trainInfo.playerIdx == std::nullopt ? "null" : trainInfo.playerIdx.value()) + "\n");
             result.append("    position: " + std::to_string(trainInfo.position) + "\n");

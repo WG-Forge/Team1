@@ -52,7 +52,8 @@ class Graph
         int goods, goodsCapacity;
         std::optional<int> goodsType;
         int idx, lineIdx;
-        int level, nextLevelPrice;
+        int level;
+        std::optional<int> nextLevelPrice;
         std::optional<std::string> playerIdx;
         int position, speed;
     };

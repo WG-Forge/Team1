@@ -1,4 +1,5 @@
 #include "parser.h"
+#include <iostream>
 
 namespace RailGraph
 {
@@ -145,9 +146,6 @@ std::vector<Graph::Train> ParseTrainsFromJson(const std::string &parseText)
 
     for (const auto &train : document["trains"].GetArray())
     {
-        //        .fuel = train["fuel"].GetInt(),
-        //        .fuelCapacity = train["fuel_capacity"].GetInt(),
-        //        .fuelConsumption = train["fuel_consumption"].GetInt(),
         result.emplace_back(Graph::TrainInfo{
             .cooldown = train["cooldown"].GetInt(),
             .fuel = 0,
@@ -159,7 +157,8 @@ std::vector<Graph::Train> ParseTrainsFromJson(const std::string &parseText)
             .idx = train["idx"].GetInt(),
             .lineIdx = train["line_idx"].GetInt(),
             .level = train["level"].GetInt(),
-            .nextLevelPrice = train["next_level_price"].GetInt(),
+            .nextLevelPrice =
+                train["next_level_price"].IsNull() ? std::nullopt : std::optional(train["next_level_price"].GetInt()),
             .playerIdx = train["player_idx"].IsNull() ? std::nullopt : std::optional(train["player_idx"].GetString()),
             .position = train["position"].GetInt(),
             .speed = train["speed"].GetInt()});

@@ -73,12 +73,14 @@ int Application::Run()
             ImGui::TreePop();
         }
         ImGui::InputTextMultiline("output", history, consoleHistory.size(),
-                                  ImVec2(-1, ImGui::GetWindowContentRegionMax().y / 3 * 2 - 50), ImGuiInputTextFlags_ReadOnly);
+                                  ImVec2(-1, ImGui::GetWindowContentRegionMax().y / 3 * 2 - 50),
+                                  ImGuiInputTextFlags_ReadOnly);
         ImGui::Spacing(), ImGui::Spacing();
         consoleInformation = map.GetPointInfo(render.GetPicked(state));
         char *information = const_cast<char *>(consoleInformation.c_str());
         ImGui::InputTextMultiline("info", information, consoleInformation.size(),
-                                  ImVec2(-1, ImGui::GetWindowContentRegionMax().y / 3 - 50), ImGuiInputTextFlags_ReadOnly);
+                                  ImVec2(-1, ImGui::GetWindowContentRegionMax().y / 3 - 50),
+                                  ImGuiInputTextFlags_ReadOnly);
         if (ImGui::IsWindowFocused() || ImGui::IsWindowHovered())
         {
             Application::focusedConsole = true;

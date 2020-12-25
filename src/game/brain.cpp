@@ -37,9 +37,12 @@ std::string Brain::FirstTrain(const RailGraph::Graph::Train &train)
     UpdateDist({RailGraph::Graph::Post::StorageIndex}, {});
     if (train.info.goods > 0)
     {
-        auto path = TrainOptimalPath(train, homeIdx);
-        return "move " + std::to_string(std::get<1>(path)) + " " + std::to_string(std::get<2>(path)) + " " +
-               std::to_string(train.info.idx);
+        if (train.info.goods == train.info.goodsCapacity)
+        {
+            auto path = TrainOptimalPath(train, homeIdx);
+            return "move " + std::to_string(std::get<1>(path)) + " " + std::to_string(std::get<2>(path)) + " " +
+                   std::to_string(train.info.idx);
+        }
     }
     else
     {
