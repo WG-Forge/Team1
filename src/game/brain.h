@@ -10,17 +10,18 @@ class Brain
 {
   private:
     void UpdateDist(const std::vector<int> &, const std::vector<int> &);
+    std::tuple<int, int, int> TrainOptimalPath(const RailGraph::Graph::Train &, int);
+    std::pair<int, int> PositionOnTheNextMove(const RailGraph::Graph::Train &, const std::tuple<int, int, int> &);
 
   public:
-    Brain();
 
+    Brain();
     std::vector<std::string> GetTurn();
     void SetMap(RailGraph::Graph &map);
     void SetHomeIdx(int homeIdx);
     void SetIdx(const std::string &idx);
     void SetHomePostIdx(int homePostIdx);
-    const std::string &GetIdx() const;
-    std::tuple<int, int, int> TrainOptimalPath(const RailGraph::Graph::Train &train, int destination);
+    [[nodiscard]] const std::string &GetIdx() const;
 
     std::string FirstTrain(const RailGraph::Graph::Train &train);
     std::string SecondTrain(const RailGraph::Graph::Train &train);

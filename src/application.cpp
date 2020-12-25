@@ -11,8 +11,9 @@ Application::Application(Config config) : config(std::move(config))
 int Application::Run()
 {
     Init();
+    int tick = 0;
 
-    std::thread brainThread([this] {
+    std::thread brainThread([this, &tick] {
         while (window.isOpen())
         {
             if (!pause)
@@ -28,8 +29,9 @@ int Application::Run()
                 {
                     worker.join();
                 }
-                HandleCommand("turn", true, 0);
-                HandleCommand("map 1", true, 0);
+                HandleCommand("turn", false, 0);
+                HandleCommand("map 1", false, 0);
+                tick++;
                 std::cerr << debug.getElapsedTime().asMilliseconds() << '\n';
             }
         }
@@ -85,6 +87,7 @@ int Application::Run()
                                   ImGuiInputTextFlags_ReadOnly);
         ImGui::Spacing(), ImGui::Spacing();
         consoleInformation = map.GetPointInfo(render.GetPicked(state));
+        consoleInformation += "\n" + std::to_string(tick);
         char *information = const_cast<char *>(consoleInformation.c_str());
         ImGui::InputTextMultiline("info", information, consoleInformation.size(),
                                   ImVec2(-1, ImGui::GetWindowContentRegionMax().y / 3 - 50),
