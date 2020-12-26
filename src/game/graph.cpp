@@ -14,6 +14,10 @@ Graph::Graph(std::string name, size_t id, const std::vector<Point> &points, std:
     }
 }
 
+int Graph::Post::MarketIndex = 0;
+int Graph::Post::CityIndex = 1;
+int Graph::Post::StorageIndex = 2;
+
 void Graph::SetName(const std::string &name_)
 {
     this->name = name_;

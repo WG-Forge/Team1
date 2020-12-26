@@ -99,6 +99,31 @@ std::vector<std::pair<sf::Text, std::string>> State::GetStaticTexts()
     return staticTexts;
 }
 
+std::vector<std::pair<sf::CircleShape, std::string>> State::GetTrains()
+{
+    std::vector<std::pair<sf::CircleShape, std::string>> res;
+    auto trains = graphState.GetTrains();
+    auto edges = graphState.GetLines();
+    auto points = graphState.GetPoints();
+    for (const auto &train : trains)
+    {
+        for (const auto &edge : edges)
+        {
+            if (edge.idx == train.info.lineIdx)
+            {
+                size_t u = graphState.GetNum(edge.points.first), v = graphState.GetNum(edge.points.second);
+                float X = points[v].renderX - points[u].renderX, Y = points[v].renderY - points[u].renderY;
+                res.emplace_back(SfmlTool::GetCircle(points[u].renderX + X / edge.length * train.info.position,
+                                                     points[u].renderY + Y / edge.length * train.info.position,
+                                                     circleRadius * 0.7),
+                                 "train");
+                break;
+            }
+        }
+    }
+    return res;
+}
+
 void State::Resize(float delta)
 {
     float len = 0;
@@ -160,4 +185,9 @@ RailGraph::Graph::Point State::GetCenter()
 void State::ResetPointInformation()
 {
     showPointInformation ^= true;
+}
+
+void State::UpdateTrains(std::vector<RailGraph::Graph::Train> trains)
+{
+    graphState.SetTrains(trains);
 }

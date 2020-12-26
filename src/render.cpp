@@ -117,6 +117,18 @@ void Render::Draw(State &state)
         text.setFont(font[fontName]);
         window->draw(text);
     }
+    for (auto [circle, textureName] : state.GetTrains())
+    {
+        circle.setPosition(circle.getPosition().x - (float)camera->GetCameraX(),
+                           circle.getPosition().y - (float)camera->GetCameraY());
+        if (texture.count(textureName))
+        {
+            SfmlTool::SetTextureOnCircleShape(circle, &texture[textureName]);
+            circle.setOutlineThickness(1);
+            circle.setOutlineColor(sf::Color(82, 73, 73));
+        }
+        window->draw(circle);
+    }
 }
 bool Render::IsPicked(State &state) const
 {

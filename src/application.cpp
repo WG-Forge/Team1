@@ -12,6 +12,21 @@ int Application::Run()
 {
     Init();
 
+    std::thread brainThread([this] {
+        sf::Clock timer;
+        while (window.isOpen())
+        {
+            if (timer.getElapsedTime().asMilliseconds() >= 100)
+            {
+                for (const auto &command : brain.GetTurn())
+                {
+                    HandleCommand(command);
+                }
+                timer.restart();
+            }
+        }
+    });
+
     while (window.isOpen())
     {
         if (dtTimer.getElapsedTime().asMilliseconds() * config.fps <= 1000)
@@ -23,18 +38,13 @@ int Application::Run()
         while (window.pollEvent(event))
         {
             ImGui::SFML::ProcessEvent(event);
+            stateMutex.lock();
             PollEvent(event);
+            stateMutex.unlock();
         }
 
-        if (!states.empty())
-        {
-            window.clear();
-            render.Draw(states.front());
-        }
-        else
-        {
-            mouseX = mouseY = cameraX = cameraY = -1;
-        }
+        window.clear();
+        render.Draw(state);
 
         ImGui::SFML::Update(window, deltaClock.restart());
         if (firstRender)
@@ -45,7 +55,12 @@ int Application::Run()
         }
         ImGui::Begin("Console");
         ImGui::InputText("input", console, sizeof(console));
-        char *history = const_cast<char *>(consoleHistory.c_str());
+        char *history = (hideConsole ? const_cast<char *>("type 'show' to show information")
+                                     : const_cast<char *>(consoleHistory.c_str()));
+        if (consoleHistory.size() > 1'000'000)
+        {
+            consoleHistory.clear();
+        }
         if (ImGui::TreeNode("Help"))
         {
             ImGui::Indent();
@@ -74,6 +89,7 @@ int Application::Run()
     }
 
     ImGui::SFML::Shutdown();
+    brainThread.join();
     return EXIT_SUCCESS;
 }
 
@@ -108,15 +124,18 @@ void Application::Init()
     render.LoadTexture("market", "../resourses/market.png");
     render.LoadTexture("storage", "../resourses/storage.png");
     render.LoadTexture("default", "../resourses/default.png");
+    render.LoadTexture("train", "../resourses/train.png");
 
     HandleCommand("login " + config.teamName);
     HandleCommand("map 0");
     HandleCommand("map 1");
     HandleCommand("map 10");
+    //    HandleCommand("hide");
+    brain.SetMap(map);
     ImGui::SFML::Init(window);
 
-    states.push(State(map, std::vector<std::pair<sf::Text, std::string>>{}));
-    auto center = states.front().GetCenter();
+    state = State(map, std::vector<std::pair<sf::Text, std::string>>{});
+    auto center = state.GetCenter();
     camera.SetCameraX(center.renderX - window.getSize().x / 2);
     camera.SetCameraY(center.renderY - window.getSize().y / 2);
 }

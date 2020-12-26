@@ -41,18 +41,17 @@ add_executable(Rail-simulator
         libs/rapidjson/stream.h
         libs/rapidjson/stringbuffer.h
         libs/rapidjson/writer.h
-        tests/graph_tests/test.cpp
+        #        tests/graph_tests/test.cpp
         src/game/graph.cpp
         src/util/parser.cpp
         src/application.cpp
         src/application_controller.cpp
-#        tests/graph_tests/test_generator.cpp
+        #        tests/graph_tests/test_generator.cpp
         src/main.cpp
         src/camera.cpp
         src/render.cpp
         src/states/state.cpp
         src/client/client.cpp
-        src/main.cpp
         libs/imgui/imgui.cpp
         libs/imgui/imgui_demo.cpp
         libs/imgui/imgui_draw.cpp
@@ -71,8 +70,8 @@ endif ()
 if (UNIX)
     find_package(OpenGL REQUIRED)
     find_package(GLUT REQUIRED)
-    include_directories(${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} )
-    target_link_libraries(Rail-simulator ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+    include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS})
+    target_link_libraries(Rail-simulator ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
 
     set(SFML_ROOT "libs/SFML-2.5.1-Linux")
     set(SFML_DIR "libs/SFML-2.5.1-Linux/lib/cmake/SFML")
