@@ -109,6 +109,8 @@ std::vector<std::string> Brain::GetTurn()
     std::vector<std::string> commands;
     auto trains = map->GetTrains();
     commands.emplace_back(FirstTrain(trains[0]));
+    commands.emplace_back(FirstTrain(trains[0]));
+    commands.emplace_back(FirstTrain(trains[0]));
     commands.emplace_back(SecondTrain(trains[1]));
     RailGraph::Graph::Post mainCity;
     for (const auto &post : map->GetPosts())
@@ -287,4 +289,32 @@ const std::string &Brain::GetIdx() const
 void Brain::SetIdx(const std::string &idx)
 {
     Brain::idx = idx;
+}
+
+std::pair<int, int> Brain::PositionOnTheNextMove(const RailGraph::Graph::Train &train,
+                                                 const std::tuple<int, int, int> &nextMove)
+{
+    auto edges = map->GetLines();
+    for (const auto &i : edges)
+    {
+        if (i.idx == train.info.lineIdx)
+        {
+            if (i.length == train.info.position && i.length == 0)
+            {
+                for (const auto &j : edges)
+                {
+                    if (j.idx == std::get<0>(nextMove))
+                    {
+                        return {j.idx,
+                                (std::get<1>(nextMove) < 0 ? j.length + std::get<1>(nextMove) : std::get<1>(nextMove))};
+                    }
+                }
+            }
+            else
+            {
+                return {i.idx, train.info.position + std::get<1>(nextMove)};
+            }
+        }
+    }
+    return {-1, -1};
 }
