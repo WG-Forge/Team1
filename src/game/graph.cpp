@@ -152,7 +152,10 @@ std::string Graph::GetPointInfo(int index) const
             break;
         }
     }
-    return (info == std::nullopt ? "no such post '" + std::to_string(index) + "'" : info.value());
+    return (
+        info == std::nullopt
+            ? "================================\n           no information\n================================"
+            : "================================\n" + info.value() + "\n================================");
 }
 std::string Graph::GetTrainInfo(int index) const
 {
@@ -176,7 +179,7 @@ std::string Graph::GetTrainInfo(int index) const
             result.append("    idx: " + std::to_string(trainInfo.idx) + "\n");
             result.append("    lineIdx: " + std::to_string(trainInfo.lineIdx) + "\n");
             result.append("    level: " + std::to_string(trainInfo.level) + "\n");
-            result.append("    nextLevelPrice: " + std::to_string(trainInfo.nextLevelPrice) + "\n");
+            result.append("    nextLevelPrice: " + std::to_string(trainInfo.nextLevelPrice.value()) + "\n");
             result.append("    playerIdx: " +
                           (trainInfo.playerIdx == std::nullopt ? "null" : trainInfo.playerIdx.value()) + "\n");
             result.append("    position: " + std::to_string(trainInfo.position) + "\n");
@@ -188,6 +191,17 @@ std::string Graph::GetTrainInfo(int index) const
     }
     return (info == std::nullopt ? "no such train '" + std::to_string(index) + "'" : info.value());
 }
+
+std::vector<RailGraph::Graph::Rating> Graph::GetRatings() const
+{
+    return Graph::ratings;
+}
+
+void Graph::SetRatings(const std::vector<Rating> &ratings)
+{
+    Graph::ratings = ratings;
+}
+
 Graph::Point::Point(size_t idx_, std::optional<size_t> postIdx_) : postIdx(std::move(postIdx_)), idx(idx_)
 {
 }

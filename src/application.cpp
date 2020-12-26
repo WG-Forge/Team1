@@ -4,7 +4,7 @@
 
 #include <utility>
 
-Application::Application(Config config, io_service &service) : config(std::move(config)), client(service)
+Application::Application(Config config) : config(std::move(config))
 {
 }
 
@@ -13,16 +13,24 @@ int Application::Run()
     Init();
 
     std::thread brainThread([this] {
-        sf::Clock timer;
         while (window.isOpen())
         {
-            if (timer.getElapsedTime().asMilliseconds() >= 100)
+            if (!pause)
             {
-                for (const auto &command : brain.GetTurn())
+                sf::Clock debug;
+                std::vector<std::thread> workers;
+                auto commands = brain.GetTurn();
+                for (int i = 0; i < commands.size(); ++i)
                 {
-                    HandleCommand(command);
+                    workers.emplace_back([this, commands, i] { HandleCommand(commands[i], false, i % clientsNum); });
                 }
-                timer.restart();
+                for (auto &worker : workers)
+                {
+                    worker.join();
+                }
+                HandleCommand("turn", true, 0);
+                HandleCommand("map 1", true, 0);
+                std::cerr << debug.getElapsedTime().asMilliseconds() << '\n';
             }
         }
     });
@@ -50,14 +58,13 @@ int Application::Run()
         if (firstRender)
         {
             ImGui::SetNextWindowPos(ImVec2(10, 10));
-            ImGui::SetNextWindowSize(ImVec2(450, 600));
+            ImGui::SetNextWindowSize(ImVec2(450, 900));
             firstRender = false;
         }
         ImGui::Begin("Console");
         ImGui::InputText("input", console, sizeof(console));
-        char *history = (hideConsole ? const_cast<char *>("type 'show' to show information")
-                                     : const_cast<char *>(consoleHistory.c_str()));
-        if (consoleHistory.size() > 1'000'000)
+        char *history = const_cast<char *>(consoleHistory.c_str());
+        if (consoleHistory.size() > 100'000)
         {
             consoleHistory.clear();
         }
@@ -74,7 +81,14 @@ int Application::Run()
             ImGui::TreePop();
         }
         ImGui::InputTextMultiline("output", history, consoleHistory.size(),
-                                  ImVec2(-1, ImGui::GetWindowContentRegionMax().y - 100), ImGuiInputTextFlags_ReadOnly);
+                                  ImVec2(-1, ImGui::GetWindowContentRegionMax().y / 3 * 2 - 50),
+                                  ImGuiInputTextFlags_ReadOnly);
+        ImGui::Spacing(), ImGui::Spacing();
+        consoleInformation = map.GetPointInfo(render.GetPicked(state));
+        char *information = const_cast<char *>(consoleInformation.c_str());
+        ImGui::InputTextMultiline("info", information, consoleInformation.size(),
+                                  ImVec2(-1, ImGui::GetWindowContentRegionMax().y / 3 - 50),
+                                  ImGuiInputTextFlags_ReadOnly);
         if (ImGui::IsWindowFocused() || ImGui::IsWindowHovered())
         {
             Application::focusedConsole = true;
@@ -126,10 +140,13 @@ void Application::Init()
     render.LoadTexture("default", "../resourses/default.png");
     render.LoadTexture("train", "../resourses/train.png");
 
-    HandleCommand("login " + config.teamName);
-    HandleCommand("map 0");
-    HandleCommand("map 1");
-    HandleCommand("map 10");
+    for (int i = 0; i < clientsNum; ++i)
+    {
+        HandleCommand("login " + config.teamName, true, i);
+    }
+    HandleCommand("map 0", true, 0);
+    HandleCommand("map 1", true, 0);
+    HandleCommand("map 10", true, 0);
     //    HandleCommand("hide");
     brain.SetMap(map);
     ImGui::SFML::Init(window);

@@ -22,12 +22,14 @@ class State
     std::vector<std::pair<sf::Text, std::string>> GetNonStaticTexts();
     std::vector<std::pair<sf::Text, std::string>> GetStaticTexts();
     std::vector<std::pair<sf::CircleShape, std::string>> GetTrains();
+    int GetCircleIndex(sf::CircleShape);
 
     RailGraph::Graph::Point GetCenter();
     void Resize(float delta);
     void ChangePointLocation(int index, float X, float Y);
     void ResetPointInformation();
     void UpdateTrains(std::vector<RailGraph::Graph::Train>);
+    void UpdateRatings(std::vector<RailGraph::Graph::Rating>, int);
 
   private:
     float circleRadius = 1.f;
