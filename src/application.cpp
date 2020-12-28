@@ -11,25 +11,42 @@ Application::Application(Config config) : config(std::move(config))
 int Application::Run()
 {
     Init();
+    int tick = 0;
 
-    std::thread brainThread([this] {
+    std::thread brainThread([this, &tick] {
         while (window.isOpen())
         {
+            auto data = clients[0].Games().data;
+            if (!isSoloGame)
+            {
+                if (RailGraph::ParseStatusOfGameFromJson(data, config.gameName) != 2)
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                if (RailGraph::ParseStatusOfGameFromJson(data, "Game of " + config.teamName) != 2)
+                {
+                    continue;
+                }
+            }
             if (!pause)
             {
                 sf::Clock debug;
                 std::vector<std::thread> workers;
-                auto commands = brain.GetTurn();
+                auto commands = brain.GetTurn(tick);
                 for (int i = 0; i < commands.size(); ++i)
                 {
-                    workers.emplace_back([this, commands, i] { HandleCommand(commands[i], false, i % clientsNum); });
+                    workers.emplace_back([this, commands, i] { HandleCommand(commands[i], true, i % clientsNum); });
                 }
                 for (auto &worker : workers)
                 {
                     worker.join();
                 }
-                HandleCommand("turn", true, 0);
-                HandleCommand("map 1", true, 0);
+                HandleCommand("turn", false, 0);
+                HandleCommand("map 1", false, 0);
+                tick++;
                 std::cerr << debug.getElapsedTime().asMilliseconds() << '\n';
             }
         }
@@ -85,6 +102,7 @@ int Application::Run()
                                   ImGuiInputTextFlags_ReadOnly);
         ImGui::Spacing(), ImGui::Spacing();
         consoleInformation = map.GetPointInfo(render.GetPicked(state));
+        consoleInformation += "\n" + std::to_string(tick);
         char *information = const_cast<char *>(consoleInformation.c_str());
         ImGui::InputTextMultiline("info", information, consoleInformation.size(),
                                   ImVec2(-1, ImGui::GetWindowContentRegionMax().y / 3 - 50),
@@ -142,12 +160,15 @@ void Application::Init()
 
     for (int i = 0; i < clientsNum; ++i)
     {
-        HandleCommand("login " + config.teamName, true, i);
+        //        HandleCommand("login " + config.teamName + " " + config.password + " " + config.gameName + " " +
+        //                          std::to_string(config.numTurns) + " " + std::to_string(config.numPlayers),
+        //                      false, i);
+        HandleCommand("login " + config.teamName, false, i);
+        isSoloGame = true;
     }
     HandleCommand("map 0", true, 0);
     HandleCommand("map 1", true, 0);
     HandleCommand("map 10", true, 0);
-    //    HandleCommand("hide");
     brain.SetMap(map);
     ImGui::SFML::Init(window);
 

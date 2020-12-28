@@ -25,5 +25,6 @@ std::vector<Graph::Post> ParseMap1FromJson(const std::string &parseText);
 std::vector<std::tuple<size_t, int, int>> ParseMap10FromJson(const std::string &parseText);
 std::vector<Graph::Train> ParseTrainsFromJson(const std::string &parseText);
 std::vector<Graph::Rating> ParseRatingFromJson(const std::string &parseText, const std::vector<std::string> &);
+int ParseStatusOfGameFromJson(const std::string &parseText, const std::string &game);
 } // namespace RailGraph
 #endif

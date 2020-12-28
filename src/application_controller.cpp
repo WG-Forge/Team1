@@ -147,7 +147,38 @@ void Application::HandleCommand(std::string command, bool display, int clientInd
         auto parsingResult = RailGraph::ParseLoginFromJson(clientResult);
         brain.SetHomeIdx(std::get<0>(parsingResult)), brain.SetHomePostIdx(std::get<1>(parsingResult));
         brain.SetIdx(std::get<2>(parsingResult));
+        std::vector<int> trainIdx;
+        for (const auto &i : RailGraph::ParseTrainsFromJson(clientResult))
+        {
+            trainIdx.emplace_back(i.info.idx);
+        }
+        brain.SetTrains(trainIdx);
         result += clientResult + "\n";
+    }
+    else if (clientCommand == "login" && tokens.size() == 6)
+    {
+        clientMutexes[clientIndex].lock();
+        result = "Login to " + clients[clientIndex].GetSocket().remote_endpoint().address().to_string() + "\n";
+        auto clientResult = clients[clientIndex]
+                                .Login(tokens[1], tokens[2], tokens[3], std::stoi(tokens[4]), std::stoi(tokens[5]))
+                                .data;
+        clientMutexes[clientIndex].unlock();
+        auto parsingResult = RailGraph::ParseLoginFromJson(clientResult);
+        brain.SetHomeIdx(std::get<0>(parsingResult)), brain.SetHomePostIdx(std::get<1>(parsingResult));
+        brain.SetIdx(std::get<2>(parsingResult));
+        std::vector<int> trainIdx;
+        for (const auto &i : RailGraph::ParseTrainsFromJson(clientResult))
+        {
+            trainIdx.emplace_back(i.info.idx);
+        }
+        brain.SetTrains(trainIdx);
+        result += clientResult + "\n";
+    }
+    else if (clientCommand == "player")
+    {
+        clientMutexes[clientIndex].lock();
+        result = clients[clientIndex].Player().data;
+        clientMutexes[clientIndex].unlock();
     }
     else if (clientCommand == "clear")
     {

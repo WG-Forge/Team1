@@ -9,7 +9,11 @@ struct Config
     bool hideCursor = false;
     int fps = 300;
     std::string pathToJson = "../tests/graph_tests/big_graph.json";
-    std::string teamName = "Team11";
+    std::string teamName = "Saske228";
+    std::string password = "12345";
+    std::string gameName = "Gucci-flip-flop";
+    int numTurns = -1;
+    int numPlayers = 2;
 
     Config() = default;
 };
