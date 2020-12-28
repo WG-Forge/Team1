@@ -7,13 +7,14 @@ struct Config
     int windowY = 600;
     bool isFullscreen = true;
     bool hideCursor = false;
+    bool isSoloGame = false;
     int fps = 300;
     std::string pathToJson = "../tests/graph_tests/big_graph.json";
-    std::string teamName = "Saske228";
+    std::string teamName = "Sanyok2";
     std::string password = "12345";
     std::string gameName = "Gucci-flip-flop";
     int numTurns = -1;
-    int numPlayers = 2;
+    int numPlayers = 4;
 
     Config() = default;
 };

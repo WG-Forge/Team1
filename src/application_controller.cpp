@@ -50,15 +50,34 @@ void Application::HandleCommand(std::string command, bool display, int clientInd
         clientMutexes[clientIndex].unlock();
         if (tokens.back() == "0")
         {
+            mapMutex.lock();
             map = RailGraph::ParseMap0FromJson(clientResult);
+            mapMutex.unlock();
         }
         else if (tokens.back() == "1")
         {
+            mapMutex.lock();
             map.SetPosts(RailGraph::ParseMap1FromJson(clientResult));
+            auto posts = map.GetPosts();
+            mapMutex.unlock();
             auto trains = RailGraph::ParseTrainsFromJson(clientResult);
-            auto ratings = RailGraph::ParseRatingFromJson(clientResult, {brain.GetIdx()});
+            std::vector<std::string> players;
+            for (const auto &i : posts)
+            {
+                if (i.postInfo.index() == RailGraph::Graph::Post::CityIndex)
+                {
+                    auto info = std::get<RailGraph::Graph::CityInfo>(i.postInfo).playerIdx;
+                    if (info.has_value())
+                    {
+                        players.emplace_back(info.value());
+                    }
+                }
+            }
+            auto ratings = RailGraph::ParseRatingFromJson(clientResult, players);
+            mapMutex.lock();
             map.SetTrains(trains);
             map.SetRatings(ratings);
+            mapMutex.unlock();
             stateMutex.lock();
             state.UpdateTrains(trains);
             state.UpdateRatings(ratings, window.getSize().x);
@@ -66,7 +85,9 @@ void Application::HandleCommand(std::string command, bool display, int clientInd
         }
         else if (tokens.back() == "10")
         {
+            mapMutex.lock();
             map.SetPointsCoordinates(RailGraph::ParseMap10FromJson(clientResult));
+            mapMutex.unlock();
         }
         result = clientResult + "\n";
     }
@@ -190,11 +211,15 @@ void Application::HandleCommand(std::string command, bool display, int clientInd
     }
     else if (clientCommand == "point" && tokens.size() == 2 && IsNumber(tokens[1]))
     {
+        mapMutex.lock();
         result = map.GetPointInfo(stoi(tokens[1])) + "\n";
+        mapMutex.unlock();
     }
     else if (clientCommand == "train" && tokens.size() == 2 && IsNumber(tokens[1]))
     {
+        mapMutex.lock();
         result = map.GetTrainInfo(stoi(tokens[1])) + "\n";
+        mapMutex.unlock();
     }
     else if (clientCommand == "pause")
     {

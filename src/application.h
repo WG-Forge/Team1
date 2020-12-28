@@ -22,12 +22,12 @@ class Application
     Render render;
     State state;
     RailGraph::Graph map;
+    std::mutex mapMutex;
     Brain brain;
     std::mutex stateMutex;
     static const int clientsNum = 10;
     std::mutex clientMutexes[clientsNum];
     Client clients[clientsNum];
-    bool isSoloGame{false};
 
     void Init();
     void HandleCommand(std::string, bool, int);
