@@ -2,6 +2,7 @@
 #include "libs/imgui-sfml/imgui-SFML.h"
 #include "libs/imgui/imgui.h"
 
+#include <atomic>
 #include <utility>
 
 Application::Application(Config config) : config(std::move(config))
@@ -12,14 +13,37 @@ int Application::Run()
 {
     Init();
 
-    std::thread brainThread([this] {
+    std::atomic<int> tick = 0;
+
+    std::thread brainThread([this, &tick] {
         while (window.isOpen())
         {
+            clientMutexes[0].lock();
+            auto data = clients[0].Games().data;
+            clientMutexes[0].unlock();
+            if (!config.isSoloGame)
+            {
+                if (RailGraph::ParseStatusOfGameFromJson(data, config.gameName) != 2)
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                if (RailGraph::ParseStatusOfGameFromJson(data, "Game of " + config.teamName) != 2)
+                {
+                    continue;
+                }
+            }
             if (!pause)
             {
                 sf::Clock debug;
                 std::vector<std::thread> workers;
-                auto commands = brain.GetTurn();
+                mapMutex.lock();
+                auto commands = brain.GetTurn(tick);
+                mapMutex.unlock();
+                std::cerr << debug.getElapsedTime().asMilliseconds() << ' ';
+                debug.restart();
                 for (int i = 0; i < commands.size(); ++i)
                 {
                     workers.emplace_back([this, commands, i] { HandleCommand(commands[i], false, i % clientsNum); });
@@ -28,8 +52,9 @@ int Application::Run()
                 {
                     worker.join();
                 }
-                HandleCommand("turn", true, 0);
-                HandleCommand("map 1", true, 0);
+                HandleCommand("turn", false, 0);
+                HandleCommand("map 1", false, 0);
+                tick++;
                 std::cerr << debug.getElapsedTime().asMilliseconds() << '\n';
             }
         }
@@ -52,7 +77,9 @@ int Application::Run()
         }
 
         window.clear();
+        stateMutex.lock();
         render.Draw(state);
+        stateMutex.unlock();
 
         ImGui::SFML::Update(window, deltaClock.restart());
         if (firstRender)
@@ -64,7 +91,7 @@ int Application::Run()
         ImGui::Begin("Console");
         ImGui::InputText("input", console, sizeof(console));
         char *history = const_cast<char *>(consoleHistory.c_str());
-        if (consoleHistory.size() > 100'000)
+        if (consoleHistory.size() > 10'000)
         {
             consoleHistory.clear();
         }
@@ -84,7 +111,10 @@ int Application::Run()
                                   ImVec2(-1, ImGui::GetWindowContentRegionMax().y / 3 * 2 - 50),
                                   ImGuiInputTextFlags_ReadOnly);
         ImGui::Spacing(), ImGui::Spacing();
+        mapMutex.lock();
         consoleInformation = map.GetPointInfo(render.GetPicked(state));
+        mapMutex.unlock();
+        consoleInformation += "\n" + std::to_string(tick);
         char *information = const_cast<char *>(consoleInformation.c_str());
         ImGui::InputTextMultiline("info", information, consoleInformation.size(),
                                   ImVec2(-1, ImGui::GetWindowContentRegionMax().y / 3 - 50),
@@ -142,12 +172,20 @@ void Application::Init()
 
     for (int i = 0; i < clientsNum; ++i)
     {
-        HandleCommand("login " + config.teamName, true, i);
+        if (!config.isSoloGame)
+        {
+            HandleCommand("login " + config.teamName + " " + config.password + " " + config.gameName + " " +
+                              std::to_string(config.numTurns) + " " + std::to_string(config.numPlayers),
+                          false, i);
+        }
+        else
+        {
+            HandleCommand("login " + config.teamName, false, i);
+        }
     }
-    HandleCommand("map 0", true, 0);
-    HandleCommand("map 1", true, 0);
-    HandleCommand("map 10", true, 0);
-    //    HandleCommand("hide");
+    HandleCommand("map 0", false, 0);
+    HandleCommand("map 1", false, 0);
+    HandleCommand("map 10", false, 0);
     brain.SetMap(map);
     ImGui::SFML::Init(window);
 

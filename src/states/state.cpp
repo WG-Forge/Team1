@@ -158,12 +158,14 @@ void State::Resize(float delta)
     }
     State::circleRadius = std::max(1.f, min / 3);
 }
+
 void State::ChangePointLocation(int index, float X, float Y)
 {
     State::graphState.GetPoints()[index].renderX = X;
     State::graphState.GetPoints()[index].renderY = Y;
     State::Resize(0);
 }
+
 RailGraph::Graph::Point State::GetCenter()
 {
     if (graphState.GetPoints().empty())
@@ -183,6 +185,7 @@ RailGraph::Graph::Point State::GetCenter()
     }
     return RailGraph::Graph::Point(0, 0, (minX + maxX) / 2.f, (minY + maxY) / 2.f);
 }
+
 void State::ResetPointInformation()
 {
     showPointInformation ^= true;
@@ -200,7 +203,7 @@ void State::UpdateRatings(std::vector<RailGraph::Graph::Rating> ratings, int wid
     for (const auto &i : ratings)
     {
         AddStaticText(
-            SfmlTool::GetText(width - 200, y, i.name + ": " + std::to_string(i.rating), 15, sf::Color(82, 73, 73)),
+            SfmlTool::GetText(width - 300, y, i.name + ": " + std::to_string(i.rating), 15, sf::Color(82, 73, 73)),
             "8-bit-pusab");
         y += 25;
     }
