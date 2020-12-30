@@ -1,0 +1,5 @@
+/snap/clion/137/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=/usr/bin/g++ -G "CodeBlocks - Unix Makefiles" /home/karial/CLionProjects/Team1
+-- Found SFML 2.5.1 in /home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/lib/cmake/SFML
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/karial/CLionProjects/Team1/cmake-build-release

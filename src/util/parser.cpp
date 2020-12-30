@@ -181,4 +181,18 @@ std::vector<Graph::Rating> ParseRatingFromJson(const std::string &parseText, con
     return result;
 }
 
+int ParseStatusOfGameFromJson(const std::string &parseText, const std::string &gameName)
+{
+    rapidjson::Document document;
+    document.Parse(parseText.c_str());
+    for (const auto &game : document["games"].GetArray())
+    {
+        if (game["name"].GetString() == gameName)
+        {
+            return game["state"].GetInt();
+        }
+    }
+    return 0;
+}
+
 } // namespace RailGraph

@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Rail-simulator"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\libs\;CMake Files\libs\SFML-2.5.1-Linux\;CMake Files\libs\SFML-2.5.1-Linux\lib\;CMake Files\libs\SFML-2.5.1-Linux\lib\cmake\;CMake Files\libs\SFML-2.5.1-Linux\lib\cmake\SFML\;CMake Files\libs\googletest-master\;CMake Files\libs\googletest-master\googlemock\;CMake Files\libs\googletest-master\googlemock\cmake\;CMake Files\libs\googletest-master\googletest\;CMake Files\libs\googletest-master\googletest\cmake\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/strip">
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/local">
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Rail-simulator">
+				<Option output="/home/karial/CLionProjects/Team1/cmake-build-release/Rail-simulator" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/karial/CLionProjects/Team1/libs"/>
+					<Add directory="/home/karial/CLionProjects/Team1/."/>
+					<Add directory="/home/karial/CLionProjects/Team1/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/error"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/internal"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 Rail-simulator"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Rail-simulator/fast">
+				<Option output="/home/karial/CLionProjects/Team1/cmake-build-release/Rail-simulator" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/karial/CLionProjects/Team1/libs"/>
+					<Add directory="/home/karial/CLionProjects/Team1/."/>
+					<Add directory="/home/karial/CLionProjects/Team1/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/error"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/internal"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 Rail-simulator/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install">
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="list_install_components">
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock_main">
+				<Option output="/home/karial/CLionProjects/Team1/cmake-build-release/lib/libgmock_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/karial/CLionProjects/Team1/libs"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/."/>
+					<Add directory="/home/karial/CLionProjects/Team1/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/error"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/internal"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 gmock_main"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock_main/fast">
+				<Option output="/home/karial/CLionProjects/Team1/cmake-build-release/lib/libgmock_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/karial/CLionProjects/Team1/libs"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/."/>
+					<Add directory="/home/karial/CLionProjects/Team1/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/error"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/internal"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 gmock_main/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock">
+				<Option output="/home/karial/CLionProjects/Team1/cmake-build-release/lib/libgmock.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/karial/CLionProjects/Team1/libs"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/."/>
+					<Add directory="/home/karial/CLionProjects/Team1/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/error"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/internal"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 gmock"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock/fast">
+				<Option output="/home/karial/CLionProjects/Team1/cmake-build-release/lib/libgmock.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/karial/CLionProjects/Team1/libs"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/."/>
+					<Add directory="/home/karial/CLionProjects/Team1/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/error"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/internal"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 gmock/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main">
+				<Option output="/home/karial/CLionProjects/Team1/cmake-build-release/lib/libgtest_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/karial/CLionProjects/Team1/libs"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/."/>
+					<Add directory="/home/karial/CLionProjects/Team1/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/error"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/internal"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 gtest_main"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main/fast">
+				<Option output="/home/karial/CLionProjects/Team1/cmake-build-release/lib/libgtest_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/karial/CLionProjects/Team1/libs"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/."/>
+					<Add directory="/home/karial/CLionProjects/Team1/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/error"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/internal"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 gtest_main/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest">
+				<Option output="/home/karial/CLionProjects/Team1/cmake-build-release/lib/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/karial/CLionProjects/Team1/libs"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/."/>
+					<Add directory="/home/karial/CLionProjects/Team1/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/error"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/internal"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 gtest"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest/fast">
+				<Option output="/home/karial/CLionProjects/Team1/cmake-build-release/lib/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/karial/CLionProjects/Team1/libs"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/."/>
+					<Add directory="/home/karial/CLionProjects/Team1/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/error"/>
+					<Add directory="/home/karial/CLionProjects/Team1/rapidjson/internal"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/include"/>
+					<Add directory="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 gtest/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/karial/CLionProjects/Team1/cmake-build-release/libs/googletest-master/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock/src/gmock-all.cc">
+			<Option target="gmock"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock/src/gmock_main.cc">
+			<Option target="gmock_main"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/src/gtest-all.cc">
+			<Option target="gtest"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/src/gtest_main.cc">
+			<Option target="gtest_main"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/imgui-sfml/imgui-SFML.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/imgui-sfml/imgui-SFML.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/imgui/imgui.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/imgui/imgui.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/imgui/imgui_demo.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/imgui/imgui_draw.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/imgui/imgui_widgets.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/allocators.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/cursorstreamwrapper.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/document.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/encodedstream.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/encodings.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/error/en.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/error/error.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/filereadstream.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/filewritestream.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/fwd.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/internal/biginteger.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/internal/clzll.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/internal/diyfp.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/internal/dtoa.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/internal/ieee754.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/internal/itoa.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/internal/meta.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/internal/pow10.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/internal/regex.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/internal/stack.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/internal/strfunc.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/internal/strtod.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/internal/swap.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/istreamwrapper.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/memorybuffer.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/memorystream.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/ostreamwrapper.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/pointer.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/prettywriter.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/rapidjson.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/reader.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/schema.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/stream.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/stringbuffer.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/rapidjson/writer.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/application.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/application.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/application_controller.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/camera.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/camera.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/client/client.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/client/client.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/game/brain.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/game/brain.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/game/graph.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/game/graph.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/main.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/render.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/render.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/states/state.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/states/state.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/util/parser.cpp">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/util/parser.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/src/util/sfml_tool.h">
+			<Option target="Rail-simulator"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/GTest.cmake">
+			<Option virtualFolder="CMake Files\libs\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/RapidJson.cmake">
+			<Option virtualFolder="CMake Files\libs\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/lib/cmake/SFML/SFMLConfig.cmake">
+			<Option virtualFolder="CMake Files\libs\SFML-2.5.1-Linux\lib\cmake\SFML\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/lib/cmake/SFML/SFMLConfigDependencies.cmake">
+			<Option virtualFolder="CMake Files\libs\SFML-2.5.1-Linux\lib\cmake\SFML\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/lib/cmake/SFML/SFMLConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\libs\SFML-2.5.1-Linux\lib\cmake\SFML\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/lib/cmake/SFML/SFMLSharedTargets-release.cmake">
+			<Option virtualFolder="CMake Files\libs\SFML-2.5.1-Linux\lib\cmake\SFML\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/SFML-2.5.1-Linux/lib/cmake/SFML/SFMLSharedTargets.cmake">
+			<Option virtualFolder="CMake Files\libs\SFML-2.5.1-Linux\lib\cmake\SFML\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/googletest-master/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libs\googletest-master\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libs\googletest-master\googlemock\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock/cmake/gmock.pc.in">
+			<Option virtualFolder="CMake Files\libs\googletest-master\googlemock\cmake\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/googletest-master/googlemock/cmake/gmock_main.pc.in">
+			<Option virtualFolder="CMake Files\libs\googletest-master\googlemock\cmake\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libs\googletest-master\googletest\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/cmake/Config.cmake.in">
+			<Option virtualFolder="CMake Files\libs\googletest-master\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/cmake/gtest.pc.in">
+			<Option virtualFolder="CMake Files\libs\googletest-master\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/cmake/gtest_main.pc.in">
+			<Option virtualFolder="CMake Files\libs\googletest-master\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/karial/CLionProjects/Team1/libs/googletest-master/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\libs\googletest-master\googletest\cmake\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

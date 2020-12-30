@@ -152,10 +152,9 @@ std::string Graph::GetPointInfo(int index) const
             break;
         }
     }
-    return (
-        info == std::nullopt
-            ? "================================\n           no information\n================================"
-            : "================================\n" + info.value() + "\n================================");
+    return (info == std::nullopt
+                ? "================================\n           no information\n================================"
+                : "================================\n" + info.value() + "\n================================");
 }
 std::string Graph::GetTrainInfo(int index) const
 {
@@ -179,7 +178,7 @@ std::string Graph::GetTrainInfo(int index) const
             result.append("    idx: " + std::to_string(trainInfo.idx) + "\n");
             result.append("    lineIdx: " + std::to_string(trainInfo.lineIdx) + "\n");
             result.append("    level: " + std::to_string(trainInfo.level) + "\n");
-            result.append("    nextLevelPrice: " + std::to_string(trainInfo.nextLevelPrice.value()) + "\n");
+            result.append("    nextLevelPrice: " + std::to_string(trainInfo.nextLevelPrice.value_or(10000)) + "\n");
             result.append("    playerIdx: " +
                           (trainInfo.playerIdx == std::nullopt ? "null" : trainInfo.playerIdx.value()) + "\n");
             result.append("    position: " + std::to_string(trainInfo.position) + "\n");
